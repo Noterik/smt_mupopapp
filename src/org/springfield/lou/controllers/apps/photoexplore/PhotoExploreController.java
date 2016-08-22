@@ -36,11 +36,12 @@ public class PhotoExploreController extends Html5Controller {
 			screen.get(selector).parsehtml(data);
 			
 			// i think we should work with /shared/ name space, Pieter need to talk about this
-			//	model.onPropertiesUpdate(sharedspace+"/station/1","onViewPortChange",this);
+			model.onPropertiesUpdate(sharedspace+"/station/1","onViewPortChange",this);
 		}
 	}
 	
 	public void onViewPortChange(ModelEvent e) {
+		System.out.println("MAINSCREEN GOT VIEW EVENT !!!");
 		FsPropertySet set = (FsPropertySet)e.target;
 		screen.get("#photoexplore_image").css("height",set.getProperty("scale")+"%");
 		screen.get("#photoexplore_image").css("left",set.getProperty("x")+"px");
