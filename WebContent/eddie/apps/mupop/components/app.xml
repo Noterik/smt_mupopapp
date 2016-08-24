@@ -16,5 +16,11 @@
 		<controller id="PhotoExploreController">
 		</controller>
 	</view>
+	
+	<view id="#photoinfospots_app">
+		<template>photoinfospots/photoinfospots.mst</template>
+		<controller id="PhotoInfoSpotsController">
+		</controller>
+	</view>
 
 </app>

@@ -37,7 +37,7 @@ public class MupopApplication extends Html5Application {
 			System.out.println("PATH="+path);
     		if (path!=null) {
     				s.getModel().setProperty("/screen/exhibitionpath","/domain/mupop/user/daniel"+path);
-    				s.getModel().setProperty("/screen/sharedspace","/shared/test/");
+    				s.getModel().setProperty("/screen/sharedspace","/shared/test");
     				s.get("#screen").append("div","exhibition",new ExhibitionController());
 
     		}

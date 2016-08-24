@@ -12,6 +12,7 @@ import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
+import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
 
@@ -41,9 +42,11 @@ public class ExhibitionController extends Html5Controller {
 			System.out.println("STATIONNODE="+stationnode.asXML());
 			String app =  stationnode.getProperty("app"); // get the app name
 			if (app!=null) {
-				// should be a case or loaded system
+				//TODO: should be a case or loaded system
 				if (app.equals("photoexplore")) {
     				screen.get("#exhibition").append("div","photoexplore_app",new PhotoExploreController());
+				} else if (app.equals("photoinfospots")) {
+					screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
 				}
 			} else {
 				// should display error that no app was selected and curator should set it
