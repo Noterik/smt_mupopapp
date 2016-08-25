@@ -41,7 +41,6 @@ public class PhotoExploreController extends Html5Controller {
 	}
 	
 	public void onViewPortChange(ModelEvent e) {
-		System.out.println("MAINSCREEN GOT VIEW EVENT !!!");
 		FsPropertySet set = (FsPropertySet)e.target;
 		screen.get("#photoexplore_image").css("height",set.getProperty("scale")+"%");
 		screen.get("#photoexplore_image").css("left",set.getProperty("x")+"px");
