@@ -20,7 +20,13 @@
 */
 package org.springfield.lou.controllers.apps.photoinfospots;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import org.json.simple.JSONObject;
+import org.springfield.fs.FSList;
+import org.springfield.fs.FSListManager;
 import org.springfield.fs.FsNode;
 import org.springfield.fs.FsPropertySet;
 import org.springfield.lou.controllers.Html5Controller;
@@ -38,14 +44,16 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 	String sharedspace;
 	
-	public PhotoInfoSpotsController() {}
+	public PhotoInfoSpotsController() {
+	}
 	
+	/*
+	 * Attach the controller to the screen
+	 * @see org.springfield.lou.controllers.Html5Controller#attach(java.lang.String)
+	 */
 	public void attach(String sel) {
-		System.out.println("Entering photoinfospots controller");
-		
 		selector = sel;
-		sharedspace = model.getProperty("/screen/sharedspace");
-		screen.loadStyleSheet("photoinfospots/photoinfospots.css");
+		screen.loadStyleSheet("photoinfospots/photoinfospots.css"); // push the css part
 		
 		String path = model.getProperty("/screen/exhibitionpath");
 
@@ -54,17 +62,61 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			JSONObject data = new JSONObject();
 			data.put("url",stationnode.getProperty("url"));
 			screen.get(selector).parsehtml(data);
-			
-			// i think we should work with /shared/ name space, Pieter need to talk about this
-			model.onPropertiesUpdate(sharedspace+"/station/2","onViewPortChange",this);
+		}
+ 		
+		sharedspace = model.getProperty("/screen/sharedspace");
+		model.onPropertiesUpdate(sharedspace+"/station/2","onPositionChange",this);
+	}
+	
+	public void onPositionChange(ModelEvent e) {
+		System.out.println("DETECTED: position change");
+		
+		FsPropertySet set = (FsPropertySet)e.target;
+		try {
+		 float x  = Float.parseFloat(set.getProperty("x"));
+		 float y  = Float.parseFloat(set.getProperty("y"));
+		 String reason = set.getProperty("action");
+		 if (reason.equals("move")) { // its a move event so lets just move the dot
+			long starttime = new Date().getTime();
+			String url = getAudio(x, y);
+			String backgr = "background-color:purple";
+			 if (url!=null) {
+				 backgr = "background-color:blue";
+			 }
+			 screen.get("#audioimage_holder").html("<div id=\"audioimage_spot\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div>");
+		 } else if (reason.equals("up")) { // its a up event so lets see if we need to play something
+			 String url = getAudio(x, y); // get the audio (if any) for this location
+			if (url!=null) { // if audio found lets push it to the screen (so it plays)
+				screen.get("#audioimage_audio").html("<source src=\""+url+"\" type=\"audio/mpeg\">");
+			}
+		 }
+		} catch(Exception error) {
+			System.out.println("AudioImage - count not move stop of play sound");
 		}
 	}
 	
-	public void onViewPortChange(ModelEvent e) {
-		System.out.println("MAINSCREEN GOT VIEW EVENT !!!");
-		FsPropertySet set = (FsPropertySet)e.target;
-		screen.get("#photoinfospots_image").css("height",set.getProperty("scale")+"%");
-		screen.get("#photoinfospots_image").css("left",set.getProperty("x")+"px");
-		screen.get("#photoinfospots_image").css("top",set.getProperty("y")+"px");
+	private String getAudio(float x,float y) {
+		FSList fslist = FSListManager.get("/domain/mecanex/app/sceneplayer/scene/blue/element/screen5/sounds",true);
+		List<FsNode> nodes = fslist.getNodes();
+		if (nodes!=null) {
+			for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
+				FsNode node = (FsNode)iter.next();	
+				String url = node.getProperty("url");
+				try {
+					float ox = Float.parseFloat(node.getProperty("x"));
+					float oy = Float.parseFloat(node.getProperty("y"));
+					float ow = Float.parseFloat(node.getProperty("width"))/2; // 
+					float oh = Float.parseFloat(node.getProperty("height"))/2;
+					if (x>(ox-ow) && x<(ox+ow)) { // within x range
+						if (y>(oy-oh) && y<(oy+oh)) { // within y range
+							return url;
+						}
+					}	
+				} catch(Exception e) {
+					System.out.println("Error parsing audioimage data");
+				}
+			}
+		}
+		return null;
 	}
 }
