@@ -53,7 +53,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	 */
 	public void attach(String sel) {
 		selector = sel;
-		screen.loadStyleSheet("photoinfospots/photoinfospots.css"); // push the css part
 		
 		String path = model.getProperty("/screen/exhibitionpath");
 
@@ -61,6 +60,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
 			data.put("url",stationnode.getProperty("url"));
+			screen.get(selector).loadScript(this);
 			screen.get(selector).parsehtml(data);
 		}
  		
@@ -69,7 +69,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	}
 	
 	public void onPositionChange(ModelEvent e) {
-		System.out.println("DETECTED: position change");
+		//System.out.println("DETECTED: position change");
 		
 		FsPropertySet set = (FsPropertySet)e.target;
 		try {
@@ -83,15 +83,18 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			 if (url!=null) {
 				 backgr = "background-color:blue";
 			 }
-			 screen.get("#audioimage_holder").html("<div id=\"audioimage_spot\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div>");
+			 screen.get("#photoinfospots_holder").html("<div id=\"photoinfospots_spot\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div>");
 		 } else if (reason.equals("up")) { // its a up event so lets see if we need to play something
 			 String url = getAudio(x, y); // get the audio (if any) for this location
 			if (url!=null) { // if audio found lets push it to the screen (so it plays)
-				screen.get("#audioimage_audio").html("<source src=\""+url+"\" type=\"audio/mpeg\">");
+				JSONObject data = new JSONObject();	
+				data.put("command","update");
+				data.put("src", url);
+				screen.get("#photoinfospots_app").update(data);
 			}
 		 }
 		} catch(Exception error) {
-			System.out.println("AudioImage - count not move stop of play sound");
+			System.out.println("PhotoInfoSpots - count not move stop of play sound");
 		}
 	}
 	

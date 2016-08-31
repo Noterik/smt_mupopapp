@@ -7,19 +7,23 @@
 	
 	<view id="#exhibition">
 		<template>exhibition/exhibition.mst</template>
+		<style>exhibition/exhibition.css</style>
 		<controller id="ExhibitionController">
 		</controller>
 	</view>
 	
 	<view id="#photoexplore_app">
 		<template>photoexplore/photoexplore.mst</template>
+		<style>photoexplore/photoexplore.css</style>
 		<controller id="PhotoExploreController">
 		</controller>
 	</view>
 	
 	<view id="#photoinfospots_app">
 		<template>photoinfospots/photoinfospots.mst</template>
+		<style>photoinfospots/photoinfospots.css</style>
 		<controller id="PhotoInfoSpotsController">
+			<javascript>photoinfospots/PhotoInfoSpotsController.js</javascript>
 		</controller>
 	</view>
 

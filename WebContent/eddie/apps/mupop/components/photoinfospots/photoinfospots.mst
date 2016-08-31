@@ -1,6 +1,7 @@
 <img id="photoinfospots_image" src="{{url}}" />
-<div id="photoinfospots_holder"></div>
+<div id="photoinfospots_holder">
 	<div id="photoinfospots_spot"></div>
 </div>
-<audio id="photoinfospots_audio" controls autoplay>
+<audio id="photoinfospots_audio" controls="controls" autoplay="autoplay">
+	<source type="audio/mpeg"/>
 </audio>

@@ -25,7 +25,7 @@ public class ExhibitionController extends Html5Controller {
 	
 	public void attach(String sel) {
 		selector = sel;
-		screen.loadStyleSheet("exhibition/exhibition.css");
+
 		JSONObject data = new JSONObject();
 		path = model.getProperty("/screen/exhibitionpath");
 		data.put("path",path);
