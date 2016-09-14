@@ -23,8 +23,36 @@
 		<template>photoinfospots/photoinfospots.mst</template>
 		<style>photoinfospots/photoinfospots.css</style>
 		<controller id="PhotoInfoSpotsController">
-			<javascript>photoinfospots/PhotoInfoSpotsController.js</javascript>
+		</controller>
+	</view>
+	
+	<view id="#staticentryscreen">
+		<template>entryscreen/staticentryscreen.mst</template>
+		<style>entryscreen/staticentryscreen.css</style>
+		<controller id="StaticEntryScreenController">
 		</controller>
 	</view>
 
+	<view id="#imagerotationentryscreen">
+		<template>entryscreen/imagerotationentryscreen.mst</template>
+		<style>entryscreen/imagerotationentryscreen.css</style>
+		<controller id="ImageRotationEntryScreenController">
+		</controller>
+	</view>
+	
+	<view id="#zoomandaudio">
+		<template>image/spotting/zoomandaudio.mst</template>
+		<style>image/spotting/zoomandaudio.css</style>
+		<controller id="ZoomAndAudioController">
+			<javascript>image/spotting/ZoomAndAudioController.js</javascript>
+		</controller>
+	</view>
+	
+	<view id="#coverflow">
+		<template>image/selection/coverflow.mst</template>
+		<style>image/selection/coverflow.css</style>
+		<controller id="CoverFlowController">
+			<javascript>image/selection/CoverFlowController.js</javascript>
+		</controller>
+	</view>
 </app>

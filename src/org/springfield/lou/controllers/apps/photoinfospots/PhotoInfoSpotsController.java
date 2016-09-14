@@ -20,16 +20,12 @@
 */
 package org.springfield.lou.controllers.apps.photoinfospots;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.json.simple.JSONObject;
-import org.springfield.fs.FSList;
-import org.springfield.fs.FSListManager;
 import org.springfield.fs.FsNode;
-import org.springfield.fs.FsPropertySet;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
+import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
+import org.springfield.lou.controllers.apps.image.spotting.ZoomAndAudioController;
 import org.springfield.lou.model.ModelEvent;
 
 /**
@@ -43,6 +39,8 @@ import org.springfield.lou.model.ModelEvent;
 public class PhotoInfoSpotsController extends Html5Controller {
 
 	String sharedspace;
+	//TODO: handle this better
+	String state = "waiting";
 	
 	public PhotoInfoSpotsController() {
 	}
@@ -59,67 +57,37 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		FsNode stationnode = model.getNode(path);
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
-			data.put("url",stationnode.getProperty("url"));
-			screen.get(selector).loadScript(this);
 			screen.get(selector).parsehtml(data);
 		}
- 		
-		sharedspace = model.getProperty("/screen/sharedspace");
-		model.onPropertiesUpdate(sharedspace+"/station/2","onPositionChange",this);
-	}
-	
-	public void onPositionChange(ModelEvent e) {
-		//System.out.println("DETECTED: position change");
 		
-		FsPropertySet set = (FsPropertySet)e.target;
-		try {
-		 float x  = Float.parseFloat(set.getProperty("x"));
-		 float y  = Float.parseFloat(set.getProperty("y"));
-		 String reason = set.getProperty("action");
-		 if (reason.equals("move")) { // its a move event so lets just move the dot
-			long starttime = new Date().getTime();
-			String url = getAudio(x, y);
-			String backgr = "background-color:purple";
-			 if (url!=null) {
-				 backgr = "background-color:blue";
-			 }
-			 screen.get("#photoinfospots_holder").html("<div id=\"photoinfospots_spot\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div>");
-		 } else if (reason.equals("up")) { // its a up event so lets see if we need to play something
-			 String url = getAudio(x, y); // get the audio (if any) for this location
-			if (url!=null) { // if audio found lets push it to the screen (so it plays)
-				JSONObject data = new JSONObject();	
-				data.put("command","update");
-				data.put("src", url);
-				screen.get("#photoinfospots_app").update(data);
-			}
-		 }
-		} catch(Exception error) {
-			System.out.println("PhotoInfoSpots - count not move stop of play sound");
-		}
+		System.out.println("Loading entry screen");
+		
+		//TODO: load config for this exhibition from FS, is there an entry screen, etc
+		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+ 		//screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
+		
+		sharedspace = model.getProperty("/screen/sharedspace");
+
+		model.onNotify("/screen/tst", "onDeviceConnected", this);
+		model.onNotify("/screen/photoinfospots/image/selected", "onImageSelected", this);
 	}
 	
-	private String getAudio(float x,float y) {
-		FSList fslist = FSListManager.get("/domain/mecanex/app/sceneplayer/scene/blue/element/screen5/sounds",true);
-		List<FsNode> nodes = fslist.getNodes();
-		if (nodes!=null) {
-			for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
-				FsNode node = (FsNode)iter.next();	
-				String url = node.getProperty("url");
-				try {
-					float ox = Float.parseFloat(node.getProperty("x"));
-					float oy = Float.parseFloat(node.getProperty("y"));
-					float ow = Float.parseFloat(node.getProperty("width"))/2; // 
-					float oh = Float.parseFloat(node.getProperty("height"))/2;
-					if (x>(ox-ow) && x<(ox+ow)) { // within x range
-						if (y>(oy-oh) && y<(oy+oh)) { // within y range
-							return url;
-						}
-					}	
-				} catch(Exception e) {
-					System.out.println("Error parsing audioimage data");
-				}
-			}
-		}
-		return null;
+	public void onDeviceConnected(ModelEvent e) {
+		if (state.equals("waiting")) {
+			screen.get("#staticentryscreen").remove();
+
+			//TODO: load from config what needs to be loaded
+			state = "coverflow";
+			screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
+		} 
+	}
+	
+	public void onImageSelected(ModelEvent e) {
+		screen.get("#coverflow").remove();
+		
+		System.out.println("Adding image zoom and audio");
+		
+		FsNode target = e.getTargetFsNode();		
+		screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController(target.getId()));
 	}
 }

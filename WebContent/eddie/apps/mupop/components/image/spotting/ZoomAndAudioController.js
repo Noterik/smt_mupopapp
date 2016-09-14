@@ -1,7 +1,8 @@
-var PhotoInfoSpotsController = function(options) {}; // needed for detection
+var ZoomAndAudioController = function(options) {}; // needed for detection
 
-
-PhotoInfoSpotsController.update = function(vars, data){
+ZoomAndAudioController.update = function(vars, data){
+	console.log(data);
+	
 	var command = data['command'];
 	var targetId = '#'+data['targetid']; 
 	
