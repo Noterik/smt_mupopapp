@@ -44,11 +44,15 @@ public class ZoomAndAudioController extends Html5Controller {
 
 	String sharedspace;
 	
-	public ZoomAndAudioController() { }
+	public ZoomAndAudioController() {
+		
+	}
 	
+	/*
 	public ZoomAndAudioController(String item) {
 		System.out.println("Loading item "+item);
 	}
+	*/
 	
 	public void attach(String sel) {
 		selector = sel;
@@ -58,12 +62,17 @@ public class ZoomAndAudioController extends Html5Controller {
 		FsNode stationnode = model.getNode(path);
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
-			data.put("url",stationnode.getProperty("url"));
+			String imageurl = model.getProperty("/screen/imageurl");
+			if (imageurl!=null && !imageurl.equals("")) {
+				data.put("url",imageurl);
+			} else {
+				data.put("url",stationnode.getProperty("url"));
+			}
 			screen.get(selector).parsehtml(data);
 		}
 		
 		sharedspace = model.getProperty("/screen/sharedspace");
-		model.onPropertiesUpdate(sharedspace+"/station/2","onPositionChange",this);		
+		model.onPropertiesUpdate(sharedspace+"/station/"+model.getProperty("@stationid"),"onPositionChange",this);		
 	}
 	
 	public void onPositionChange(ModelEvent e) {

@@ -62,32 +62,47 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		
 		System.out.println("Loading entry screen");
 		
-		//TODO: load config for this exhibition from FS, is there an entry screen, etc
-		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
- 		//screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
+		System.out.println("MODE="+model.getProperty("@station/waitscreenmode"));
+		String waitscreenmode = model.getProperty("@station/waitscreenmode");
 		
-		sharedspace = model.getProperty("/screen/sharedspace");
+		if (waitscreenmode!=null && !waitscreenmode.equals("off")) { // is there a intro screen?
+			// Pieter you need to work with these values for waitscreens, like 'static' or 'animation'
+			// as far as i can see they are not the same as having a 'selector' like a grid or image 
+			
+			screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+			
+			// so this is i think if you have a selector screen (like grid or imageGallery)
+			
+			//screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
+		
+			sharedspace = model.getProperty("/screen/sharedspace");
 
-		model.onNotify("/screen/tst", "onDeviceConnected", this);
-		model.onNotify("/screen/photoinfospots/image/selected", "onImageSelected", this);
+			model.onNotify("/screen/tst", "onDeviceConnected", this);
+			model.onNotify("/screen/photoinfospots/image/selected", "onImageSelected", this);
+		} else {
+			screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
+		}
 	}
 	
 	public void onDeviceConnected(ModelEvent e) {
 		if (state.equals("waiting")) {
 			screen.get("#staticentryscreen").remove();
 
-			//TODO: load from config what needs to be loaded
-			state = "coverflow";
-			screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
+			String selectionmode = model.getProperty("@station/selectionmode");
+			if (selectionmode!=null && !selectionmode.equals("off")) { 
+				state = "coverflow";
+				screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
+			} else {
+				
+			}
 		} 
 	}
 	
 	public void onImageSelected(ModelEvent e) {
 		screen.get("#coverflow").remove();
-		
-		System.out.println("Adding image zoom and audio");
-		
-		FsNode target = e.getTargetFsNode();		
-		screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController(target.getId()));
+		FsNode target = e.getTargetFsNode();	
+		System.out.println("e="+target.asXML());
+		model.setProperty("/screen/imageurl","http://images1.noterik.com/mupop/"+target.getId()+"-500px.jpg");
+		screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
 	}
 }

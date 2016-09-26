@@ -1,4 +1,23 @@
 <app>
+
+	<model id="default">
+		<username>/screen['profile']/username</username>
+		<exhibitionid>/screen['vars']/exhibitionid</exhibitionid>
+		<stationid>/screen['vars']/stationid</stationid>
+		<roomid>/screen['vars']/roomid</roomid>
+		<oldroomid>/screen['vars']/oldroomid</oldroomid>
+		<roomname>/screen['vars']/roomname</roomname>
+	
+	 	<exhibitions>/domain['mupop']/user['@username']/exhibition</exhibitions>
+	    <exhibition>/domain['mupop']/user['@username']/exhibition['@exhibitionid']</exhibition>
+	    
+	  	<rooms>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/room</rooms>
+	    <room>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/room['@roomid']</room>
+	    
+		<stations>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station</stations>
+		<station>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']</station>
+	</model>
+
 	<view id="#screen">
 		<template>screen.mst</template>
 		<controller id="ScreenController">

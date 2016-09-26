@@ -28,6 +28,14 @@ public class ExhibitionController extends Html5Controller {
 
 		JSONObject data = new JSONObject();
 		path = model.getProperty("/screen/exhibitionpath");
+		String[] parts = path.split("/");
+		String userid=parts[4];
+		String exhibitionid=parts[6];
+		String stationid=parts[8];
+		model.setProperty("@username", userid);
+		model.setProperty("@exhibitionid", exhibitionid);
+		model.setProperty("@stationid", stationid);
+		
 		data.put("path",path);
 		//data.put("element",model.getProperty("/screen/element"));
 		System.out.println("exhibition controller called");
@@ -39,7 +47,6 @@ public class ExhibitionController extends Html5Controller {
 		FsNode stationnode = model.getNode(path);
 		
 		if (stationnode!=null) {
-			System.out.println("STATIONNODE="+stationnode.asXML());
 			String app =  stationnode.getProperty("app"); // get the app name
 			if (app!=null) {
 				//TODO: should be a case or loaded system

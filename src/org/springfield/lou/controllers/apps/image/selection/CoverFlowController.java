@@ -57,8 +57,7 @@ public class CoverFlowController extends Html5Controller {
 		
 		model.onNotify("/screen/photoinfospots", "coverFlow", this);
 		
-		screen.get("#coverflow").on("active",
-				"active", this);
+		screen.get("#coverflow").on("active","active", this);
 		
 	}
 	
