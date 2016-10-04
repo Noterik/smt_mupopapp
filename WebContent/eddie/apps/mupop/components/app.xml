@@ -38,6 +38,13 @@
 		</controller>
 	</view>
 	
+	<view id="#interactivevideo_app">
+		<template>interactivevideo/interactivevideo.mst</template>
+		<style>interactivevideo/interactivevideo.css</style>
+		<controller id="InteractiveVideoController">
+		</controller>
+	</view>
+	
 	<view id="#photoinfospots_app">
 		<template>photoinfospots/photoinfospots.mst</template>
 		<style>photoinfospots/photoinfospots.css</style>
