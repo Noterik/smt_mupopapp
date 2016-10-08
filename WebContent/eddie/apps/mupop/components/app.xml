@@ -1,5 +1,13 @@
 <app>
 
+	<jumper id="/lou/mupop/station">
+		<target>/lou/domain/mupop/user/daniel/html5application/mupop</target>
+	</jumper>
+
+	<jumper id="station.mupop.net@/lou/mupop/">
+		<target>/lou/domain/mupop/user/daniel/html5application/mupop</target>
+	</jumper>
+
 	<model id="default">
 		<username>/screen['profile']/username</username>
 		<exhibitionid>/screen['vars']/exhibitionid</exhibitionid>
@@ -7,6 +15,7 @@
 		<roomid>/screen['vars']/roomid</roomid>
 		<oldroomid>/screen['vars']/oldroomid</oldroomid>
 		<roomname>/screen['vars']/roomname</roomname>
+		<pairingid>/screen['vars']/pairingid</pairingid>
 	
 	 	<exhibitions>/domain['mupop']/user['@username']/exhibition</exhibitions>
 	    <exhibition>/domain['mupop']/user['@username']/exhibition['@exhibitionid']</exhibition>
