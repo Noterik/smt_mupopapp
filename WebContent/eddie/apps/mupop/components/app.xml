@@ -40,6 +40,13 @@
 		</controller>
 	</view>
 	
+	<view id="#pairing">
+		<template>pairing/pairing.mst</template>
+		<style>pairing/pairing.css</style>
+		<controller id="PairingController">
+		</controller>
+	</view>
+	
 	<view id="#photoexplore_app">
 		<template>photoexplore/photoexplore.mst</template>
 		<style>photoexplore/photoexplore.css</style>

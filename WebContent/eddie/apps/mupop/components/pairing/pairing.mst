@@ -1,0 +1,6 @@
+{{#paringmode}}
+<!-- {{hid}} -->
+{{/paringmode}}
+{{^paringmode}}
+<div id="pairing_code">CODE = {{pairingcode}}</div>
+{{/paringmode}}

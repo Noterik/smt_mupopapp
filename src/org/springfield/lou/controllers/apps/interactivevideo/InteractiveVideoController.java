@@ -33,7 +33,7 @@ public class InteractiveVideoController extends Html5Controller {
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
 			data.put("url",stationnode.getProperty("url"));
-			screen.get(selector).parsehtml(data);
+			screen.get(selector).render(data);
 			
 		}
 	}
