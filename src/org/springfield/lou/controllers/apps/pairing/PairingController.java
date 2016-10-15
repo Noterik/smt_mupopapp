@@ -41,6 +41,7 @@ import org.springfield.lou.model.ModelEvent;
 public class PairingController extends Html5Controller {
 
 	String code; 
+	String hid;
 	
 	public PairingController() { 
 		
@@ -48,7 +49,7 @@ public class PairingController extends Html5Controller {
 	
 	public void attach(String sel) {
 		String selector = sel;
-		String hid = model.getProperty("@pairingid");
+		hid = model.getProperty("@pairingid");
 		if (hid!=null && !hid.equals("")) {
 			FsNode hidnode = model.getNode("/domain/mupop/config/hids/hid/"+hid);
 			if (hidnode!=null) {		
@@ -82,6 +83,7 @@ public class PairingController extends Html5Controller {
 			model.onPropertyUpdate("/shared/mupop/hidresponse"+code,"onHidResponse",this);
 			model.setProperty("/shared/mupop/hidrequest",code);
 		}
+		model.onNotify("/app['timers']", "onAliveCheck", this);
 	}
 	
 	public void onDashboardMessage(ModelEvent e) {
@@ -93,6 +95,7 @@ public class PairingController extends Html5Controller {
 		FsNode node = e.getTargetFsNode();
 		String hid = node.getProperty("hidresponse"+code);
 		model.setProperty("@pairingid",hid);
+		screen.get("#screen").location("");
 	}
 	
 	private String getRandomCode() {
@@ -104,5 +107,14 @@ public class PairingController extends Html5Controller {
 	       result+=options.charAt(r.nextInt(len));
 	    }
 	    return result;
+	}
+	
+	public void onAliveCheck(ModelEvent e) {
+		//System.out.println("ALIVE CHECK !!!"+e.getTargetFsNode().asXML());
+		FsNode node = e.getTargetFsNode();
+		String message = node.getProperty("message");
+		if (message.equals("10") && hid!=null) {
+			model.notify("/shared['mupop']/hids[alive]",hid);	
+		}
 	}
 }

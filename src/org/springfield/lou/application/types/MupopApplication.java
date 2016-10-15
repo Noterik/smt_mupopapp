@@ -51,4 +51,15 @@ public class MupopApplication extends Html5Application {
 					new ExhibitionController());
 		}
 	}
+	
+	public void maintainanceRun() {
+		super.maintainanceRun();
+		Iterator<Screen> iter = getScreenManager().getScreens().values().iterator();
+		if (iter.hasNext()) {
+			Screen scr = iter.next();
+			scr.getModel().notify("/app['timers']","10");
+		}
+	
+	}
+	
 }
