@@ -23,6 +23,7 @@ package org.springfield.lou.controllers.apps.photoinfospots;
 import org.json.simple.JSONObject;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
 import org.springfield.lou.controllers.apps.image.spotting.ZoomAndAudioController;
@@ -68,16 +69,15 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		if (waitscreenmode!=null && !waitscreenmode.equals("off")) { // is there a intro screen?
 			// Pieter you need to work with these values for waitscreens, like 'static' or 'animation'
 			// as far as i can see they are not the same as having a 'selector' like a grid or image 
-			
-			screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
-			
-			// so this is i think if you have a selector screen (like grid or imageGallery)
-			
-			//screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
 		
-			sharedspace = model.getProperty("/screen/sharedspace");
+			//screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+		    	screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
+		    
+			// so this is i think if you have a selector screen (like grid or imageGallery)
 
-			model.onNotify("/screen/tst", "onDeviceConnected", this);
+			sharedspace = model.getProperty("/screen/sharedspace");
+					
+			model.onNotify("/shared/photoinfospots/device/connected", "onDeviceConnected", this);
 			model.onNotify("/screen/photoinfospots/image/selected", "onImageSelected", this);
 		} else {
 			screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
@@ -85,17 +85,20 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	}
 	
 	public void onDeviceConnected(ModelEvent e) {
-		if (state.equals("waiting")) {
-			screen.get("#staticentryscreen").remove();
-
-			String selectionmode = model.getProperty("@station/selectionmode");
-			if (selectionmode!=null && !selectionmode.equals("off")) { 
-				state = "coverflow";
-				screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
-			} else {
-				
-			}
-		} 
+	    System.out.println("Received device is connected!");
+	    
+	    if (state.equals("waiting")) {
+		//screen.get("#staticentryscreen").remove();
+		screen.get("#imagerotationentryscreen").remove();
+    			
+    		String selectionmode = model.getProperty("@station/selectionmode");
+    		if (selectionmode!=null && !selectionmode.equals("off")) { 
+    		    state = "coverflow";
+    		    screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
+    		} else {
+    			
+    		}
+	    }
 	}
 	
 	public void onImageSelected(ModelEvent e) {

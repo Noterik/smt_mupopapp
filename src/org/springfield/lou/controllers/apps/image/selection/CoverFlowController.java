@@ -55,14 +55,16 @@ public class CoverFlowController extends Html5Controller {
 			screen.get(selector).parsehtml(data);
 		}
 		
-		model.onNotify("/screen/photoinfospots", "coverFlow", this);
+		model.onNotify("/shared/photoinfospots", "coverFlow", this);
 		
 		screen.get("#coverflow").on("active","active", this);
 		
 	}
 	
 	public void coverFlow(ModelEvent e) {
-		FsNode target = e.getTargetFsNode();
+	    System.out.println("Received coverflow event from mobile "+e.getTargetFsNode());
+	    
+	    	FsNode target = e.getTargetFsNode();
 
 		if (target.getId().equals("left")) {
 			JSONObject d = new JSONObject();

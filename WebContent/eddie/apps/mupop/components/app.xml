@@ -79,6 +79,7 @@
 		<template>entryscreen/imagerotationentryscreen.mst</template>
 		<style>entryscreen/imagerotationentryscreen.css</style>
 		<controller id="ImageRotationEntryScreenController">
+			<javascript>entryscreen/ImageRotationEntryScreenController.js</javascript>
 		</controller>
 	</view>
 	

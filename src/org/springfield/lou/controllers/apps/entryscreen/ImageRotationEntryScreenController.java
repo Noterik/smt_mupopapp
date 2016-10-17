@@ -20,6 +20,8 @@
 */
 package org.springfield.lou.controllers.apps.entryscreen;
 
+import org.json.simple.JSONObject;
+import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
 
 /**
@@ -35,7 +37,16 @@ public class ImageRotationEntryScreenController extends Html5Controller{
 	public ImageRotationEntryScreenController() { }
 	
 	public void attach(String sel) {
+	    String selector = sel;
+
+		String path = model.getProperty("/screen/exhibitionpath");
 		
+		FsNode stationnode = model.getNode(path);
+		if (stationnode!=null) {
+			JSONObject data = new JSONObject();
+			data.put("entryimageurl", stationnode.getProperty("entryscreen"));
+			screen.get(selector).parsehtml(data);
+		}
 	}
 	
 }

@@ -1,1 +1,3 @@
 <img id="entryimage" src="{{entryimageurl}}"/>
+<div class="row" id="title"><h1 class="title">Amazing exhibition title</h1></div>
+<div class="row" id="connect-info"><h2>Go to mupop.net/kaligrafie to control the screen</h2></div>

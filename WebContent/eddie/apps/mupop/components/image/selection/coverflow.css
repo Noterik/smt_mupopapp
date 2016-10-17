@@ -20,14 +20,22 @@
 	}
 
 #coverflow-title {
+	height: 20%;
+}
+
+h1 {
+	position: relative;
+  	top: 50%;
+  	margin: 0;
 	color: #fff;
 	text-align: center;
 	font-size: 25px;
 	letter-spacing: 20px;
 	font-weight: 600;
 	text-shadow: 7px 5px 1px rgba(0, 0, 0, 0.5);
-	margin-top: 75px;
-	margin-bottom: 125px;
+	transform: translateY(-50%);
+  	-webkit-transform: translateY(-50%);
+  	-ms-transform: translateY(-50%);
 }
 
 /*! CoverflowJS - v3.0.2 - 2015-12-31
@@ -36,4 +44,5 @@
 
 .ui-coverflow-wrapper{
     height: 100%;
+    padding: 10%;
 }

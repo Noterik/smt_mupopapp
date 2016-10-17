@@ -68,6 +68,7 @@ public class ZoomAndAudioController extends Html5Controller {
 			} else {
 				data.put("url",stationnode.getProperty("url"));
 			}
+
 			screen.get(selector).parsehtml(data);
 		}
 		
@@ -89,7 +90,7 @@ public class ZoomAndAudioController extends Html5Controller {
 			 if (url!=null) {
 				 backgr = "background-color:blue";
 			 }
-			 screen.get("#zoomandaudio_holder").html("<div id=\"zoomandaudio_spot\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div>");
+			 screen.get("#zoomandaudio_holder").html("<div id=\"zoomandaudio_outer\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"><div id=\"zoomandaudio_inner\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div></div>");
 		 }
 		} catch(Exception error) {
 			System.out.println("PhotoInfoSpots - count not move stop of play sound");

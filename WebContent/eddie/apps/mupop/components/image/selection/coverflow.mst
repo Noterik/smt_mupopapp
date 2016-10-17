@@ -1,6 +1,6 @@
 <div class="container-fluid" style="height:100%;">
 	<div id="coverflow-title" class="row">
-	{{title}}
+		<h1>{{title}}</h1>
 	</div>
 	<div class="row" style="height: 65%;"><!-- issue with coverflowjs displaying last item below instead of in container-->
 		<div>
