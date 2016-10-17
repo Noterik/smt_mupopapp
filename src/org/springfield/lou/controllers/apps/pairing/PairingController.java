@@ -42,6 +42,9 @@ public class PairingController extends Html5Controller {
 
 	String code; 
 	String hid;
+	String si;
+	String ei;
+	String un;
 	
 	public PairingController() { 
 		
@@ -53,9 +56,9 @@ public class PairingController extends Html5Controller {
 		if (hid!=null && !hid.equals("")) {
 			FsNode hidnode = model.getNode("/domain/mupop/config/hids/hid/"+hid);
 			if (hidnode!=null) {		
-					String un = hidnode.getProperty("username");
-					String ei = hidnode.getProperty("exhibitionid");
-					String si = hidnode.getProperty("stationid");
+					un = hidnode.getProperty("username");
+					ei = hidnode.getProperty("exhibitionid");
+					si = hidnode.getProperty("stationid");
 					if (!un.equals("") && !ei.equals("") && !si.equals("")) {
 						model.setProperty("/screen/exhibitionpath","/domain/mupop/user/"+un+"/exhibition/"+ei+"/station/"+si);
 						model.setProperty("/screen/sharedspace", "/shared/test"); // what does this do should be removed
@@ -114,7 +117,12 @@ public class PairingController extends Html5Controller {
 		FsNode node = e.getTargetFsNode();
 		String message = node.getProperty("message");
 		if (message.equals("10") && hid!=null) {
-			model.notify("/shared['mupop']/hids[alive]",hid);	
+			FsNode messagenode = new FsNode("notify","1");
+			messagenode.setProperty("message", hid);
+			if (un!=null) messagenode.setProperty("username", un);
+			if (si!=null) messagenode.setProperty("stationid", si);
+			if (ei!=null) messagenode.setProperty("exhibitionid", ei);
+			model.notify("/shared['mupop']/hids[alive]",messagenode);	
 		}
 	}
 }
