@@ -13,6 +13,7 @@
 		<exhibitionid>/screen['vars']/exhibitionid</exhibitionid>
 		<stationid>/screen['vars']/stationid</stationid>
 		<roomid>/screen['vars']/roomid</roomid>
+		<videoid>/screen['vars']/videoid</videoid>
 		<oldroomid>/screen['vars']/oldroomid</oldroomid>
 		<roomname>/screen['vars']/roomname</roomname>
 		<pairingid>/screen['vars']/pairingid</pairingid>
@@ -25,6 +26,7 @@
 	    
 		<stations>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station</stations>
 		<station>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']</station>
+		<video>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/video['@videoid']</video>
 	</model>
 
 	<view id="#screen">
