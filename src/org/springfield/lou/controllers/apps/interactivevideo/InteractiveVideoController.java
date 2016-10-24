@@ -19,7 +19,6 @@ import org.springfield.lou.screen.Screen;
 
 public class InteractiveVideoController extends Html5Controller {
 	
-	String sharedspace;
 	FsTimeLine timeline;
 
 	public InteractiveVideoController() {
@@ -27,7 +26,6 @@ public class InteractiveVideoController extends Html5Controller {
 	
 	public void attach(String sel) {
 		selector = sel;
-		sharedspace = model.getProperty("/screen/sharedspace");
 		screen.loadStyleSheet("interactivevideo/interactivevideo.css");
 		
 		String path = model.getProperty("/screen/exhibitionpath");

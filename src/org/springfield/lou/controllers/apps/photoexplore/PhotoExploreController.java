@@ -17,14 +17,11 @@ import org.springfield.lou.screen.Screen;
 
 public class PhotoExploreController extends Html5Controller {
 	
-	String sharedspace;
-
 	public PhotoExploreController() {
 	}
 	
 	public void attach(String sel) {
 		selector = sel;
-		sharedspace = model.getProperty("/screen/sharedspace");
 		screen.loadStyleSheet("photoexplore/photoexplore.css");
 		
 		String path = model.getProperty("/screen/exhibitionpath");
@@ -36,7 +33,7 @@ public class PhotoExploreController extends Html5Controller {
 			screen.get(selector).parsehtml(data);
 			
 			// i think we should work with /shared/ name space, Pieter need to talk about this
-			model.onPropertiesUpdate(sharedspace+"/station/1","onViewPortChange",this);
+			model.onPropertiesUpdate("/shared['mupop']/station/1","onViewPortChange",this);
 		}
 	}
 	

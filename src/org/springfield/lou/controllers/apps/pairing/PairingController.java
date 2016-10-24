@@ -61,7 +61,6 @@ public class PairingController extends Html5Controller {
 					si = hidnode.getProperty("stationid");
 					if (!un.equals("") && !ei.equals("") && !si.equals("")) {
 						model.setProperty("/screen/exhibitionpath","/domain/mupop/user/"+un+"/exhibition/"+ei+"/station/"+si);
-						model.setProperty("/screen/sharedspace", "/shared/test"); // what does this do should be removed
 						screen.get("#screen").append("div", "exhibition",new ExhibitionController());
 					} else {
 						JSONObject data = new JSONObject();

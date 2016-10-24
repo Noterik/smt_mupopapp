@@ -1,4 +1,5 @@
 <img id="zoomandaudio_image" src="{{url}}" />
+
 <div id="zoomandaudio_holder">
 	<div id="zoomandaudio_spot"></div>
 </div>

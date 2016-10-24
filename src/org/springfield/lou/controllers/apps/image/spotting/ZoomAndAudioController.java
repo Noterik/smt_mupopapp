@@ -42,8 +42,6 @@ import org.springfield.lou.model.ModelEvent;
  */
 public class ZoomAndAudioController extends Html5Controller {
 
-	String sharedspace;
-	
 	public ZoomAndAudioController() {
 		
 	}
@@ -72,8 +70,7 @@ public class ZoomAndAudioController extends Html5Controller {
 			screen.get(selector).parsehtml(data);
 		}
 		
-		sharedspace = model.getProperty("/screen/sharedspace");
-		model.onPropertiesUpdate(sharedspace+"/station/"+model.getProperty("@stationid"),"onPositionChange",this);		
+		model.onPropertiesUpdate("/shared['mupop']/station/"+model.getProperty("@stationid"),"onPositionChange",this);		
 	}
 	
 	public void onPositionChange(ModelEvent e) {
@@ -83,15 +80,32 @@ public class ZoomAndAudioController extends Html5Controller {
 		 float x  = Float.parseFloat(set.getProperty("x"));
 		 float y  = Float.parseFloat(set.getProperty("y"));
 
-		 String reason = set.getProperty("action");
-		 if (reason.equals("move")) { // its a move event so lets just move the dot
+		 String action = set.getProperty("action");
+		 if (action.equals("move")) { // its a move event so lets just move the dot
 			String url = getAudio(x, y);
-			String backgr = "background-color:purple";
+			screen.get("#zoomandaudio_spot").css("background-color","purple");
 			 if (url!=null) {
-				 backgr = "background-color:blue";
+				screen.get("#zoomandaudio_spot").css("background-color","blue");
 			 }
-			 screen.get("#zoomandaudio_holder").html("<div id=\"zoomandaudio_outer\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"><div id=\"zoomandaudio_inner\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div></div>");
+			// screen.get("#zoomandaudio_holder").html("<div id=\"zoomandaudio_outer\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"><div id=\"zoomandaudio_inner\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div></div>");
+			//screen.get("#zoomandaudio_holder").html("<div id=\"zoomandaudio_spot\" style=\"top: "+(y-5)+"%;left:"+(x-5)+"%;"+backgr+"\"></div>");
+
+			// screen.get("#zoomandaudio_spot").css("top",""+(y-5)+"%");
+			//screen.get("#zoomandaudio_spot").css("left",""+(x-5)+"%");
+			// screen.get("#zoomandaudio_spot").css("transform","translateX("+(x-5)+"px)");
+			// screen.get("#zoomandaudio_spot").css("transform","translate("+(x-5)+"px,200px)");
+			screen.get("#zoomandaudio_spot").translate(""+x+"%",""+y+"%");
+		 } else if (action.equals("up")) {
+				String url = getAudio(x, y);
+				 if (url!=null) {
+						FsNode message = new FsNode("message","1");
+						message.setProperty("action", "startaudio");
+						message.setProperty("url", url);
+						model.notify("/shared['mupop']/station/"+model.getProperty("@stationid"),message);
+				}
 		 }
+
+		 
 		} catch(Exception error) {
 			System.out.println("PhotoInfoSpots - count not move stop of play sound");
 		}

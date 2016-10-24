@@ -39,7 +39,6 @@ import org.springfield.lou.model.ModelEvent;
  */
 public class PhotoInfoSpotsController extends Html5Controller {
 
-	String sharedspace;
 	//TODO: handle this better
 	String state = "waiting";
 	
@@ -74,8 +73,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		    	screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
 		    
 			// so this is i think if you have a selector screen (like grid or imageGallery)
-
-			sharedspace = model.getProperty("/screen/sharedspace");
 					
 			model.onNotify("/shared/photoinfospots/device/connected", "onDeviceConnected", this);
 			model.onNotify("/screen/photoinfospots/image/selected", "onImageSelected", this);
