@@ -38,6 +38,7 @@ public class MupopApplication extends Html5Application {
 
 		loadStyleSheet(s, "bootstrap.min");
 		loadStyleSheet(s, "bootstrap-theme");
+		loadStyleSheet(s, "font-awesome.min");
 
 		// start the pairing controller its job is to 
 		s.get("#screen").append("div", "pairing",new PairingController());

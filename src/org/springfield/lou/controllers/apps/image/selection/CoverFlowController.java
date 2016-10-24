@@ -52,13 +52,18 @@ public class CoverFlowController extends Html5Controller {
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
 			data.put("title", stationnode.getProperty("title"));
-			screen.get(selector).parsehtml(data);
+			
+			screen.get(selector).render(data);
+			screen.get(selector).loadScript(this);
+			
+			JSONObject d = new JSONObject();	
+			d.put("command","init");
+			screen.get(selector).update(d);
 		}
 		
 		model.onNotify("/shared/photoinfospots", "coverFlow", this);
 		
-		screen.get("#coverflow").on("active","active", this);
-		
+		screen.get("#coverflow").on("active","active", this);		
 	}
 	
 	public void coverFlow(ModelEvent e) {
@@ -76,7 +81,7 @@ public class CoverFlowController extends Html5Controller {
 			screen.get("#coverflow").update(d);
 		} else if (target.getId().equals("enter")) {
 			System.out.println("opening image "+activeItem);
-			model.notify("/screen/photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
+			model.notify("/shared/photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
 		}
 	}
 	

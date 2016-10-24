@@ -75,7 +75,8 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			// so this is i think if you have a selector screen (like grid or imageGallery)
 					
 			model.onNotify("/shared/photoinfospots/device/connected", "onDeviceConnected", this);
-			model.onNotify("/screen/photoinfospots/image/selected", "onImageSelected", this);
+			model.onNotify("/shared/photoinfospots/image/selected", "onImageSelected", this);
+			model.onNotify("/shared/photoinfospots/image/spotting", "onCoverflowRequested", this);
 		} else {
 			screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
 		}
@@ -95,6 +96,18 @@ public class PhotoInfoSpotsController extends Html5Controller {
     		} else {
     			
     		}
+	    }
+	}
+	
+	public void onCoverflowRequested(ModelEvent e) {
+	    screen.get("#zoomandaudio").remove();
+	    
+	    String selectionmode = model.getProperty("@station/selectionmode");
+	    if (selectionmode!=null && !selectionmode.equals("off")) { 
+		state = "coverflow";
+		screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
+	    } else {
+		
 	    }
 	}
 	
