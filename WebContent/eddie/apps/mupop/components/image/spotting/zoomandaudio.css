@@ -4,6 +4,23 @@
 	height: 100%;	
 }
 
+#zoomandaudio_layers {
+	position: absolute;
+	width: 100%;
+	height: 100%;	
+	z-index:1000;
+	
+}
+
+.zoomandaudio_spotmask {
+	position: absolute;
+	width: 100%;
+	height: 100%;	
+	z-index:1100;
+	opacity: 0;
+}
+
+
 #zoomandaudio_audio {
 	display: none;
 }

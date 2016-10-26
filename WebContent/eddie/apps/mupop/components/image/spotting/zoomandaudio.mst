@@ -1,4 +1,9 @@
 <img id="zoomandaudio_image" src="{{url}}" />
+<div id="zoomandaudio_layers">
+	{{#nodes}}
+	<img id="zoomandaudio_layer{{id}}" class="zoomandaudio_spotmask" src="{{mask}}" />
+	{{/nodes}}
+</div>
 
 <div id="zoomandaudio_holder">
 	<div id="zoomandaudio_spot"></div>
