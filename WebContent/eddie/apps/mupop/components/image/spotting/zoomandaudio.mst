@@ -6,8 +6,11 @@
 </div>
 
 <div id="zoomandaudio_holder">
-	<div id="zoomandaudio_spot"></div>
 </div>
-<audio id="zoomandaudio_audio" controls="controls" autoplay="autoplay">
-	<source type="audio/mpeg"/>
-</audio>
+<div id="url_row" class="row">
+	<div class="col-xs-4"/>
+	<div class="col-xs-4 text-center" id="url_holder">
+		<h2 id="url">http://mupop.net/bosch - screen 2</h2>
+	</div>
+	<div class="col-xs-4"/>
+</div>

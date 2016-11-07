@@ -1,3 +1,7 @@
+body {
+	overflow: hidden;
+}
+
 #zoomandaudio_image {
 	position: absolute;
 	width: 100%;
@@ -9,7 +13,6 @@
 	width: 100%;
 	height: 100%;	
 	z-index:1000;
-	
 }
 
 .zoomandaudio_spotmask {
@@ -20,12 +23,6 @@
 	opacity: 0;
 }
 
-
-#zoomandaudio_audio {
-	display: none;
-}
-
-
 #zoomandaudio_holder {
 	position: absolute;
 	visibility: visible;
@@ -33,14 +30,33 @@
 	height: 100%;	
 }
 
-#zoomandaudio_spot {
+.zoomandaudio_spot {
 	position: absolute;
-	background-color: purple;
 	opacity: 0.7;
-	top: -5%;
-	left: -5%;
+	top: -2.5%;
+	left: -2.5%;
 	border-radius: 50%;
 	width: 5%;
 	height: 5%;
 	z-index: 100;
+}
+
+#url_row {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	overflow: none;
+	height: 10%;
+}
+
+#url_holder {
+	background-color: black;
+	opacity: 0.7;
+	height: 100%;
+}
+
+#url {
+	font-size: 1.8em;
+	font-weight: 600;
+	vertical-align: middle;
 }
