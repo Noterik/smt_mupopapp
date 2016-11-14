@@ -1,21 +1,13 @@
 package org.springfield.lou.controllers;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.json.simple.JSONObject;
-import org.springfield.fs.FSList;
-import org.springfield.fs.FSListManager;
-import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
-import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoController;
+import org.springfield.lou.controllers.apps.interactivevideo.WaitScreenController;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
-import org.springfield.lou.model.ModelEvent;
-import org.springfield.lou.screen.Screen;
 
 public class ExhibitionController extends Html5Controller {
 	
@@ -46,6 +38,8 @@ public class ExhibitionController extends Html5Controller {
 	
 	private void fillExhibition() {
 		FsNode stationnode = model.getNode(path);
+		String stationid = model.getProperty("@stationid");
+		String exhibitionid = model.getProperty("@exhibitionid");
 		
 		if (stationnode!=null) {
 			String app =  stationnode.getProperty("app"); // get the app name
@@ -57,8 +51,14 @@ public class ExhibitionController extends Html5Controller {
 				} else if (app.equals("photoinfospots")) {
 					screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
 				} else if (app.equals("interactivevideo")) {
-					screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
-
+					String isPlaying = model.getProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying");
+					if(isPlaying != null && isPlaying.equals("true")){
+						screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
+					}
+					else{
+						//screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+						screen.get("#exhibition").append("div","interactivevideo_wait_screen", new WaitScreenController());
+					}					
 				}
 			} else {
 				// should display error that no app was selected and curator should set it

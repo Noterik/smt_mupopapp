@@ -6,7 +6,5 @@
 	<classpathentry kind="lib" path="libs/mojo.jar"/>
 	<classpathentry kind="lib" path="libs/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="libs/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="libs/org.restlet.ext.html.jar"/>
-	<classpathentry kind="lib" path="libs/org.restlet.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

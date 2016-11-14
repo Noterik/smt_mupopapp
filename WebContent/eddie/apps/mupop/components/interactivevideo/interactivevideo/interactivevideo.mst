@@ -1,0 +1,3 @@
+<video id="interactivevideo_video_c" controls muted>
+	<source id="interactivevideo_video" src="{{url}}" type="video/mp4">
+</video>
