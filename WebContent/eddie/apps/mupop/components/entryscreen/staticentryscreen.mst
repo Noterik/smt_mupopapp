@@ -1,5 +1,9 @@
-<img id="entryimage" src="{{entryimageurl}}"/>
-<div class="row" id="title"><h1 class="title">Amazing exhibition title</h1></div>
+<div id="image-container">
+	<div id="image-wrapper" class="center-block">
+		<img id="entryimage" src="{{entryimageurl}}" class="img-responsive"/>
+	</div>
+</div>
+<div class="row" id="title"><h1 class="title">{{title}}</h1></div>
 <div id="connect-row" class="row">
 	<div id="mobile-phone" class="inbl">
 		<span class="centerer inbl">
@@ -7,6 +11,6 @@
 		</span>
 	</div>
 	<div id="connect-info" class="inbl">
-		<h2>Go to mupop.net/kaligrafie to control the screen</h2></div>
+		<h2 class="entryscreen">Go to mupop.net/{{jumper}} to control the screen</h2></div>
 	</div>
 </div>

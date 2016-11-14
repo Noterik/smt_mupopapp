@@ -57,26 +57,33 @@ public class ZoomAndAudioController extends Html5Controller {
 
     public void attach(String sel) {
 	selector = sel;
-		
-	String path = model.getProperty("/screen/exhibitionpath");
-		
-	FsNode stationnode = model.getNode(path);
-	if (stationnode!=null) {
-	    FSList fslist = FSListManager.get("/domain/mecanex/app/sceneplayer/scene/blue/element/screen5/sounds",false);
+
+	FsNode exhibitionnode = model.getNode("@exhibition");
+	FsNode imagenode = model.getNode("@image");
+	
+	if (imagenode != null) {
+	    FSList fslist = FSListManager.get("/domain/"+screen.getApplication().getDomain()
+		    +"/user/"+model.getProperty("@username")+"/exhibition/"+model.getProperty("@exhibitionid")
+		    +"/station/"+model.getProperty("@stationid")+"/image/"+model.getProperty("@imageid")+"/spot", false);
+	    
 	    nodes = fslist.getNodes();
 	    loadImages();
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,screen.getLanguageCode(),"mask,url"); 
-			
-	    String imageurl = model.getProperty("/screen/imageurl");
-	    if (imageurl!=null && !imageurl.equals("")) {
-		data.put("url",imageurl);
-	    } else {
-		data.put("url",stationnode.getProperty("url"));
-	    }
+	    
+	    data.put("jumper", exhibitionnode.getProperty("jumper"));
+	    data.put("url",imagenode.getProperty("url"));
+	    data.put("copyright", imagenode.getProperty("copyright"));
 				
-	    screen.get(selector).parsehtml(data);
+	    screen.get(selector).render(data);
+	    screen.get(selector).loadScript(this);
+	    
+	    JSONObject d = new JSONObject();	
+	    d.put("command","init");
+	    screen.get(selector).update(d);
 	}
 	model.onPropertiesUpdate("/shared['mupop']/station/"+model.getProperty("@stationid"),"onPositionChange",this);		
+	model.onNotify("/shared/photoinfospots/spotting/player", "onAudioLoaded", this);
+    
     }
 	
     public void loadImages() {
@@ -151,12 +158,13 @@ public class ZoomAndAudioController extends Html5Controller {
 			
 	    String action = set.getProperty("action");
 	    String deviceid = set.getProperty("deviceid");
+	    String language = set.getProperty("language");
 	    
 	    long currentTime = new Date().getTime();
 	    
 	    //check for a new spot
 	    if (!spots.containsKey(deviceid)) {
-		screen.get("#zoomandaudio_holder").append("<div class='zoomandaudio_spot' id='zoomandaudio_spot_"+deviceid+"'></div>");
+		screen.get("#zoomandaudio_spots_holder").append("<div class='zoomandaudio_spot' id='zoomandaudio_spot_"+deviceid+"'><div class='zoomandaudio_spot_outer' id='zoomandaudio_spot_outer_"+deviceid+"'><div class='zoomandaudio_spot_inner' style='background-color:"+color+"'></div></div></div>");
 	    }
 	    
 	    //update last seen
@@ -181,20 +189,40 @@ public class ZoomAndAudioController extends Html5Controller {
 	    checkOverlays();
 	    
 	    if (action.equals("move")) { // its a move event so lets just move the dot
-		screen.get("#zoomandaudio_spot_"+deviceid).css("background-color", "#"+color);
-		screen.get("#zoomandaudio_spot_"+deviceid).translate(""+x+"%",""+y+"%");
+		//screen.get("#zoomandaudio_spot_inner_"+deviceid).css("background-color", "#"+color);
+		JSONObject d = new JSONObject();	
+		d.put("command","spot_move");
+		d.put("spotid", "#zoomandaudio_spot_"+deviceid);
+		d.put("x", x);
+		d.put("y", y);
+		screen.get(selector).update(d);
+		
+		//screen.get("#zoomandaudio_spot_"+deviceid).translate(""+x+"%",""+y+"%");
 	    } else if (action.equals("up")) {
 		if (selecteditems.get(deviceid) != null) {
-		    System.out.println("Item is selected notify");
 		    FsNode message = new FsNode("message","1");
 		    message.setProperty("action", "startaudio");
 		    message.setProperty("url", selecteditems.get(deviceid).getProperty("url"));
+		    message.setProperty("text", selecteditems.get(deviceid).getProperty(language+"_text"));
 		    message.setProperty("deviceid", deviceid);
 		    model.notify("/shared['mupop']/station/"+model.getProperty("@stationid"),message);
+		    
+		    String[] animation = new String[]{"border-top: 6px solid grey", "-webkit-animation: rotation .6s infinite linear", "-moz-animation: rotation .6s infinite linear", "-o-animation: rotation .6s infinite linear", "animation: rotation .6s infinite linear"};
+		    screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
 		}
 	    }
 	} catch(Exception error) {
 	    System.out.println("PhotoInfoSpots - count not move stop of play sound");
 	}	
+    }
+    
+    
+    public void onAudioLoaded(ModelEvent e) {
+	FsNode target = e.getTargetFsNode();
+	
+	String deviceid = target.getProperty("deviceid");
+	String[] animation = new String[]{"border-top: 6px solid white", "-webkit-animation: none !important", "-moz-animation: none !important", "-o-animation: none !important", "animation: none !important"};
+	
+	screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
     }
 }

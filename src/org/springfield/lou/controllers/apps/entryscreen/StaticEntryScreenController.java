@@ -21,6 +21,7 @@
 package org.springfield.lou.controllers.apps.entryscreen;
 
 import org.json.simple.JSONObject;
+import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
 
@@ -34,18 +35,41 @@ import org.springfield.lou.controllers.Html5Controller;
  */
 public class StaticEntryScreenController extends Html5Controller {
 
-	public StaticEntryScreenController() { }
+    public StaticEntryScreenController() { }
 	
-	public void attach(String sel) {
-		String selector = sel;
+    public void attach(String sel) {
+	String selector = sel;
 
-		String path = model.getProperty("/screen/exhibitionpath");
+	String path = model.getProperty("/screen/exhibitionpath");
 		
-		FsNode stationnode = model.getNode(path);
-		if (stationnode!=null) {
-			JSONObject data = new JSONObject();
-			data.put("entryimageurl", stationnode.getProperty("entryscreen"));
-			screen.get(selector).parsehtml(data);
+	FsNode stationnode = model.getNode(path);
+	FsNode exhibitionnode = model.getNode("@exhibition");
+	
+	if (stationnode!=null) {
+	    JSONObject data = new JSONObject();
+	    
+	    //check if a specific entry screen image is configured
+	    String entryScreen = stationnode.getProperty("entryscreen");
+	    if (entryScreen == null || entryScreen.equals("")) {
+		//load first image
+		FSList imagesList = model.getList("@images");
+		    
+		if (imagesList.size() > 0) {
+		    FsNode first = imagesList.getNodes().get(0);
+		    entryScreen = first.getProperty("url");
 		}
+	    }
+	    
+	    data.put("entryimageurl", entryScreen);
+	    //TODO: get a default language for the mainscreen?
+	    data.put("title", stationnode.getSmartProperty("en", "title"));
+	    data.put("jumper", exhibitionnode.getProperty("jumper"));
+	    screen.get(selector).render(data);
+	    screen.get(selector).loadScript(this);
+	    
+	    JSONObject d = new JSONObject();	
+	    d.put("command","init");
+	    screen.get(selector).update(d);
 	}
+    }
 }
