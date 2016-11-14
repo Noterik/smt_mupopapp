@@ -20,7 +20,10 @@
 */
 package org.springfield.lou.controllers.apps.image.selection;
 
+import java.util.List;
+
 import org.json.simple.JSONObject;
+import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.model.ModelEvent;
@@ -36,56 +39,58 @@ import org.springfield.lou.screen.Screen;
  */
 public class CoverFlowController extends Html5Controller {
 
-	private long activeItem;
+    private long activeItem;
 	
-	public CoverFlowController() { }
+    public CoverFlowController() { }
 	
-	public void attach(String sel) {
-		selector = sel;
-		
-		//TODO: load images from FS and pass them to template
-		//TODO: set middle item in activeItem and through update call
-		
-		String path = model.getProperty("/screen/exhibitionpath");
-		
-		FsNode stationnode = model.getNode(path);
-		if (stationnode!=null) {
-			JSONObject data = new JSONObject();
-			data.put("title", stationnode.getProperty("title"));
-			
-			screen.get(selector).render(data);
-			screen.get(selector).loadScript(this);
-			
-			JSONObject d = new JSONObject();	
-			d.put("command","init");
-			screen.get(selector).update(d);
-		}
-		
-		model.onNotify("/shared/photoinfospots", "coverFlow", this);
-		
-		screen.get("#coverflow").on("active","active", this);		
-	}
-	
-	public void coverFlow(ModelEvent e) {
-	    System.out.println("Received coverflow event from mobile "+e.getTargetFsNode());
-	    
-	    	FsNode target = e.getTargetFsNode();
+    public void attach(String sel) {
+	selector = sel;
 
-		if (target.getId().equals("left")) {
-			JSONObject d = new JSONObject();
-			d.put("command", "next");
-			screen.get("#coverflow").update(d);
-		} else if (target.getId().equals("right")) {
-			JSONObject d = new JSONObject();
-			d.put("command", "prev");
-			screen.get("#coverflow").update(d);
-		} else if (target.getId().equals("enter")) {
-			System.out.println("opening image "+activeItem);
-			model.notify("/shared/photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
-		}
+	//TODO: set middle item in activeItem and through update call
+		
+	String path = model.getProperty("/screen/exhibitionpath");
+		
+	FsNode stationnode = model.getNode(path);
+	if (stationnode!=null) {
+	    FSList imagesList = model.getList("@images");
+	    List<FsNode> nodes = imagesList.getNodes();
+	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
+	    
+	    data.put("title", stationnode.getProperty("title"));
+			
+	    screen.get(selector).render(data);
+	    screen.get(selector).loadScript(this);
+			
+	    JSONObject d = new JSONObject();	
+	    d.put("command","init");
+	    screen.get(selector).update(d);
 	}
+		
+	model.onNotify("/shared/photoinfospots", "coverFlow", this);
+		
+	screen.get("#coverflow").on("active","active", this);		
+    }
 	
-	public void active(Screen s, JSONObject data) {
-		activeItem = (Long) data.get("item");
+    public void coverFlow(ModelEvent e) {
+	System.out.println("Received coverflow event from mobile "+e.getTargetFsNode());
+	    
+	FsNode target = e.getTargetFsNode();
+
+	if (target.getId().equals("left")) {
+	    JSONObject d = new JSONObject();
+	    d.put("command", "next");
+	    screen.get("#coverflow").update(d);
+	} else if (target.getId().equals("right")) {
+	    JSONObject d = new JSONObject();
+	    d.put("command", "prev");
+	    screen.get("#coverflow").update(d);
+	} else if (target.getId().equals("enter")) {
+	    System.out.println("opening image "+activeItem);
+	    model.notify("/shared/photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
 	}
+    }
+
+    public void active(Screen s, JSONObject data) {
+	activeItem = (Long) data.get("item");
+    }
 }

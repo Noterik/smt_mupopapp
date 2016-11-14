@@ -1,16 +1,30 @@
-<img id="zoomandaudio_image" src="{{url}}" />
-<div id="zoomandaudio_layers">
-	{{#nodes}}
-	<img id="zoomandaudio_layer{{id}}" class="zoomandaudio_spotmask" src="{{mask}}" />
-	{{/nodes}}
+<div id="image-container">
+	<div id="image-wrapper" class="center-block">
+	
+		<img id="zoomandaudio_image" src="{{url}}" class="img-responsive"/>
+		{{#nodes}}
+		<div class="zoomandaudio_layer">
+			<img id="zoomandaudio_layer{{id}}" class="zoomandaudio_spotmask img-responsive" src="{{mask}}" />
+		</div>
+		{{/nodes}}
+		<div id="zoomandaudio_spots_holder">
+		
+		</div>
+	</div>
 </div>
 
-<div id="zoomandaudio_holder">
-</div>
 <div id="url_row" class="row">
-	<div class="col-xs-4"/>
-	<div class="col-xs-4 text-center" id="url_holder">
-		<h2 id="url">http://mupop.net/bosch - screen 2</h2>
+	<div class="col-md-3 col-md-offset-4">
+		<div class="vertical-center">
+			<div id="zoomandaudio-mobile-phone"></div>
+			<div id="join-text">
+				<h2 class="zoomandaudio">Join at: <b>mupop.net/{{jumper}}</b></h2>
+			</div>
+		</div>
 	</div>
-	<div class="col-xs-4"/>
+	<div class="col-md-2 col-md-offset-3 fill-height">
+		<div class="vertical-center fill-height">
+			<h2 class="zoomandaudio">License: {{copyright}}</h2>
+		</div>
+	</div>
 </div>
