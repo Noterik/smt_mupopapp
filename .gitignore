@@ -1,6 +1,9 @@
 
 *.class
+<<<<<<< HEAD
 /bin/
+=======
+>>>>>>> master
 
 *.jar
 

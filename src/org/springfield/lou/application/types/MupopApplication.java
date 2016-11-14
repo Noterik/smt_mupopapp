@@ -17,6 +17,7 @@ import org.springfield.fs.FSListManager;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.application.*;
 import org.springfield.lou.controllers.*;
+import org.springfield.lou.controllers.apps.pairing.PairingController;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.screen.*;
 import org.springfield.lou.servlet.LouServlet;
@@ -26,22 +27,39 @@ public class MupopApplication extends Html5Application {
 	public MupopApplication(String id) {
 		super(id);
 		this.setSessionRecovery(true);
+		this.setSessionRecovery(true);
+		this.addToRecoveryList("vars/pairingid");
 	}
 
 	public void onNewScreen(Screen s) {
 		s.setLanguageCode("en");
 		s.get("#screen").attach(new ScreenController());
 
+
 		loadStyleSheet(s, "bootstrap.min");
 		loadStyleSheet(s, "bootstrap-theme");
+		loadStyleSheet(s, "font-awesome.min");
 
+		// start the pairing controller its job is to 
+		s.get("#screen").append("div", "pairing",new PairingController());
+		
 		String path = s.getParameter("path");
 		System.out.println("PATH=" + path);
 		if (path != null) {
 			s.getModel().setProperty("/screen/exhibitionpath","/domain/mupop/user/daniel" + path);
-			s.getModel().setProperty("/screen/sharedspace", "/shared/test");
 			s.get("#screen").append("div", "exhibition",
 					new ExhibitionController());
 		}
 	}
+	
+	public void maintainanceRun() {
+		super.maintainanceRun();
+		Iterator<Screen> iter = getScreenManager().getScreens().values().iterator();
+		if (iter.hasNext()) {
+			Screen scr = iter.next();
+			scr.getModel().notify("/app['timers']","10");
+		}
+	
+	}
+	
 }

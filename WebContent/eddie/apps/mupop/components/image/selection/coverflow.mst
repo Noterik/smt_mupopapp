@@ -1,9 +1,8 @@
-<div class="container-fluid" style="height:100%;">
+<div class="container-fluid fill-height">
 	<div id="coverflow-title" class="row">
-	{{title}}
+		<h1>{{title}}</h1>
 	</div>
-	<div class="row" style="height: 65%;"><!-- issue with coverflowjs displaying last item below instead of in container-->
-		<div>
+	<div class="row" id="coverflow-container">
 			<div id="coverflow-bar"  class="col-md-12">
 				<img class="coverflow-img" src="http://images1.noterik.com/mupop/1-500px.jpg"/>
 				<img class="coverflow-img" src="http://images1.noterik.com/mupop/2-500px.jpg"/>

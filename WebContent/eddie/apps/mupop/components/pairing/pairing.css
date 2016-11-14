@@ -1,0 +1,44 @@
+html, body, #screen, .fill-height {
+	height: 100%;
+}
+
+body {
+	background-color: #F7F0DC;
+	color: #ffffff;
+	font-family: 'Montserrat', sans-serif;
+	margin: 0;
+}
+
+#synctime {
+	display: none;
+}
+
+#pairing {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+#pairing_code {
+	position: absolute;
+	padding: 6px 10px 6px 10px;
+	border: solid 1px silver;
+  	background-color: #336;
+	display: block;
+	margin-left: auto;
+    margin-right: auto;
+	top: 50%;
+	left: 40%;
+}
+
+#pairing_hid {
+	position: absolute;
+	padding: 6px 10px 6px 10px;
+	border: solid 1px silver;
+  	background-color: #336;  	
+	display: block;
+	margin-left: auto;
+    margin-right: auto;
+	top: 50%;
+	left: 40%;
+}

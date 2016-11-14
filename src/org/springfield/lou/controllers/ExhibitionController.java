@@ -11,6 +11,7 @@ import org.springfield.fs.FSListManager;
 import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoController;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
 import org.springfield.lou.model.ModelEvent;
@@ -49,11 +50,15 @@ public class ExhibitionController extends Html5Controller {
 		if (stationnode!=null) {
 			String app =  stationnode.getProperty("app"); // get the app name
 			if (app!=null) {
+				System.out.println("APP="+app);
 				//TODO: should be a case or loaded system
 				if (app.equals("photoexplore")) {
     				screen.get("#exhibition").append("div","photoexplore_app",new PhotoExploreController());
 				} else if (app.equals("photoinfospots")) {
 					screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
+				} else if (app.equals("interactivevideo")) {
+					screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
+
 				}
 			} else {
 				// should display error that no app was selected and curator should set it

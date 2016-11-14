@@ -1,1 +1,19 @@
-Image rotation entry screen
+<div class="smoothslides" id="images">
+	<img src="http://images1.noterik.com/mupop/1-500px.jpg"/>
+	<img src="http://images1.noterik.com/mupop/3-500px.jpg"/>
+	<img src="http://images1.noterik.com/mupop/5-500px.jpg"/>
+	<img src="http://images1.noterik.com/mupop/2-500px.jpg"/>
+	<img src="http://images1.noterik.com/mupop/4-500px.jpg"/>
+</div>
+<div id="title" class="row"><h1 class="title">Amazing exhibition title</h1></div>
+<div id="connect-row" class="row">
+	<div id="mobile-phone" class="inbl">
+		<span class="centerer inbl">
+			<img src="http://images1.noterik.com/mupop/play-espace-animation.gif" id="play-logo"/>
+		</span>
+	</div>
+	<div id="connect-info" class="inbl">
+		<h2>Go to mupop.net/kaligrafie to control the screen</h2></div>
+	</div>
+</div>
+

@@ -1,0 +1,11 @@
+{{#pairingmode}}
+	<div id="pairing_code">CODE = {{pairingcode}}</div>
+{{/pairingmode}}
+
+{{#unassignedmode}}
+	<div id="pairing_hid">HARDWARE ID '{{hid}}' not in use</div>
+{{/unassignedmode}}
+
+{{#nohidnode}}
+	<div id="pairing_hid">HARDWARE ID '{{hid}}' unknown in the system, clear cache</div>
+{{/nohidnode}}
