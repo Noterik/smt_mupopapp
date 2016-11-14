@@ -1,2 +1,13 @@
 
 *.class
+/bin/
+
+*.jar
+
+*.war
+
+*.jar
+
+*.jar
+
+*.war
