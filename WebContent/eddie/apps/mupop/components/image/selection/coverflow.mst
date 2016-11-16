@@ -5,10 +5,31 @@
 	<div class="row" id="coverflow-container">
 			<div id="coverflow-bar"  class="col-md-12">
 				{{#nodes}}
-				<img class="coverflow-img" src="{{url}}"/>
+				<img class="coverflow-img" src="{{url}}" id="coverflow-img-{{id}}" />
 				{{/nodes}}
 			</div>
 			<div id="coverflow-slider"></div>
 		</div>
 	</div>
+	
+	<div id="url_row" class="row">
+	<div class="col-md-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height"/>
+		</div>
+	</div>
+	<div class="col-md-4 col-md-offset-2">
+		<div class="vertical-center">
+			<div id="coverflow-mobile-phone"></div>
+			<div id="join-text">
+				<h2 class="coverflow"><b>mupop.net/{{jumper}}</b></h2>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 col-md-offset-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<span class="poweredby">Powered by </span><h2 class="coverflow">MUPOP</h2>
+		</div>
+	</div>
+</div>
 </div>

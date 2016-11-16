@@ -2,6 +2,11 @@ body {
 	overflow: hidden;
 }
 
+#zoomandaudio {
+	background-color: #33475a;	
+	height: 100%;
+}
+
 #pairing {
 	display: none;
 }
@@ -16,6 +21,11 @@ body {
 #image-wrapper {
 	top: 0;
 	overflow: hidden;
+}
+
+#zoomandaudio_image {
+	width: 100%;
+	height: 100%;
 }
 
 .zoomandaudio_layer {
@@ -104,7 +114,7 @@ body {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	background-color: black;
+	background-color: #3a393e;
 	overflow: none;
 	height: 5%;
 	margin-left: 0;
@@ -113,7 +123,7 @@ body {
 h2.zoomandaudio {
 	font-size: 2vh;
 	margin: 0;
-	padding-left: 1vw;
+	padding: 0;
 }
 
 #zoomandaudio-mobile-phone:before {
@@ -123,6 +133,7 @@ h2.zoomandaudio {
   	line-height: 5.1vh;
   	content: "\f10b";
   	color: #fff;
+  	padding-right: 1vw;
 }
 
 .vertical-center {
@@ -133,4 +144,23 @@ h2.zoomandaudio {
 
 .fill-height {
 	height: 100%;
+}
+
+.poweredby {
+	font-size: 2vh;
+	color: #cccccc;
+	padding: 0;
+	padding-right: 0.2vw;
+}
+
+.max-height {
+	max-height: 100%;
+}
+
+.nopadding {
+	padding: 0;
+}
+
+.url_row_background {
+	background-color: #358ed6;
 }

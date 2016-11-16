@@ -72,8 +72,12 @@ public class ZoomAndAudioController extends Html5Controller {
 	    
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));
 	    data.put("url",imagenode.getProperty("url"));
-	    data.put("copyright", imagenode.getProperty("copyright"));
-				
+	    String externalWebsite = imagenode.getProperty("external-website");
+
+	    if (externalWebsite != null) {
+		data.put("external-website", imagenode.getProperty("external-website"));
+	    }
+		
 	    screen.get(selector).render(data);
 	    screen.get(selector).loadScript(this);
 	    
@@ -81,8 +85,8 @@ public class ZoomAndAudioController extends Html5Controller {
 	    d.put("command","init");
 	    screen.get(selector).update(d);
 	}
-	model.onPropertiesUpdate("/shared['mupop']/station/"+model.getProperty("@stationid"),"onPositionChange",this);		
-	model.onNotify("/shared/photoinfospots/spotting/player", "onAudioLoaded", this);
+	model.onPropertiesUpdate("@photoinfospots/spot/move", "onPositionChange", this);		
+	model.onNotify("@photoinfospots/spotting/player", "onAudioLoaded", this);
     
     }
 	
@@ -151,6 +155,8 @@ public class ZoomAndAudioController extends Html5Controller {
     public void onPositionChange(ModelEvent e) {
 	FsPropertySet set = (FsPropertySet)e.target;
 		
+	System.out.println(e.toString());
+	
 	try {
 	    double x  = Double.parseDouble(set.getProperty("x"));
 	    double y  = Double.parseDouble(set.getProperty("y"));
@@ -189,23 +195,20 @@ public class ZoomAndAudioController extends Html5Controller {
 	    checkOverlays();
 	    
 	    if (action.equals("move")) { // its a move event so lets just move the dot
-		//screen.get("#zoomandaudio_spot_inner_"+deviceid).css("background-color", "#"+color);
 		JSONObject d = new JSONObject();	
 		d.put("command","spot_move");
 		d.put("spotid", "#zoomandaudio_spot_"+deviceid);
 		d.put("x", x);
 		d.put("y", y);
 		screen.get(selector).update(d);
-		
-		//screen.get("#zoomandaudio_spot_"+deviceid).translate(""+x+"%",""+y+"%");
 	    } else if (action.equals("up")) {
 		if (selecteditems.get(deviceid) != null) {
 		    FsNode message = new FsNode("message","1");
 		    message.setProperty("action", "startaudio");
 		    message.setProperty("url", selecteditems.get(deviceid).getProperty("url"));
-		    message.setProperty("text", selecteditems.get(deviceid).getProperty(language+"_text"));
+		    message.setProperty("text", selecteditems.get(deviceid).getSmartProperty(language, "text"));
 		    message.setProperty("deviceid", deviceid);
-		    model.notify("/shared['mupop']/station/"+model.getProperty("@stationid"),message);
+		    model.notify("@photoinfospots/spot/audio", message);
 		    
 		    String[] animation = new String[]{"border-top: 6px solid grey", "-webkit-animation: rotation .6s infinite linear", "-moz-animation: rotation .6s infinite linear", "-o-animation: rotation .6s infinite linear", "animation: rotation .6s infinite linear"};
 		    screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
@@ -213,6 +216,8 @@ public class ZoomAndAudioController extends Html5Controller {
 	    }
 	} catch(Exception error) {
 	    System.out.println("PhotoInfoSpots - count not move stop of play sound");
+	    System.out.println(error.getMessage());
+	    System.out.println(error.getStackTrace());
 	}	
     }
     

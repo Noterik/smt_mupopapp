@@ -1,7 +1,6 @@
 #coverflow {
 	height: 100%;
 	background-color: #33475a;	
-	color: #000;
 }
 
 .fill-height {
@@ -14,6 +13,8 @@
 
 #coverflow-bar {
 	display: none;
+	padding-left: 0;
+	padding-right: 0;
 }
 
 #coverflow-title {
@@ -21,7 +22,7 @@
 }
 
 #coverflow-container {
-	height: 80%;
+	height: 75%;
 	padding-top: 5%;
 }
 
@@ -38,6 +39,61 @@ h1 {
 	transform: translateY(-50%);
   	-webkit-transform: translateY(-50%);
   	-ms-transform: translateY(-50%);
+}
+
+#url_row {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background-color: #3a393e;
+	overflow: none;
+	height: 5%;
+	margin-left: 0;
+}
+
+h2.coverflow {
+	font-size: 2vh;
+	margin: 0;
+	padding: 0;
+}
+
+#coverflow-mobile-phone:before {
+	position: relative;
+  	font-family: FontAwesome;
+  	font-size: 6.1vh;
+  	line-height: 5.1vh;
+  	content: "\f10b";
+  	color: #fff;
+  	padding-right: 1vw;
+}
+
+.vertical-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.fill-height {
+	height: 100%;
+}
+
+.poweredby {
+	font-size: 2vh;
+	color: #cccccc;
+	padding: 0;
+	padding-right: 0.2vw;
+}
+
+.max-height {
+	max-height: 100%;
+}
+
+.nopadding {
+	padding: 0;
+}
+
+.url_row_background {
+	background-color: #358ed6;
 }
 
 /*! CoverflowJS - v3.0.2 - 2015-12-31

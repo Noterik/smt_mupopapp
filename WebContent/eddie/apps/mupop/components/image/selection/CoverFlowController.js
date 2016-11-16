@@ -1,10 +1,11 @@
 var CoverFlowController = function(options) {}; // needed for detection
 
+var activeItem = 0;
+
 CoverFlowController.update = function(vars, data) {		
 	//init - this is also handled when returning on a page
 	if (!vars["loaded"]) {	
-		//use small timeout to make sure the plugin is loaded properly
-		setTimeout(initCoverFlow, 200);
+		
 
 		vars["loaded"] = true;		
 	}
@@ -21,7 +22,10 @@ CoverFlowController.update = function(vars, data) {
 		$('#coverflow-bar').coverflow('prev');
 		break;
 	case "numItems":
-		//TODO: send how many items are in the coverflow, set middle one active
+		activeItem = Math.round(data['items'] / 2) - 1;
+		
+		//use small timeout to make sure the plugin is loaded properly
+		setTimeout(initCoverFlow, 200);
 		break;
 	}
 }
@@ -62,9 +66,10 @@ function initCoverFlow() {
 	$("#coverflow-bar").show();
 	
 	var element = $('#coverflow-bar').coverflow({
-        active: 4,
+		active: activeItem,
         select: function(event, ui){
-        	var msg = 'event(coverflow/active,{"id":"trackpad","targetid":"trackpad", "item":'+ui.index+'})';
+        	var imageId = ui.active[0].id.substr("coverflow-img-".length);
+        	var msg = 'event(coverflow/active,{"id":"trackpad","targetid":"trackpad", "item":'+imageId+'})';
         	eddie.putLou('', msg);
         }
     });

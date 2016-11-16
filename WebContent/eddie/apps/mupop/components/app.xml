@@ -18,10 +18,7 @@
 		<oldroomid>/screen['vars']/oldroomid</oldroomid>
 		<roomname>/screen['vars']/roomname</roomname>
 		<pairingid>/screen['vars']/pairingid</pairingid>
-<<<<<<< Updated upstream
-=======
 		<videoid>/screen['vars']/videoid</videoid>
->>>>>>> Stashed changes
 	
 	 	<exhibitions>/domain['mupop']/user['@username']/exhibition</exhibitions>
 	    <exhibition>/domain['mupop']/user['@username']/exhibition['@exhibitionid']</exhibition>
@@ -36,6 +33,8 @@
 		<image>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/image['@imageid']</image>
 		
 		<video>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/video['@videoid']</video>
+		
+		<photoinfospots>/shared['photoinfospots']/exhibition['@exhibitionid']/station['@stationid']</photoinfospots>
 	</model>
 
 	<view id="#screen">
@@ -66,14 +65,6 @@
 	</view>
 	
 	<view id="#interactivevideo_app">
-<<<<<<< Updated upstream
-		<template>interactivevideo/interactivevideo.mst</template>
-		<style>interactivevideo/interactivevideo.css</style>
-		<controller id="InteractiveVideoController">
-		</controller>
-	</view>
-	
-=======
 		<template>interactivevideo/interactivevideo/interactivevideo.mst</template>
 		<style>interactivevideo/interactivevideo/interactivevideo.css</style>
 		<controller id="InteractiveVideoController">
@@ -86,8 +77,7 @@
 		<style>interactivevideo/waitingscreen/waitingscreen.css</style>
 		<controller id="WaitScreenController"/>
 	</view>
-	
->>>>>>> Stashed changes
+
 	<view id="#photoinfospots_app">
 		<template>photoinfospots/photoinfospots.mst</template>
 		<style>photoinfospots/photoinfospots.css</style>

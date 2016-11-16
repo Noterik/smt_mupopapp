@@ -3,8 +3,6 @@ html, body, #screen, .fill-height {
 }
 
 body {
-	background-color: #000000;
-	color: #ffffff;
 	font-family: 'Montserrat', sans-serif;
 	margin: 0;
 }

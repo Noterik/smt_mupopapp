@@ -45,35 +45,35 @@ public class CoverFlowController extends Html5Controller {
 	
     public void attach(String sel) {
 	selector = sel;
-
-	//TODO: set middle item in activeItem and through update call
-		
+	
 	String path = model.getProperty("/screen/exhibitionpath");
 		
+	FsNode exhibitionnode = model.getNode("@exhibition");
 	FsNode stationnode = model.getNode(path);
+	
 	if (stationnode!=null) {
 	    FSList imagesList = model.getList("@images");
 	    List<FsNode> nodes = imagesList.getNodes();
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 	    
-	    data.put("title", stationnode.getProperty("title"));
-			
+	    data.put("title", stationnode.getSmartProperty("en", "title"));
+	    data.put("jumper", exhibitionnode.getProperty("jumper"));	
+	    
 	    screen.get(selector).render(data);
 	    screen.get(selector).loadScript(this);
 			
 	    JSONObject d = new JSONObject();	
-	    d.put("command","init");
+	    d.put("command","numItems");
+	    d.put("items", nodes.size());
 	    screen.get(selector).update(d);
 	}
 		
-	model.onNotify("/shared/photoinfospots", "coverFlow", this);
+	model.onNotify("@photoinfospots", "coverFlow", this);
 		
 	screen.get("#coverflow").on("active","active", this);		
     }
 	
-    public void coverFlow(ModelEvent e) {
-	System.out.println("Received coverflow event from mobile "+e.getTargetFsNode());
-	    
+    public void coverFlow(ModelEvent e) {	    
 	FsNode target = e.getTargetFsNode();
 
 	if (target.getId().equals("left")) {
@@ -85,12 +85,12 @@ public class CoverFlowController extends Html5Controller {
 	    d.put("command", "prev");
 	    screen.get("#coverflow").update(d);
 	} else if (target.getId().equals("enter")) {
-	    System.out.println("opening image "+activeItem);
-	    model.notify("/shared/photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
+	    model.notify("@photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
 	}
     }
 
     public void active(Screen s, JSONObject data) {
 	activeItem = (Long) data.get("item");
+	model.setProperty("@imageid", String.valueOf(activeItem));
     }
 }

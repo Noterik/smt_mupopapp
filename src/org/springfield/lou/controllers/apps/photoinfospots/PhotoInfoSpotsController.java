@@ -46,7 +46,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
     public void attach(String sel) {
 	selector = sel;
-		
+	
 	String path = model.getProperty("/screen/exhibitionpath");
 
 	FsNode stationnode = model.getNode(path);
@@ -56,22 +56,28 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	}
 
 	String waitscreenmode = model.getProperty("@station/waitscreenmode");
-		
+	
 	//check if we need to load a waiting screen
 	if (waitscreenmode!=null && !waitscreenmode.equals("off")) { 
 	    if (waitscreenmode.equals("static")) {
 		 //static entry screen
 		state = "staticentryscreen";
+		model.setProperty("@photoinfospots/vars/state", state);
 		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+		//notify all pending screens as this could be a reload
+		model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
 	    } else if (waitscreenmode.equals("imagerotation")) {
 		//image rotation entry screen
 		state = "imagerotationentryscreen";
+		model.setProperty("@photoinfospots/vars/state", state);
 		screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
+		//notify all pending screens as this could be a reload
+		model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
 	    }
-		
-	    model.onNotify("/shared/photoinfospots/device/connected", "onDeviceConnected", this);
-	    model.onNotify("/shared/photoinfospots/image/selected", "onImageSelected", this);
-	    model.onNotify("/shared/photoinfospots/image/spotting", "onCoverflowRequested", this);
+
+	    model.onNotify("@photoinfospots/device/connected", "onDeviceConnected", this);
+	    model.onNotify("@photoinfospots/image/selected", "onImageSelected", this);
+	    model.onNotify("@photoinfospots/image/spotting", "onCoverflowRequested", this);
 	} else {
 	    loadImageSelection();
 	}
@@ -81,7 +87,9 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	FSList imagesList = model.getList("@images");
 	    
 	if (imagesList.size() > 1) {
+	    
 	    state = "coverflow";
+	    model.setProperty("@photoinfospots/vars/state", state);
 	    screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
 	} else {
 	    FsNode node = imagesList.getNodes().get(0);
@@ -92,6 +100,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	
     public void loadZoomAndAudio() {
 	state = "zoomandaudio";
+	model.setProperty("@photoinfospots/vars/state", state);
 	screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
     }
 
@@ -101,10 +110,11 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	    
 	if (state.equals("staticentryscreen")) {
 	    screen.get("#staticentryscreen").remove();
+	    loadImageSelection();
 	} else if (state.equals("imagerotationentryscreen")) {
 	    screen.get("#imagerotationentryscreen").remove();
-	}
-	loadImageSelection();
+	    loadImageSelection();
+	} else { /* nothing to change on the mainscreen */ }
     }
 
     //Coverflow requested returning from zoomandaudio
@@ -113,12 +123,12 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	loadImageSelection();
     }
 	
+    //Image selected in coverflow
     public void onImageSelected(ModelEvent e) {
 	screen.get("#coverflow").remove();
 	FsNode target = e.getTargetFsNode();
-	System.out.println("e="+target.asXML());
+
 	model.setProperty("@imageid", target.getId());
-	//model.setProperty("/screen/imageurl","http://images1.noterik.com/mupop/"+target.getId()+"-500px.jpg");
-	screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
+	loadZoomAndAudio();
     }
 }
