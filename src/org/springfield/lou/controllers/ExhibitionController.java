@@ -8,6 +8,7 @@ import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoCon
 import org.springfield.lou.controllers.apps.interactivevideo.WaitScreenController;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
+import org.springfield.lou.model.ModelEvent;
 
 public class ExhibitionController extends Html5Controller {
 	
@@ -51,13 +52,16 @@ public class ExhibitionController extends Html5Controller {
 				} else if (app.equals("photoinfospots")) {
 					screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
 				} else if (app.equals("interactivevideo")) {
+					System.out.println("INTERACTIVEVIDEO DEMO!!!!!!!!");
+					screen.loadStyleSheet("interactivevideo/soundandvision.css");
 					String isPlaying = model.getProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying");
 					if(isPlaying != null && isPlaying.equals("true")){
 						screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
 					}
 					else{
-						//screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
-						screen.get("#exhibition").append("div","interactivevideo_wait_screen", new WaitScreenController());
+						screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+						model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/userJoined", "startExhibition", this);
+						//screen.get("#exhibition").append("div","interactivevideo_wait_screen", new WaitScreenController());
 					}					
 				}
 			} else {
@@ -66,6 +70,11 @@ public class ExhibitionController extends Html5Controller {
 		} else {
 			// should show some illegal station controller with urls to all the valid ones?
 		}
+	}
+	
+	public void startExhibition(ModelEvent e){
+		screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
+		screen.get("#staticentryscreen").remove();
 	}
  	 
 }

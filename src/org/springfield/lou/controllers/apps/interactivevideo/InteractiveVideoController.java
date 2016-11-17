@@ -4,6 +4,7 @@ package org.springfield.lou.controllers.apps.interactivevideo;
 import org.json.simple.JSONObject;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockManager;
 import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockThread;
 import org.springfield.lou.model.ModelBindEvent;
@@ -21,8 +22,7 @@ public class InteractiveVideoController extends Html5Controller {
 	public void attach(String sel) {
 		selector = sel;
 		sharedspace = model.getProperty("/screen/sharedspace");
-		screen.loadStyleSheet("interactivevideo/interactivevideo/interactivevideo.css");
-		screen.get(selector).loadScript(this);		
+		screen.get(selector).loadScript(this);	
 		//model.setProperty("@videoid", ""+1);
 		
 		String stationid = model.getProperty("@stationid");
@@ -49,6 +49,7 @@ public class InteractiveVideoController extends Html5Controller {
 			if(c == null)
 				c = MasterClockManager.addMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
 			c.setVideoLength(313000);
+//			c.setVideoLength(60000);
 			c.start();
 		}
 		else{
@@ -78,6 +79,7 @@ public class InteractiveVideoController extends Html5Controller {
 				pauseVideo();
 				System.out.println("GOT QUESTION EVENT!");
 				if(model.getProperty("/screen/isClockManager").equals("true")){
+					screen.get("#exhibition").append("div","questionscreen", new QuestionScreenController());
 					String stationid = model.getProperty("@stationid");
 					String exhibitionid = model.getProperty("@exhibitionid");
 					MasterClockManager.setApp(this);
@@ -89,6 +91,7 @@ public class InteractiveVideoController extends Html5Controller {
 		} else if (e.eventtype==ModelBindEvent.TIMELINENOTIFY_LEAVE) {
 			System.out.println("Station:: GOT TIME EVENT END");
 			if(e.getTargetFsNode().getName().equals("question")){
+				screen.get("#questionscreen").remove();
 				playVideo();
 
 			}
@@ -97,7 +100,7 @@ public class InteractiveVideoController extends Html5Controller {
 	
 	public void onExhibitionEnd(ModelEvent e){
 		System.out.println("Station:: Exhibition Ended");
-		screen.get("#exhibition").append("div","interactivevideo_wait_screen", new WaitScreenController());
+		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
 		screen.get(selector).remove();
 		
 	}

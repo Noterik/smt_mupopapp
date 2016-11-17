@@ -42,21 +42,23 @@ public class MasterClockThread extends Thread {
 					}
 					
 					app.model.setProperty("/shared/mupop/exhibition/"+exhibitionid+"/station/"+ stationid+"/currenttime", ""+virtual_streamtime);
-					System.out.println("wantedtime : "+ realtime+","+streamtime);
+					
 					
 					//video playback has to catch up after exiting a freeze event
-					if(virtual_streamtime == streamtime)
+					if(virtual_streamtime == streamtime || frozen)
 						virtual_streamtime += updateInterval;
 					if(!frozen){
 						app.model.setProperty("/shared/exhibition/"+exhibitionid+"/station/"+stationid+"/vars/wantedtime", realtime+","+(streamtime+ timeToCatchUp));
-						app.model.notify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime", new FsNode("wantedtime", realtime+","+streamtime));
+						app.model.setProperty("/shared/exhibition/"+exhibitionid+"/station/"+stationid+"/vars/curPlayTime", ""+streamtime);
+						System.out.println("wantedtime : "+ realtime+","+streamtime);
+						app.model.notify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime", new FsNode("wantedtime", realtime+","+streamtime+ timeToCatchUp));
 						streamtime += updateInterval;
 					}
 					else{
 						freezetime -= updateInterval;
 						if (freezetime <= 0){
 							frozen = false;
-							app.model.notify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/play");
+//							app.model.notify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/play");
 						}
 					}
 				} catch(Exception e) {

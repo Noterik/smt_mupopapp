@@ -30,5 +30,4 @@ public class WaitScreenController extends Html5Controller  {
 		screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
 		screen.get(selector).remove();
 	}
-	
 }
