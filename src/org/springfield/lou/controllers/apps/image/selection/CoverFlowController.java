@@ -78,14 +78,16 @@ public class CoverFlowController extends Html5Controller {
 
 	if (target.getId().equals("left")) {
 	    JSONObject d = new JSONObject();
-	    d.put("command", "next");
+	    d.put("command", "prev");
 	    screen.get("#coverflow").update(d);
 	} else if (target.getId().equals("right")) {
 	    JSONObject d = new JSONObject();
-	    d.put("command", "prev");
+	    d.put("command", "next");
 	    screen.get("#coverflow").update(d);
 	} else if (target.getId().equals("enter")) {
-	    model.notify("@photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
+	    if (!model.getProperty("@photoinfospots/vars/state").equals("zoomandaudio")) {
+		model.notify("@photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
+	    }
 	}
     }
 

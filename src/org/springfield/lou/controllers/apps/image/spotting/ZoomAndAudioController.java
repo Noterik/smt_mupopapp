@@ -72,11 +72,6 @@ public class ZoomAndAudioController extends Html5Controller {
 	    
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));
 	    data.put("url",imagenode.getProperty("url"));
-	    String externalWebsite = imagenode.getProperty("external-website");
-
-	    if (externalWebsite != null) {
-		data.put("external-website", imagenode.getProperty("external-website"));
-	    }
 		
 	    screen.get(selector).render(data);
 	    screen.get(selector).loadScript(this);
@@ -105,6 +100,9 @@ public class ZoomAndAudioController extends Html5Controller {
     }
 
     public void checkOverlays() {
+	//new check, so clear old cache
+	selecteditems.clear();
+	
 	//loop over every layer
 	for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
 	    FsNode node = (FsNode)iter.next();	
@@ -154,8 +152,6 @@ public class ZoomAndAudioController extends Html5Controller {
 
     public void onPositionChange(ModelEvent e) {
 	FsPropertySet set = (FsPropertySet)e.target;
-		
-	System.out.println(e.toString());
 	
 	try {
 	    double x  = Double.parseDouble(set.getProperty("x"));
@@ -205,12 +201,15 @@ public class ZoomAndAudioController extends Html5Controller {
 		if (selecteditems.get(deviceid) != null) {
 		    FsNode message = new FsNode("message","1");
 		    message.setProperty("action", "startaudio");
-		    message.setProperty("url", selecteditems.get(deviceid).getProperty("url"));
+		    message.setProperty("url", selecteditems.get(deviceid).getSmartProperty(language, "url"));
 		    message.setProperty("text", selecteditems.get(deviceid).getSmartProperty(language, "text"));
 		    message.setProperty("deviceid", deviceid);
 		    model.notify("@photoinfospots/spot/audio", message);
 		    
 		    String[] animation = new String[]{"border-top: 6px solid grey", "-webkit-animation: rotation .6s infinite linear", "-moz-animation: rotation .6s infinite linear", "-o-animation: rotation .6s infinite linear", "animation: rotation .6s infinite linear"};
+		    screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
+		} else {
+		    String[] animation = new String[]{"border-top: 6px solid white", "-webkit-animation: none !important", "-moz-animation: none !important", "-o-animation: none !important", "animation: none !important"};
 		    screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
 		}
 	    }

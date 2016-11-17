@@ -1,8 +1,8 @@
 <div class="container-fluid fill-height">
 	<div id="coverflow-title" class="row">
-		<h1>{{title}}</h1>
+		<h1 class="coverflow">{{title}}</h1>
 	</div>
-	<div class="row" id="coverflow-container">
+	<div class="row vertical-center" id="coverflow-container">
 			<div id="coverflow-bar"  class="col-md-12">
 				{{#nodes}}
 				<img class="coverflow-img" src="{{url}}" id="coverflow-img-{{id}}" />
@@ -22,13 +22,13 @@
 		<div class="vertical-center">
 			<div id="coverflow-mobile-phone"></div>
 			<div id="join-text">
-				<h2 class="coverflow"><b>mupop.net/{{jumper}}</b></h2>
+				<h2 class="coverflow">mupop.net/{{jumper}}</h2>
 			</div>
 		</div>
 	</div>
 	<div class="col-md-2 col-md-offset-2 fill-height nopadding url_row_background">
 		<div class="vertical-center fill-height">
-			<span class="poweredby">Powered by </span><h2 class="coverflow">MUPOP</h2>
+			<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
 		</div>
 	</div>
 </div>

@@ -100,8 +100,11 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	
     public void loadZoomAndAudio() {
 	state = "zoomandaudio";
-	model.setProperty("@photoinfospots/vars/state", state);
-	screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
+	
+	if (!model.getProperty("@photoinfospots/vars/state").equals(state)) {
+	    model.setProperty("@photoinfospots/vars/state", state);
+	    screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
+	}
     }
 
     //Mobile device connected
@@ -129,6 +132,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	FsNode target = e.getTargetFsNode();
 
 	model.setProperty("@imageid", target.getId());
+	model.setProperty("@photoinfospots/vars/imageid", target.getId());
 	loadZoomAndAudio();
     }
 }

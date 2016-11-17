@@ -11,7 +11,7 @@
 		</span>
 	</div>
 	<div id="connect-info" class="inbl">
-		<h2 class="entryscreen">Go to mupop.net/{{jumper}} to control the screen</h2></div>
+		<h2 class="entryscreen">Go to <b>mupop.net/{{jumper}}</b> to control the screen</h2></div>
 	</div>
 </div>
 

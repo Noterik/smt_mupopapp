@@ -27,8 +27,8 @@ ZoomAndAudioController.update = function(vars, data){
 };
 
 function resize(){
-	var wrapperWidth = $("#image-container").width();
-	var wrapperHeight = $("#image-container").height();
+	var wrapperWidth = $("#zoomandaudio-image-container").width();
+	var wrapperHeight = $("#zoomandaudio-image-container").height();
 	
 	var imgWidth = $("#zoomandaudio_image").get(0).naturalWidth;
 	var imgHeight = $("#zoomandaudio_image").get(0).naturalHeight;
