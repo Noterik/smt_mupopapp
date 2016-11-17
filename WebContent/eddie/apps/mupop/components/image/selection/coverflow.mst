@@ -1,14 +1,35 @@
 <div class="container-fluid fill-height">
 	<div id="coverflow-title" class="row">
-		<h1>{{title}}</h1>
+		<h1 class="coverflow">{{title}}</h1>
 	</div>
-	<div class="row" id="coverflow-container">
+	<div class="row vertical-center" id="coverflow-container">
 			<div id="coverflow-bar"  class="col-md-12">
 				{{#nodes}}
-				<img class="coverflow-img" src="{{url}}"/>
+				<img class="coverflow-img" src="{{url}}" id="coverflow-img-{{id}}" />
 				{{/nodes}}
 			</div>
 			<div id="coverflow-slider"></div>
 		</div>
 	</div>
+	
+	<div id="url_row" class="row">
+	<div class="col-md-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height"/>
+		</div>
+	</div>
+	<div class="col-md-4 col-md-offset-2">
+		<div class="vertical-center">
+			<div id="coverflow-mobile-phone"></div>
+			<div id="join-text">
+				<h2 class="coverflow">mupop.net/{{jumper}}</h2>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 col-md-offset-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
+		</div>
+	</div>
+</div>
 </div>

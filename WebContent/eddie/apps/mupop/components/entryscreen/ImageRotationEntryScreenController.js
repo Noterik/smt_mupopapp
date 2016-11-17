@@ -12,10 +12,10 @@ function initImageRotationEntryScreen() {
 		effectDuration: 10000,
 		transitionDuration: 1500,
 		order: 'random',
-		effectModifier: 1.4,
+		effectModifier: 1.5,
 		navigation: 'false',
 		pagination: 'false',
-		matchImageSize: 'false'	
+		matchImageSize: 'false'
 	});
 }
 

@@ -1,10 +1,10 @@
-<div id="image-container">
+<div id="zoomandaudio-image-container">
 	<div id="image-wrapper" class="center-block">
 	
-		<img id="zoomandaudio_image" src="{{url}}" class="img-responsive"/>
+		<img id="zoomandaudio_image" src="{{url}}" class="zoomandaudio_image"/>
 		{{#nodes}}
 		<div class="zoomandaudio_layer">
-			<img id="zoomandaudio_layer{{id}}" class="zoomandaudio_spotmask img-responsive" src="{{mask}}" />
+			<img id="zoomandaudio_layer{{id}}" class="zoomandaudio_spotmask zoomandaudio_image" src="{{mask}}" />
 		</div>
 		{{/nodes}}
 		<div id="zoomandaudio_spots_holder">
@@ -14,17 +14,22 @@
 </div>
 
 <div id="url_row" class="row">
-	<div class="col-md-3 col-md-offset-4">
+	<div class="col-md-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height"/>
+		</div>
+	</div>
+	<div class="col-md-4 col-md-offset-2">
 		<div class="vertical-center">
 			<div id="zoomandaudio-mobile-phone"></div>
 			<div id="join-text">
-				<h2 class="zoomandaudio">Join at: <b>mupop.net/{{jumper}}</b></h2>
+				<h2 class="zoomandaudio">mupop.net/{{jumper}}</h2>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-2 col-md-offset-3 fill-height">
+	<div class="col-md-2 col-md-offset-2 fill-height nopadding url_row_background">
 		<div class="vertical-center fill-height">
-			<h2 class="zoomandaudio">License: {{copyright}}</h2>
+			<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
 		</div>
 	</div>
 </div>
