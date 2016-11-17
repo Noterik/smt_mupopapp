@@ -33,7 +33,7 @@ public class InteractiveVideoController extends Html5Controller {
 		FsNode stationnode = model.getNode(path);
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
-			data.put("url","http://images3.noterik.com/mupop/coalmines_with_audio.mp4");
+			data.put("url","http://images3.noterik.com/mupop/test2.mp4");
 			screen.get(selector).render(data);
 		}
 		
@@ -79,6 +79,7 @@ public class InteractiveVideoController extends Html5Controller {
 				pauseVideo();
 				System.out.println("GOT QUESTION EVENT!");
 				if(model.getProperty("/screen/isClockManager").equals("true")){
+					System.out.println("SCREEN MANAGER HERE!!!");
 					screen.get("#exhibition").append("div","questionscreen", new QuestionScreenController());
 					String stationid = model.getProperty("@stationid");
 					String exhibitionid = model.getProperty("@exhibitionid");
@@ -86,6 +87,8 @@ public class InteractiveVideoController extends Html5Controller {
 					MasterClockThread c = MasterClockManager.getMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
 					if (c != null)
 						c.freezeFor(Long.parseLong(e.getTargetFsNode().getProperty("duration")));
+					else
+						System.out.println("CLOCK IS NULL");
 				}
 			}
 		} else if (e.eventtype==ModelBindEvent.TIMELINENOTIFY_LEAVE) {
@@ -100,6 +103,9 @@ public class InteractiveVideoController extends Html5Controller {
 	
 	public void onExhibitionEnd(ModelEvent e){
 		System.out.println("Station:: Exhibition Ended");
+		String stationid = model.getProperty("@stationid");
+		String exhibitionid = model.getProperty("@exhibitionid");
+		model.setProperty("/app/interactivevideo/exhibition/" +exhibitionid+ "/station/"+ stationid +"/vars/hasClockManager", "false");
 		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
 		screen.get(selector).remove();
 		

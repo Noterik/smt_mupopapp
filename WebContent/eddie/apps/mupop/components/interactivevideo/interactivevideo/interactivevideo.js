@@ -6,7 +6,7 @@ InteractiveVideoController.update = function(vars, data){
 	var targetid = data['target'];
 	$("#"+targetid).attr('autoplay',data['autoplay']);
 	$("#"+targetid).attr('controls',data['controls']);
-	$("#" + targetid).parent().append("<div id=\"notificationbox\" style=\"position: absolute; top: 0;\"></div>");
+	// $("#" + targetid).parent().append("<div id=\"notificationbox\" style=\"position: absolute; top: 0;\"></div>");
 
 	var action = data['action'];
 	console.log(data['action']);
