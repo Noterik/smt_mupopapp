@@ -4,22 +4,23 @@ import java.util.Date;
 
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.apps.interactivevideo.CommunicationController;
 import org.springfield.lou.screen.Screen;
 
 public class MasterClockThread extends Thread {
 	private boolean running = false;
 	private long streamtime = 0;
 	private String name;
-	private Html5Controller app;
+	private CommunicationController app;
 	private boolean paused = true;
 	private boolean frozen = false;
 	private long freezetime = 0;
 	long virtual_streamtime = 0;
 	long videoLength = 10000;
 	
-    public MasterClockThread(Html5Controller a,String n) {
+    public MasterClockThread(String n) {
 		super("masterclockthread "+n);
-		app = a;
+		app = new CommunicationController(this);
 		name = n;
 	}
     
@@ -58,6 +59,7 @@ public class MasterClockThread extends Thread {
 						freezetime -= updateInterval;
 						if (freezetime <= 0){
 							frozen = false;
+							app.event("play");
 //							app.model.notify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/play");
 						}
 					}
@@ -78,6 +80,16 @@ public class MasterClockThread extends Thread {
 		System.out.println("running is false. exiting thread");
 	}
 	
+	
+	public void onTimelineNotify(String path, String timerPath, String s, String d){
+		app.followTimeline(path, timerPath, s, d);
+	}
+	
+	public void listenForEvent(String path){
+		app.listenForEvent(path);
+	}
+	
+	
 	public void seek(long newtime) {
 		streamtime = newtime;
 		//this.interrupt(); // interupt to take new times
@@ -89,6 +101,7 @@ public class MasterClockThread extends Thread {
 		//but time events still happen
 		freezetime = duration;
 		frozen = true;
+		app.event("pause");
 		
 	}
 	
