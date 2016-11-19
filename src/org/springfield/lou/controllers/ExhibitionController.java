@@ -6,8 +6,6 @@ import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoController;
 import org.springfield.lou.controllers.apps.interactivevideo.WaitScreenController;
-import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockManager;
-import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockThread;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
 import org.springfield.lou.model.ModelEvent;
@@ -67,14 +65,6 @@ public class ExhibitionController extends Html5Controller {
 			} else if (app.equals("photoinfospots")) {
 			    screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
 			} else if (app.equals("interactivevideo")) {
-//				System.out.println("STATION PATH::: " + model.getProperty("@station"));
-				MasterClockThread c = MasterClockManager.getMasterClock("/domain/mupop/user/daniel/exhibition/"+exhibitionid+"/station/"+stationid);
-				if(c == null){
-					c = MasterClockManager.addMasterClock("/domain/mupop/user/daniel/exhibition/"+exhibitionid+"/station/"+stationid);
-					c.setVideoLength(313000);
-					c.listenForEvent("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/userJoined");
-					c.onTimelineNotify("/domain/mupop/user/daniel/exhibition/1475504815025/station/1475504866572/video/1","/shared/mupop/exhibition/"+exhibitionid+"/station/"+ stationid+"/currenttime","starttime","duration");
-				}
 				screen.loadStyleSheet("interactivevideo/soundandvision.css");
 				String isPlaying = model.getProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying");
 				if(isPlaying != null && isPlaying.equals("true")){
