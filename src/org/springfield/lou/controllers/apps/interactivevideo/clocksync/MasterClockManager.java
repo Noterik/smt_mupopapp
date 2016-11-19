@@ -22,8 +22,10 @@ public class MasterClockManager {
 	public static MasterClockThread addMasterClock(String name) {
 		MasterClockThread clock  = clocks.get(name);
 		if (clock!=null) {
+			System.out.println("RESET THE THREAD !!!"+name);
 			clock.reset();
 		} else {
+			System.out.println("CREATING NEW THREAD !!!"+name);
 			clock = new MasterClockThread(app,name);
 			clocks.put(name, clock);
 		}

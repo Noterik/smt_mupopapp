@@ -33,6 +33,7 @@ public class ExhibitionController extends Html5Controller {
 	//data.put("element",model.getProperty("/screen/element"));
 	System.out.println("exhibition controller called");
  	screen.get(selector).parsehtml(data);
+	model.setProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying", "false");
 	fillExhibition();
     }
 	
@@ -52,6 +53,7 @@ public class ExhibitionController extends Html5Controller {
 		} else if (style.equals("leuven")) {
 		    screen.loadStyleSheet("styles/leuven.css");
 		} else if (style.equals("soundandvision")) {
+			System.out.println("LOADING SOUND AND VISION STYLSHEET");
 		    screen.loadStyleSheet("styles/soundandvision.css");
 		}
 		
@@ -65,8 +67,9 @@ public class ExhibitionController extends Html5Controller {
 			} else if (app.equals("photoinfospots")) {
 			    screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
 			} else if (app.equals("interactivevideo")) {
-				screen.loadStyleSheet("interactivevideo/soundandvision.css");
+				//screen.loadStyleSheet("interactivevideo/soundandvision.css");
 				String isPlaying = model.getProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying");
+				System.out.println("ISSSSSSPLAYING="+isPlaying);
 				if(isPlaying != null && isPlaying.equals("true")){
 					screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
 				}

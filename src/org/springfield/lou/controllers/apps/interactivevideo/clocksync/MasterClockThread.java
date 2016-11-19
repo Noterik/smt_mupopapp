@@ -16,6 +16,8 @@ public class MasterClockThread extends Thread {
 	private long freezetime = 0;
 	long virtual_streamtime = 0;
 	long videoLength = 10000;
+	String stationid;
+	String exhibitionid;
 	
     public MasterClockThread(Html5Controller a,String n) {
 		super("masterclockthread "+n);
@@ -24,8 +26,8 @@ public class MasterClockThread extends Thread {
 	}
     
 	public void run() {
-		String stationid = app.model.getProperty("@stationid");
-		String exhibitionid = app.model.getProperty("@exhibitionid");
+		stationid = app.model.getProperty("@stationid");
+		exhibitionid = app.model.getProperty("@exhibitionid");
 		int updateInterval = 1000;
 		int timeToCatchUp = 5000;
 			
@@ -93,8 +95,8 @@ public class MasterClockThread extends Thread {
 	}
 	
 	public void pause() {
-		String stationid = app.model.getProperty("@stationid");
-		String exhibitionid = app.model.getProperty("@exhibitionid");
+		//String stationid = app.model.getProperty("@stationid");
+		//String exhibitionid = app.model.getProperty("@exhibitionid");
 		app.model.setProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying", "false");
 		paused=true;
 		//this.interrupt(); // interupt to take new times
@@ -103,13 +105,14 @@ public class MasterClockThread extends Thread {
 	public void reset() {
 		// new master
 		pause();
+		app.model.setProperty("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/pause", "false");
 		streamtime = 0;
 		virtual_streamtime = 0;
 	}
 	
 	public void resumeClock(){
-		String stationid = app.model.getProperty("@stationid");
-		String exhibitionid = app.model.getProperty("@exhibitionid");
+		//String stationid = app.model.getProperty("@stationid");
+		//String exhibitionid = app.model.getProperty("@exhibitionid");
 		app.model.setProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying", "true");
 		paused = false;
 		
@@ -127,9 +130,19 @@ public class MasterClockThread extends Thread {
 		return !paused;
 	}
 	
+	public void restart() {
+		// new master
+		paused = false;
+		System.out.println("RESTART CALLED");
+	//	app.model.setProperty("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/pause", "false");
+		streamtime = 0;
+		virtual_streamtime = 0;
+		freezetime = 0;
+	}
+	
 	
 	public void start() {
-		System.out.println("Thread: Got start signal. Starting thread");
+		System.out.println("Thread: Got start signal. Starting thread !!"+getClockName());
 		if (paused) resumeClock();
 		if (running == true) return;
 		running = true;
@@ -140,8 +153,8 @@ public class MasterClockThread extends Thread {
      * Shutdown
      */
 	public void destroy() {
-		running = false;
+		//running = false;
 		//cannot resume same thread after interrupt
-		this.interrupt(); // signal we should stop;
+		//this.interrupt(); // signal we should stop;
 	}
 }
