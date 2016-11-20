@@ -36,7 +36,7 @@ body {
 	padding: 5px;
 }
 
-/* static entry screen */
+/ static entry screen /
 
 #staticentryscreen {
 	position: absolute;
@@ -148,3 +148,4 @@ h2.entryscreen {
 	width: 100% !important;
 	height: 100% !important;
 }
+

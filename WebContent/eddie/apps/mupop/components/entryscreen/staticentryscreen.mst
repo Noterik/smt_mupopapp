@@ -3,7 +3,9 @@
 		<img id="entryimage" src="{{entryimageurl}}" class="img-responsive"/>
 	</div>
 </div>
-<div class="row" id="title"><h1 class="title">{{title}}</h1></div>
+<div class="row" id="title"><h1 class="title"><span class="title-span">{{{title}}}</span></h1>
+<div class="subrow"><img src="http://images1.noterik.com/mupop/in_sv.png"/></div>
+</div>
 <div id="connect-row" class="row">
 	<div id="mobile-phone" class="inbl">
 		<span class="centerer inbl">
