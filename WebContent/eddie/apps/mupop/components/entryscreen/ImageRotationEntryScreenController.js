@@ -1,7 +1,13 @@
 var ImageRotationEntryScreenController = function(options) {}; // needed for detection
 
 ImageRotationEntryScreenController.update = function(vars, data) {
-	
+	//init - this is also handled when returning on a page
+	if (!vars["loaded"]) {	
+		vars["loaded"] = true;
+		
+		//use small timeout to make sure the above plugin is loaded properly
+		setTimeout(initImageRotationEntryScreen, 200);
+	}
 };
 
 //using http://kthornbloom.github.io/Smoothslides/
@@ -20,4 +26,4 @@ function initImageRotationEntryScreen() {
 }
 
 //use small timeout to make sure the above plugin is loaded properly
-setTimeout(initImageRotationEntryScreen, 200);
+//setTimeout(initImageRotationEntryScreen, 200);

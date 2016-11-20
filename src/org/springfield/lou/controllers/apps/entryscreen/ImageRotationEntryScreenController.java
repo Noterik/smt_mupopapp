@@ -56,6 +56,11 @@ public class ImageRotationEntryScreenController extends Html5Controller{
 	    data.put("title", stationnode.getSmartProperty("en", "title"));
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));
 	    screen.get(selector).render(data);
+	    screen.get(selector).loadScript(this);
+	    
+	    JSONObject d = new JSONObject();	
+	    d.put("command","init");
+	    screen.get(selector).update(d);
 	}
     }
 	

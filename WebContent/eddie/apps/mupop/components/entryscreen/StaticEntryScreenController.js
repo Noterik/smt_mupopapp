@@ -6,7 +6,7 @@ StaticEntryScreenController.update = function(vars, data) {
 		vars["loaded"] = true;
 		
 		//resize once the image is loaded
-		$("#entryimage").on('load', resize).each(function() {
+		$("#entryimage").on('load', resizeStaticEntryScreen).each(function() {
 			if (this.complete) {
 				$(this).trigger('load');
 			}
@@ -14,7 +14,7 @@ StaticEntryScreenController.update = function(vars, data) {
 	}
 };
 
-function resize(){
+function resizeStaticEntryScreen(){
 	var wrapperWidth = $("#image-container").width();
 	var wrapperHeight = $("#image-container").height();
 	

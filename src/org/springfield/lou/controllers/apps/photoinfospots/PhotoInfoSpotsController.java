@@ -78,6 +78,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	    model.onNotify("@photoinfospots/device/connected", "onDeviceConnected", this);
 	    model.onNotify("@photoinfospots/image/selected", "onImageSelected", this);
 	    model.onNotify("@photoinfospots/image/spotting", "onCoverflowRequested", this);
+	    model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
 	} else {
 	    loadImageSelection();
 	}
@@ -135,5 +136,39 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	model.setProperty("@imageid", target.getId());
 	model.setProperty("@photoinfospots/vars/imageid", target.getId());
 	loadZoomAndAudio();
+    }
+    
+    public void onEntryScreenRequested(ModelEvent e) {
+	FsNode target = (FsNode) e.target;	
+
+	if (model.getProperty("@exhibitionid").equals(target.getProperty("exhibition"))) {
+	    if (state.equals("coverflow")) {
+		screen.get("#coverflow").remove();
+	    } else if (state.equals("zoomandaudio")) {
+		screen.get("#zoomandaudio").remove();
+	    }
+	    String waitscreenmode = model.getProperty("@station/waitscreenmode");
+		
+	    //check if we need to load a waiting screen
+	    if (waitscreenmode!=null && !waitscreenmode.equals("off")) { 
+		if (waitscreenmode.equals("static")) {
+		    //static entry screen
+		    state = "staticentryscreen";
+		    model.setProperty("@photoinfospots/vars/state", state);
+		    screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+		    //notify all pending screens as this could be a reload
+		    model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
+		} else if (waitscreenmode.equals("imagerotation")) {
+		    //image rotation entry screen
+		    state = "imagerotationentryscreen";
+		    model.setProperty("@photoinfospots/vars/state", state);
+		    screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
+		    //notify all pending screens as this could be a reload
+		    model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
+		}
+	    } else {
+		loadImageSelection();
+	    }
+	}
     }
 }

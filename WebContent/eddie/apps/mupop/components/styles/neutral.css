@@ -22,7 +22,7 @@ body {
 	height: 15%;
 	width: 70%;
 	left: 32%;
-	background-color: #33475a;
+	background-color: rgba(51,71,90, .5);
 	text-align: center;
 }
 
@@ -34,7 +34,7 @@ h1.title {
 	color: #fff;
 	letter-spacing: 1vw;
 	font-weight: 600;
-	font-size: 8vhpx;	
+	font-size: 7vh;	
 	text-shadow: 7px 5px 1px rgba(0, 0, 0, 0.5);
   	transform: translateY(-50%);
   	-webkit-transform: translateY(-50%);
@@ -50,7 +50,7 @@ h1.title {
 }
 
 #connect-info {
-	background-color: #33475a;
+	background-color: rgba(51,71,90, .5);
 	text-align: center;
 	height: 50%;
 	padding: 20px;
@@ -337,7 +337,7 @@ h2.entryscreen {
 	height: 15%;
 	width: 70%;
 	left: 32%;
-	background-color: #33475a;
+	background-color: rgba(51,71,90, .5);
 	text-align: center;
 }
 
@@ -350,7 +350,7 @@ h2.entryscreen {
 }
 
 #connect-info {
-	background-color: #33475a;
+	background-color: rgba(51,71,90, .5);
 	text-align: center;
 	height: 50%;
 	padding: 20px;
@@ -426,7 +426,7 @@ h1 {
   	margin: 0;
 	color: #fff;
 	text-align: center;
-	font-size: 8vh;
+	font-size: 7vh;
 	letter-spacing: 1vw;
 	font-weight: 600;
 	text-shadow: 7px 5px 1px rgba(0, 0, 0, 0.5);
