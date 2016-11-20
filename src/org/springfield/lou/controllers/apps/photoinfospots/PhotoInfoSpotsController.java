@@ -100,7 +100,8 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	
     public void loadZoomAndAudio() {
 	state = "zoomandaudio";
-	
+	String newstate = model.getProperty("@photoinfospots/vars/state");
+	System.out.println("ZOOMSTATE="+newstate);
 	if (!model.getProperty("@photoinfospots/vars/state").equals(state)) {
 	    model.setProperty("@photoinfospots/vars/state", state);
 	    screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());

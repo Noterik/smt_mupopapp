@@ -302,6 +302,10 @@ h2.entryscreen {
 
 /* static entry screen */
 
+.subrow {
+	display: none;
+}
+
 #staticentryscreen {
 	position: absolute;
 	width: 100%;
