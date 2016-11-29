@@ -67,12 +67,12 @@ body {
 }
 
 #title {
-	position: absolute;
+	position: relative;
+	float: right;
 	top: 18%;
-	height: 15%;
 	width: 60%;
-	left: 27%;
 	text-align: center;
+	margin-right: 180px;
 }
 
 h1.title {
@@ -83,13 +83,17 @@ h1.title {
 }
 
 .subrow {
-	text-align: right;
-	margin-right: -11.25vw;
-	margin-top: -3.5vh;
+	position: absolute;
+	bottom: -88px;
+	right: -156px;
+	
 }
 
 .title-span {
-	background-color: #009fda;
+	background-color: #008ce6;
+	box-decoration-break: clone;
+	box-shadow: -10px 0 0 #008ce6, 10px 0 0 #008ce6;
+	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
 }
 
 #connect-row {
