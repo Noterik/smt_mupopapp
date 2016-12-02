@@ -2,6 +2,16 @@ body {
 	background-color: #000;
 }
 
+@font-face {
+    font-family: akzidenz-grotesk-condensed;
+    src: url(http://images1.noterik.com/mupop/fonts/akzidenz-grotesk-condensed.woff);
+}
+
+@font-face {
+	font-family: bebas_neueregular;
+	src: url(http://images1.noterik.com/mupop/fonts/BebasNeue-webfont.woff);
+}
+
 #entryimage{
 	width: 100%;
 	height: 100%;
@@ -143,10 +153,15 @@ h1.title {
 	margin-top: 50px;
 }
 
-h2.entryscreen {
-	background-color: #009fda;
+.entryscreen-span {
+	background-color: #008ce6;
+	box-decoration-break: clone;
+	box-shadow: -10px 0 0 #008ce6, 10px 0 0 #008ce6;
 	text-transform: uppercase;
-	padding: 1vh;
+	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
+	margin-left: 6px;
+	letter-spacing: 1px;
+	font-size: 3vw;
 }
 
 #entryimage {
@@ -154,3 +169,38 @@ h2.entryscreen {
 	height: 100% !important;
 }
 
+/** interactive video screen **/
+
+#videotitle {
+	position: relative;
+	float: right;
+	top: 18%;
+	width: 60%;
+	text-align: center;
+	margin-right: 180px;
+}
+
+h1.videotitle {
+	text-align: right;
+	font-size: 4vh;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.videotitle-span {
+	background-color: #008ce6;
+	box-decoration-break: clone;
+	box-shadow: -10px 0 0 #008ce6, 10px 0 0 #008ce6;
+	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
+}
+
+.videosubrow {
+	position: absolute;
+	bottom: -42px;
+	right: -86px;
+}
+
+.videosubrow > img {
+	width: 236px;
+	height: 57px;
+}

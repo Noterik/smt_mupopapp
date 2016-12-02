@@ -34,6 +34,7 @@ public class InteractiveVideoController extends Html5Controller {
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
 			data.put("url","http://images3.noterik.com/mupop/test2.mp4");
+			data.put("title", stationnode.getSmartProperty("en", "title"));
 			screen.get(selector).render(data);
 		}
 		

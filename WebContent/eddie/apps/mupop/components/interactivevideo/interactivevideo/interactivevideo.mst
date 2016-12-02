@@ -1,3 +1,5 @@
-<video id="interactivevideo_video_c" controls muted>
+<video id="interactivevideo_video_c" muted>
 	<source id="interactivevideo_video" src="{{url}}" type="video/mp4">
 </video>
+<div class="videotitlerow" id="videotitle"><h1 class="videotitle"><span class="videotitle-span">{{title}}</span></h1>
+<div class="videosubrow"><img src="http://images1.noterik.com/mupop/in_sv.png"/></div>
