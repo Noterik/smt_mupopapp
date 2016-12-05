@@ -88,8 +88,8 @@ public class ExhibitionController extends Html5Controller {
     }
     
     public void startExhibition(ModelEvent e){
-		screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
-		screen.get("#staticentryscreen").remove();
-	}
+	screen.get("#staticentryscreen").remove();	
+	screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());	
+    }
 }
 

@@ -4,6 +4,7 @@ package org.springfield.lou.controllers.apps.interactivevideo;
 import org.json.simple.JSONObject;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockManager;
 import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockThread;
@@ -64,6 +65,7 @@ public class InteractiveVideoController extends Html5Controller {
 		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/pause", "onPauseEvent", this);
 		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime", "onClockUpdate", this);
 		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/exhibitionEnded", "onExhibitionEnd", this);
+		model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
 		
 		playVideo();
 //		System.out.println("video path:::: " + video);
@@ -205,5 +207,28 @@ public class InteractiveVideoController extends Html5Controller {
 		String exhibitionid = model.getProperty("@exhibitionid");	
 		model.setProperty("/app/interactivevideo/exhibition/" +exhibitionid+ "/station/"+ stationid +"/vars/hasClockManager", "false");
 			
+	}
+	
+	//Pieter: quickly hacked in for Cultuur in Beeld demo on request of Rutger.
+	public void onEntryScreenRequested(ModelEvent e) {
+	    FsNode target = (FsNode) e.target;	
+
+	    if (model.getProperty("@exhibitionid").equals(target.getProperty("exhibition"))) {
+		screen.get("#interactivevideo_app").remove();
+		
+		String waitscreenmode = model.getProperty("@station/waitscreenmode");
+			
+		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+		
+		String stationid = model.getProperty("@stationid");
+		String exhibitionid = model.getProperty("@exhibitionid");
+		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/userJoined", "startExhibition", this);
+
+	    }
+	}
+	
+	public void startExhibition(ModelEvent e){
+	    screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
+	    screen.get("#staticentryscreen").remove();
 	}
 }
