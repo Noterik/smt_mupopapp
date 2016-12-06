@@ -72,6 +72,9 @@ body {
 #image-wrapper {
 	top: 0;
 	overflow: hidden;
+}
+
+.staticentryscreen {
 	width: 100% !important;
 	height: 100% !important;
 }
@@ -203,4 +206,184 @@ h1.videotitle {
 .videosubrow > img {
 	width: 236px;
 	height: 57px;
+}
+
+/* zoom and audio */
+
+body {
+	overflow: hidden;
+}
+
+#zoomandaudio {
+	background-color: #000;	
+	height: 100%;
+}
+
+#pairing {
+	display: none;
+}
+
+#zoomandaudio-image-container {
+	position: absolute;
+	width: 100%;
+	height: 93%;
+	top: 0;
+}
+
+#image-wrapper {
+	top: 0;
+	overflow: hidden;
+}
+
+.zoomandaudio_image {
+	width: 100%;
+	height: 100%;
+}
+
+.zoomandaudio_layer {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.zoomandaudio_spotmask {
+	z-index:1100;
+	opacity: 0;
+}
+
+#zoomandaudio_spots_holder {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;	
+}
+
+.zoomandaudio_spot {
+	position: absolute;
+	top: -23px;
+	left: -23px;
+	width: 46px;
+	height: 46px;
+	z-index: 100;
+}
+
+.zoomandaudio_spot_outer {
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	border-left: 6px solid rgba(255, 255, 255, 1);
+  	border-right: 6px solid rgba(255, 255, 255, 1);
+  	border-bottom: 6px solid rgba(255, 255, 255, 1);
+  	border-top: 6px solid rgba(255, 255, 255, 1);
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+
+@-moz-keyframes rotation {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(359deg);
+  }
+}
+
+@-o-keyframes rotation {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(359deg);
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.zoomandaudio_spot_inner {
+	opacity: 0.7;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+}
+
+#url_row {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background-color: #3a393e;
+	overflow: none;
+	height: 7%;
+	margin-left: 0;
+}
+
+h2.zoomandaudio {
+	font-size: 4.5vh;
+	margin: 0;
+	padding: 0;
+	padding-top: 0.5vh;
+}
+
+#zoomandaudio-mobile-phone {
+	height: 3.6vh;
+}
+
+#zoomandaudio-mobile-phone:before {
+	position: relative;
+  	font-family: FontAwesome;
+  	font-size: 6.1vh;
+  	line-height: 5.1vh;
+  	content: "\f10b";
+  	color: #fff;
+  	padding-right: 1vw;
+}
+
+.vertical-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.fill-height {
+	height: 100%;
+}
+
+.poweredby {
+	font-size: 2vh;
+	color: #cccccc;
+	padding: 0;
+	padding-right: 0.2vw;
+}
+
+.max-height {
+	max-height: 100%;
+}
+
+.nopadding {
+	padding: 0;
+}
+
+.url_row_background {
+	background-color: #008ce6;
+}
+
+h2.mupop {
+	font-size: 3vh;
+	margin: 0;
+	padding: 0;
 }
