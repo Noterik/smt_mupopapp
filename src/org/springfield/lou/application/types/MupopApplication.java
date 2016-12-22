@@ -43,13 +43,14 @@ public class MupopApplication extends Html5Application {
 		// start the pairing controller its job is to 
 		s.get("#screen").append("div", "pairing",new PairingController());
 		
+		/*
 		String path = s.getParameter("path");
 		System.out.println("PATH=" + path);
 		if (path != null) {
 			s.getModel().setProperty("/screen/exhibitionpath","/domain/mupop/user/daniel" + path);
-			s.get("#screen").append("div", "exhibition",
-					new ExhibitionController());
+			s.get("#screen").append("div", "exhibition",new ExhibitionController());
 		}
+		*/
 	}
 	
 	public void maintainanceRun() {

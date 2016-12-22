@@ -3,8 +3,12 @@
 	<jumper id="/lou/mupop/station">
 		<target>/lou/domain/mupop/user/daniel/html5application/mupop</target>
 	</jumper>
-
+	
 	<jumper id="station.mupop.net@/lou/mupop/">
+		<target>/lou/domain/mupop/user/daniel/html5application/mupop</target>
+	</jumper>
+	
+	<jumper id="betastation.mupop.net@/lou/mupop/">
 		<target>/lou/domain/mupop/user/daniel/html5application/mupop</target>
 	</jumper>
 
@@ -19,6 +23,7 @@
 		<roomname>/screen['vars']/roomname</roomname>
 		<pairingid>/screen['vars']/pairingid</pairingid>
 		<videoid>/screen['vars']/videoid</videoid>
+		<contentrole>/screen['vars']/contentrole</contentrole>
 	
 	 	<exhibitions>/domain['mupop']/user['@username']/exhibition</exhibitions>
 	    <exhibition>/domain['mupop']/user['@username']/exhibition['@exhibitionid']</exhibition>
@@ -29,10 +34,14 @@
 		<stations>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station</stations>
 		<station>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']</station>
 		
-		<images>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/image</images>
-		<image>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/image['@imageid']</image>
+		<images>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/image</images>
+		<image>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/image['@imageid']</image>
 		
-		<video>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/video['@videoid']</video>
+		<videos>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/video</videos>
+		<video>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/video['@videoid']</video>
+	
+		<stationevents>/shared['exhibitionevents']/exhibition['@exhibitionid']/station['@stationid']</stationevents>
+		<exhibitionevents>/shared['exhibitionevents']/exhibition['@exhibitionid']</exhibitionevents>
 		
 		<photoinfospots>/shared['photoinfospots']/exhibition['@exhibitionid']/station['@stationid']</photoinfospots>
 	</model>

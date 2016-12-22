@@ -38,38 +38,41 @@ public class StaticEntryScreenController extends Html5Controller {
     public StaticEntryScreenController() { }
 	
     public void attach(String sel) {
-	String selector = sel;
+    	String selector = sel;
 
-	String path = model.getProperty("/screen/exhibitionpath");
+    	String path = model.getProperty("/screen/exhibitionpath");
 		
-	FsNode stationnode = model.getNode(path);
-	FsNode exhibitionnode = model.getNode("@exhibition");
+    	FsNode stationnode = model.getNode(path);
+    	FsNode exhibitionnode = model.getNode("@exhibition");
 	
-	if (stationnode!=null) {
-	    JSONObject data = new JSONObject();
+    	if (stationnode!=null) {
+    		JSONObject data = new JSONObject();
 	    
-	    //check if a specific entry screen image is configured
-	    String entryScreen = stationnode.getProperty("entryscreen");
-	    if (entryScreen == null || entryScreen.equals("")) {
-		//load first image
-		FSList imagesList = model.getList("@images");
+    		//check if a specific entry screen image is configured
+    		String entryScreen = null;
+    		//if (entryScreen == null || entryScreen.equals("")) {
+    			//load first image
+    			model.setDebug(true);
+    			model.setProperty("@contentrole",model.getProperty("@station/waitscreen_content"));
+    			FSList imagesList = model.getList("@images");
+    			model.setDebug(false);
 		    
-		if (imagesList.size() > 0) {
-		    FsNode first = imagesList.getNodes().get(0);
-		    entryScreen = first.getProperty("url");
-		}
-	    }
+    			if (imagesList.size() > 0) {
+    				FsNode first = imagesList.getNodes().get(0);
+    				entryScreen = first.getProperty("url");
+    			}
+    		//}
 	    
-	    data.put("entryimageurl", entryScreen);
-	    //TODO: get a default language for the mainscreen?
-	    data.put("title", stationnode.getSmartProperty("en", "title"));
-	    data.put("jumper", exhibitionnode.getProperty("jumper"));
-	    screen.get(selector).render(data);
-	    screen.get(selector).loadScript(this);
+    		data.put("entryimageurl", entryScreen);
+    		//TODO: get a default language for the mainscreen?
+    		data.put("title", stationnode.getSmartProperty("en", "title"));
+    		data.put("jumper", exhibitionnode.getProperty("jumper"));
+    		screen.get(selector).render(data);
+    		screen.get(selector).loadScript(this);
 	    
-	    JSONObject d = new JSONObject();	
-	    d.put("command","init");
-	    screen.get(selector).update(d);
-	}
+    		JSONObject d = new JSONObject();	
+    		d.put("command","init");
+    		screen.get(selector).update(d);
+    	}
     }
 }

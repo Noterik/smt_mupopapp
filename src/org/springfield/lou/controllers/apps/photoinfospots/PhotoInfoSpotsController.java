@@ -42,68 +42,71 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
     String state = "";
 	
-    public PhotoInfoSpotsController() { }
+    public PhotoInfoSpotsController() { 
+    	
+    }
 
     public void attach(String sel) {
-	selector = sel;
+    	selector = sel;
 	
-	String path = model.getProperty("/screen/exhibitionpath");
+    	String path = model.getProperty("/screen/exhibitionpath");
+    	System.out.println("EXHIPATH="+path);
+    	FsNode stationnode = model.getNode(path);
+    	if (stationnode!=null) {
+    		JSONObject data = new JSONObject();
+    		screen.get(selector).render(data);
+    	}
 
-	FsNode stationnode = model.getNode(path);
-	if (stationnode!=null) {
-	    JSONObject data = new JSONObject();
-	    screen.get(selector).render(data);
-	}
-
-	String waitscreenmode = model.getProperty("@station/waitscreenmode");
+    	String waitscreenmode = model.getProperty("@station/waitscreenmode");
 	
-	//check if we need to load a waiting screen
-	if (waitscreenmode!=null && !waitscreenmode.equals("off")) { 
-	    if (waitscreenmode.equals("static")) {
-		 //static entry screen
-		state = "staticentryscreen";
-		model.setProperty("@photoinfospots/vars/state", state);
-		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
-		//notify all pending screens as this could be a reload
-		model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
-	    } else if (waitscreenmode.equals("imagerotation")) {
-		//image rotation entry screen
-		state = "imagerotationentryscreen";
-		model.setProperty("@photoinfospots/vars/state", state);
-		screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
-		//notify all pending screens as this could be a reload
-		model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
-	    }
+    	//check if we need to load a waiting screen
+    	if (waitscreenmode!=null && !waitscreenmode.equals("off")) { 
+    		if (waitscreenmode.equals("static")) {
+    			//static entry screen
+    			state = "staticentryscreen";
+    			model.setProperty("@photoinfospots/vars/state", state);
+    			screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+    			//notify all pending screens as this could be a reload
+    			model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
+    		} else if (waitscreenmode.equals("imagerotation")) {
+    			//image rotation entry screen
+    			state = "imagerotationentryscreen";
+    			model.setProperty("@photoinfospots/vars/state", state);
+    			screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
+    			//notify all pending screens as this could be a reload
+    			model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
+    		}
 
-	    model.onNotify("@photoinfospots/device/connected", "onDeviceConnected", this);
-	    model.onNotify("@photoinfospots/image/selected", "onImageSelected", this);
-	    model.onNotify("@photoinfospots/image/spotting", "onCoverflowRequested", this);
-	    model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
-	} else {
-	    loadImageSelection();
-	}
+    		model.onNotify("@photoinfospots/device/connected", "onDeviceConnected", this);
+    		model.onNotify("@photoinfospots/image/selected", "onImageSelected", this);
+    		model.onNotify("@photoinfospots/image/spotting", "onCoverflowRequested", this);
+    		model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
+    	} else {
+    		System.out.println("NO WAITSCREEN LOADING IMAGE");
+    		loadImageSelection();
+    	}
     }
 	
     public void loadImageSelection() {
-	FSList imagesList = model.getList("@images");
+    	FSList imagesList = model.getList("@images");
+	    System.out.println("imagesList size="+imagesList.size());
+    	if (imagesList.size() > 1) {
 	    
-	if (imagesList.size() > 1) {
-	    
-	    state = "coverflow";
-	    model.setProperty("@photoinfospots/vars/state", state);
-	    screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
-	} else {
-	    FsNode node = imagesList.getNodes().get(0);
-	    model.setProperty("@imageid", node.getId());
-	    loadZoomAndAudio();
-	}
+    		state = "coverflow";
+    		model.setProperty("@photoinfospots/vars/state", state);
+    		screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
+    	} else {
+    		FsNode node = imagesList.getNodes().get(0);
+    		model.setProperty("@imageid", node.getId());
+    		loadZoomAndAudio();
+    	}
     }
 	
     public void loadZoomAndAudio() {
 	state = "zoomandaudio";
 	String newstate = model.getProperty("@photoinfospots/vars/state");
 	System.out.println("ZOOMSTATE="+newstate);
-	if (!model.getProperty("@photoinfospots/vars/state").equals(state)) {
+	if (model.getProperty("@photoinfospots/vars/state")!=null && !model.getProperty("@photoinfospots/vars/state").equals(state)) {
 	    model.setProperty("@photoinfospots/vars/state", state);
 	    screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
 	}
