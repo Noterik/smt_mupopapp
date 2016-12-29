@@ -48,7 +48,10 @@ public class ImageRotationEntryScreenController extends Html5Controller{
 	FsNode exhibitionnode = model.getNode("@exhibition");
 	
 	if (stationnode!=null) {
-	    FSList imagesList = model.getList("@images");
+		model.setProperty("@contentrole",model.getProperty("@station/waitscreen_content"));
+		FSList imagesList = model.getList("@images");
+		System.out.println("LEN="+imagesList.size());
+	  //  FSList imagesList = model.getList("@images");
 	    List<FsNode> nodes = imagesList.getNodes();
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 	    

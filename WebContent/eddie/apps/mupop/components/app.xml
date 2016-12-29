@@ -23,6 +23,7 @@
 		<roomname>/screen['vars']/roomname</roomname>
 		<pairingid>/screen['vars']/pairingid</pairingid>
 		<videoid>/screen['vars']/videoid</videoid>
+		<fromid>/screen['vars']/fromid</fromid>
 		<contentrole>/screen['vars']/contentrole</contentrole>
 	
 	 	<exhibitions>/domain['mupop']/user['@username']/exhibition</exhibitions>

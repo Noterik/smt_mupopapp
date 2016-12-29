@@ -44,7 +44,7 @@ public class StaticEntryScreenController extends Html5Controller {
 		
     	FsNode stationnode = model.getNode(path);
     	FsNode exhibitionnode = model.getNode("@exhibition");
-	
+    	System.out.println("STATIONNODE="+stationnode);
     	if (stationnode!=null) {
     		JSONObject data = new JSONObject();
 	    
