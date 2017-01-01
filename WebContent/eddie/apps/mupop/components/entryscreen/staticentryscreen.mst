@@ -13,6 +13,11 @@
 		</span>
 	</div>
 	<div id="connect-info" class="inbl">
-		<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>mupop.net/{{jumper}}</b> to control the screen</span></h2></div>
+		{{#stationselect}}
+			<h2 class="entryscreen"><span class="entryscreen-span">Select station <b>{{labelid}} </b> ({{name}}) to control the screen</span></h2></div>
+		{{/stationselect}}
+		{{^stationselect}}
+			<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>{{domain}}/{{jumper}}</b> to control the screen</span></h2></div>
+		{{/stationselect}}
 	</div>
 </div>

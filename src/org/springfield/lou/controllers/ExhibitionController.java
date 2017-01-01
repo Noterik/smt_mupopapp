@@ -36,6 +36,7 @@ public class ExhibitionController extends Html5Controller {
 		model.onPropertyUpdate("/screen/state","onStateChange",this);
 		model.setProperty("/screen/state","init"); // will trigger a event 
 		model.onNotify("@station","onStationChange",this);
+		model.onNotify("@exhibition","onStationChange",this);
     }
     
     public void onStationChange(ModelEvent event) {
@@ -74,6 +75,13 @@ public class ExhibitionController extends Html5Controller {
     	if (appname==null || appname.equals("") || appname.equals("none")) {
     		// no app selected, set html to reflect this
     		screen.get("#exhibition").html("<div id=\"noappselected\">No App Selected</div>");
+    		return;
+    	}
+    	
+    	String roomstate = model.getProperty("@station/room");
+    	if (roomstate==null || roomstate.equals("") || roomstate.equals("offline")) {
+    		// no app selected, set html to reflect this
+    		screen.get("#exhibition").html("<div id=\"noappselected\">Station is offline</div>");
     		return;
     	}
     	

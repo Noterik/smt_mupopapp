@@ -26,6 +26,7 @@ import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.homer.LazyHomer;
 
 /**
  * ImageRotationEntryScreenController.java
@@ -58,6 +59,13 @@ public class ImageRotationEntryScreenController extends Html5Controller{
 	    //TODO: get a default language for the mainscreen?
 	    data.put("title", stationnode.getSmartProperty("en", "title"));
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));
+		data.put("domain", LazyHomer.getExternalIpNumber());
+		data.put("name", model.getProperty("@station/name"));
+		data.put("labelid", model.getProperty("@station/labelid"));
+	    String stationselect = model.getProperty("@exhibition/stationselect");
+	    if (stationselect!=null && !stationselect.equals("")&& !stationselect.equals("none")) {
+	    	data.put("stationselect","true");
+	    }
 	    screen.get(selector).render(data);
 	    screen.get(selector).loadScript(this);
 	    
