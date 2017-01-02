@@ -52,7 +52,9 @@ public class CoverFlowController extends Html5Controller {
 	FsNode stationnode = model.getNode(path);
 	
 	if (stationnode!=null) {
-	    FSList imagesList = model.getList("@images");
+		model.setProperty("@contentrole",model.getProperty("@station/contentselect_content"));
+		FSList imagesList = model.getList("@images");
+		System.out.println("LEN="+imagesList.size());
 	    List<FsNode> nodes = imagesList.getNodes();
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 	    

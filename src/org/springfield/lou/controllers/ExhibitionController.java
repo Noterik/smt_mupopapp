@@ -10,6 +10,7 @@ import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.Html5ApplicationInterface;
 import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
+import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
 import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoController;
 import org.springfield.lou.controllers.apps.interactivevideo.WaitScreenController;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
@@ -138,9 +139,17 @@ public class ExhibitionController extends Html5Controller {
     			// ok lets see what we need todo and reply back to client
     			System.out.println("FROM="+from);
     			Screen client = ApplicationManager.getScreenByFullid(from);
-    			client.getModel().setProperty("/screen/state","mainapp");
-    			model.setProperty("@fromid", from);
-        		model.setProperty("/screen/state","mainapp");
+    			System.out.println("WHOOOuUUU="+model.getProperty("@station/contentselect"));
+    			String contentselect = model.getProperty("@station/contentselect");
+    			if (contentselect!=null && !contentselect.equals("none")) {
+    				client.getModel().setProperty("/screen/state","contentselect");
+    				model.setProperty("@fromid", from);
+    				model.setProperty("/screen/state","contentselect");	
+    			} else {
+    				client.getModel().setProperty("/screen/state","mainapp");
+    				model.setProperty("@fromid", from);
+    				model.setProperty("/screen/state","mainapp");
+    			}
     		}
     	}
     	
@@ -152,7 +161,10 @@ public class ExhibitionController extends Html5Controller {
     	String type = model.getProperty("@station/contentselect");
     	System.out.println("MuPoP MAIN : content select step called ="+type);
     	if (type!=null && !type.equals("")) {
-    	
+    		if (type.equals("coverflow")) {
+    			screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
+    			return;
+    		}
     	}
 		model.setProperty("/screen/state","mainapp"); 
     }
