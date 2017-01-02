@@ -14,7 +14,12 @@
 	</div>
 	<div id="connect-info" class="inbl">
 		{{#stationselect}}
-			<h2 class="entryscreen"><span class="entryscreen-span">Select station <b>{{labelid}} </b> ({{name}}) to control the screen</span></h2></div>
+			{{#codeselect}}
+				<h2 class="entryscreen"><span class="entryscreen-span">Enter code <b>{{codeselect}}</b> to control the screen</span></h2></div>
+			{{/codeselect}}
+			{{^codeselect}}
+				<h2 class="entryscreen"><span class="entryscreen-span">Select station <b>{{labelid}}</b> ({{name}}) to control the screen</span></h2></div>
+			{{/codeselect}}
 		{{/stationselect}}
 		{{^stationselect}}
 			<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>{{domain}}/{{jumper}}</b> to control the screen</span></h2></div>

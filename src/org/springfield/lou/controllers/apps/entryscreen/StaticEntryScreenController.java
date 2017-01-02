@@ -20,6 +20,9 @@
 */
 package org.springfield.lou.controllers.apps.entryscreen;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
@@ -70,9 +73,24 @@ public class StaticEntryScreenController extends Html5Controller {
     		data.put("domain", LazyHomer.getExternalIpNumber());
     		data.put("name", model.getProperty("@station/name"));
     		data.put("labelid", model.getProperty("@station/labelid"));
+    		
+    		
+    		
     	    String stationselect = model.getProperty("@exhibition/stationselect");
     	    if (stationselect!=null && !stationselect.equals("")&& !stationselect.equals("none")) {
     	    	data.put("stationselect","true");
+    	    }
+    	    if (stationselect!=null && stationselect.equals("codeselect")) {
+    	    	String fullcode =CodeSelector.getFreeRandomCode();
+    	    	Boolean codeok =  checkCodeInUse(fullcode);
+    	    	while (!codeok) {
+        	    	fullcode =CodeSelector.getFreeRandomCode();
+    	    		codeok = checkCodeInUse(fullcode);
+    	    	}
+    	    	
+    	    	model.setProperty("@station/codeselect",fullcode);
+    	    	
+    	    	data.put("codeselect",fullcode);
     	    }
     		screen.get(selector).render(data);
     		screen.get(selector).loadScript(this);
@@ -81,5 +99,20 @@ public class StaticEntryScreenController extends Html5Controller {
     		d.put("command","init");
     		screen.get(selector).update(d);
     	}
+    }
+    
+    private boolean checkCodeInUse(String newcode) {
+    	FSList stations = model.getList("@stations"); // check all the active stations
+    	List<FsNode> nodes = stations.getNodes();
+    	if (nodes != null) {
+    		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+    			FsNode node = (FsNode) iter.next();
+    			String correctcode = node.getProperty("codeselect");
+    			if (correctcode!=null && correctcode.equals(newcode)) {
+    				return false;
+    			}
+    		}
+    	}
+    	return true;
     }
 }
