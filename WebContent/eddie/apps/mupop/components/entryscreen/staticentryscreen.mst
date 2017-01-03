@@ -15,10 +15,21 @@
 	<div id="connect-info" class="inbl">
 		{{#stationselect}}
 			{{#codeselect}}
-				<h2 class="entryscreen"><span class="entryscreen-span">Enter code <b>{{codeselect}}</b> to control the screen</span></h2></div>
+				{{#showurl}}
+					<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>{{domain}}/{{jumper}}</b> and enter <b>{{codeselect}}</b> to control the screen</span></h2></div>
+				{{/showurl}}
+				{{^showurl}}
+					<h2 class="entryscreen"><span class="entryscreen-span">Enter code <b>{{codeselect}}</b> to control the screen</span></h2></div>
+				{{/showurl}}
+				
 			{{/codeselect}}
 			{{^codeselect}}
-				<h2 class="entryscreen"><span class="entryscreen-span">Select station <b>{{labelid}}</b> ({{name}}) to control the screen</span></h2></div>
+				{{#showurl}}
+					<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>{{domain}}/{{jumper}}</b> and select <b>{{labelid}}</b> ({{name}}) to control the screen</span></h2></div>
+				{{/showurl}}
+				{{^showurl}}
+					<h2 class="entryscreen"><span class="entryscreen-span">Select station <b>{{labelid}}</b> ({{name}}) to control the screen</span></h2></div>
+				{{/showurl}}
 			{{/codeselect}}
 		{{/stationselect}}
 		{{^stationselect}}
