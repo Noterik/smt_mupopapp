@@ -112,11 +112,11 @@ public class ExhibitionController extends Html5Controller {
     }
     
     public void onClientExhibitionEvent(ModelEvent e) {
-    	System.out.println("CLIENT Exhibition EVENT="+e);
+    	//System.out.println("CLIENT Exhibition EVENT="+e);
     	FsNode message = e.getTargetFsNode();
     	String from = message.getId();
     	String request = message.getProperty("request");
-    	System.out.println("REQ="+request);
+    	//System.out.println("REQ="+request);
     	if (request!=null) { // so its a request for something !
     		if (request.equals("join")) {
     			// ok lets see what we need todo and reply back to client
@@ -129,11 +129,11 @@ public class ExhibitionController extends Html5Controller {
     }
   
     public void onClientStationEvent(ModelEvent e) {
-    	System.out.println("CLIENT station EVENT="+e);
+    	//System.out.println("CLIENT station EVENT="+e);
     	FsNode message = e.getTargetFsNode();
     	String from = message.getId();
     	String request = message.getProperty("request");
-    	System.out.println("REQ="+request);
+    	//System.out.println("REQ="+request);
     	if (request!=null) { // so its a request for something !
     		if (request.equals("station")) {
     			// ok lets see what we need todo and reply back to client

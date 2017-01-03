@@ -25,6 +25,7 @@ import java.util.List;
 import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
+import org.springfield.lou.application.ApplicationManager;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
@@ -70,27 +71,35 @@ public class CoverFlowController extends Html5Controller {
 	    screen.get(selector).update(d);
 	}
 		
-	model.onNotify("@photoinfospots", "coverFlow", this);
+	model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
+	//model.onNotify("@photoinfospots", "coverFlow", this);
 		
 	screen.get("#coverflow").on("active","active", this);		
     }
 	
-    public void coverFlow(ModelEvent e) {	    
-	FsNode target = e.getTargetFsNode();
-
-	if (target.getId().equals("left")) {
-	    JSONObject d = new JSONObject();
-	    d.put("command", "prev");
-	    screen.get("#coverflow").update(d);
-	} else if (target.getId().equals("right")) {
-	    JSONObject d = new JSONObject();
-	    d.put("command", "next");
-	    screen.get("#coverflow").update(d);
-	} else if (target.getId().equals("enter")) {
-	    if (!model.getProperty("@photoinfospots/vars/state").equals("zoomandaudio")) {
-		model.notify("@photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
-	    }
-	}
+    public void onClientStationEvent(ModelEvent e) {	    
+    	FsNode message = e.getTargetFsNode();
+    	String from = message.getId();
+    	String command = message.getProperty("action");
+    	
+    	if (command.equals("left")) {
+    		JSONObject d = new JSONObject();
+    		d.put("command", "prev");
+    		screen.get("#coverflow").update(d);
+    	} else if (command.equals("right")) {
+    		JSONObject d = new JSONObject();
+    		d.put("command", "next");
+    		screen.get("#coverflow").update(d);
+    	} else if (command.equals("enter")) {
+			Screen client = ApplicationManager.getScreenByFullid(from);
+			client.getModel().setProperty("/screen/state","mainapp");
+			model.setProperty("@fromid", from);
+			model.setProperty("/screen/state","mainapp");
+			
+    		if (!model.getProperty("@photoinfospots/vars/state").equals("zoomandaudio")) {
+    			//model.notify("@photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
+    		}
+    	}
     }
 
     public void active(Screen s, JSONObject data) {
