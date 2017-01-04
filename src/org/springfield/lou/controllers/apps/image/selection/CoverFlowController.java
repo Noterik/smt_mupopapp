@@ -41,6 +41,10 @@ import org.springfield.lou.screen.Screen;
 public class CoverFlowController extends Html5Controller {
 
     private long activeItem;
+	int timeoutcount = 0;
+	int timeoutnoactioncount = 0;
+	int maxtimeoutcount = 2; //(check every 10sec)
+	int maxtnoactiontimeoutcount = 1; //(check every 10sec)
 	
     public CoverFlowController() { }
 	
@@ -69,10 +73,11 @@ public class CoverFlowController extends Html5Controller {
 	    d.put("command","numItems");
 	    d.put("items", nodes.size());
 	    screen.get(selector).update(d);
+	    
 	}
 		
 	model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
-	//model.onNotify("@photoinfospots", "coverFlow", this);
+	model.onNotify("/app['timers']", "onTimeoutChecks", this);
 		
 	screen.get("#coverflow").on("active","active", this);		
     }
@@ -106,4 +111,22 @@ public class CoverFlowController extends Html5Controller {
 	activeItem = (Long) data.get("item");
 	model.setProperty("@imageid", String.valueOf(activeItem));
     }
+    
+	public void onTimeoutChecks(ModelEvent e) {
+		//System.out.println("TIME OUT CHECKS");
+		if (timeoutcount!=-1) {
+			timeoutcount++;
+			timeoutnoactioncount++;
+		}
+		//System.out.println("TIME OUT CHECKS 2 : "+timeoutcount+" "+timeoutnoactioncount);
+		if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
+			//System.out.println("APP TIMEOUT RESET WANTED");
+			//model.setProperty("@fromid",userincontrol);
+			screen.get(selector).remove();
+			timeoutcount=-1; // how do the remove not remove the notify ?
+			timeoutnoactioncount=-1; // how do the remove not remove the notify ?
+    		model.setProperty("/screen/state","apptimeout");
+		}
+	}
+
 }

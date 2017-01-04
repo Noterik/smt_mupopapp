@@ -63,9 +63,9 @@ public class PhotoExploreController extends Html5Controller {
 			timeoutcount++;
 			timeoutnoactioncount++;
 		}
-		System.out.println("TIME OUT CHECKS : "+timeoutcount+" "+timeoutnoactioncount);
+		//System.out.println("TIME OUT CHECKS : "+timeoutcount+" "+timeoutnoactioncount);
 		if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
-			System.out.println("APP TIMEOUT RESET WANTED");
+			//System.out.println("APP TIMEOUT RESET WANTED");
 			model.setProperty("@fromid",userincontrol);
 			//screen.remove(selector);
 			screen.get(selector).remove();

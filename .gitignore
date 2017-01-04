@@ -14,3 +14,5 @@ libs/lou.jar
 build.xml
 
 WebContent/WEB-INF/lib/lou.jar
+
+*.jar

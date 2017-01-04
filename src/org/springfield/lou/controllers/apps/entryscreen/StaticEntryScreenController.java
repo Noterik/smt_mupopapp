@@ -28,6 +28,7 @@ import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.homer.LazyHomer;
+import org.springfield.lou.model.ModelEvent;
 
 /**
  * StaticEntryScreenController.java
@@ -38,6 +39,7 @@ import org.springfield.lou.homer.LazyHomer;
  * 
  */
 public class StaticEntryScreenController extends Html5Controller {
+	
 
     public StaticEntryScreenController() { }
 	
@@ -101,6 +103,8 @@ public class StaticEntryScreenController extends Html5Controller {
     		JSONObject d = new JSONObject();	
     		d.put("command","init");
     		screen.get(selector).update(d);
+    		
+
     	}
     }
     
@@ -118,4 +122,5 @@ public class StaticEntryScreenController extends Html5Controller {
     	}
     	return true;
     }
+    
 }
