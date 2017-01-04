@@ -1,1 +1,28 @@
-<img id="photoexplore_image" src="{{url}}" />
+<div id="photoexplore-image-container">
+	{{#nodes}}
+		<div id="image-wrapper{{id}}" class="center-block image-wrapper">
+			<img class="zoomandaudio_image" src="{{url}}" id="photoexplore_image-{{id}}" />
+		</div>
+	{{/nodes}}
+</div>
+
+<div id="url_row" class="row">
+	<div class="col-md-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height"/>
+		</div>
+	</div>
+	<div class="col-md-4 col-md-offset-2">
+		<div class="vertical-center">
+			<div id="zoomandaudio-mobile-phone"></div>
+			<div id="join-text">
+				<h2 class="zoomandaudio">mupop.net/{{jumper}}</h2>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 col-md-offset-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
+		</div>
+	</div>
+</div>

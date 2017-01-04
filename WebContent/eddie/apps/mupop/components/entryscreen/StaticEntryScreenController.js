@@ -35,4 +35,4 @@ function resizeStaticEntryScreen(){
 	$("#image-wrapper").css({"width": width, "height" : height});
 }
 
-jQuery(window).on('resize', resize);
+jQuery(window).on('resize', resizeStaticEntryScreen);

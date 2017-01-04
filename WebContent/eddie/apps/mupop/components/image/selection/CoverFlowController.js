@@ -15,8 +15,7 @@ CoverFlowController.update = function(vars, data) {
 	
 	switch (command) {
 	case "next": 
-		$('#coverflow-bar').coverflow('next');
-		
+		$('#coverflow-bar').coverflow('next');		
 		break;
 	case "prev":
 		$('#coverflow-bar').coverflow('prev');

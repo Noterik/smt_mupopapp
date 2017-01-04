@@ -25,6 +25,7 @@
 		<videoid>/screen['vars']/videoid</videoid>
 		<fromid>/screen['vars']/fromid</fromid>
 		<contentrole>/screen['vars']/contentrole</contentrole>
+		<itemid>/screen['vars']/itemid</itemid>
 	
 	 	<exhibitions>/domain['mupop']/user['@username']/exhibition</exhibitions>
 	    <exhibition>/domain['mupop']/user['@username']/exhibition['@exhibitionid']</exhibition>
@@ -37,6 +38,9 @@
 		
 		<images>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/image</images>
 		<image>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/image['@imageid']</image>
+		
+		<itemimages>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/image</itemimages>
+		<itemimage>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/image['@imageid']</itemimage>
 		
 		<videos>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/video</videos>
 		<video>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/video['@videoid']</video>
@@ -71,6 +75,7 @@
 		<template>photoexplore/photoexplore.mst</template>
 		<style>photoexplore/photoexplore.css</style>
 		<controller id="PhotoExploreController">
+			<javascript>photoexplore/PhotoExploreController.js</javascript>
 		</controller>
 	</view>
 	

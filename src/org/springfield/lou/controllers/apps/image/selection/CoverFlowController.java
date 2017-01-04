@@ -41,11 +41,14 @@ import org.springfield.lou.screen.Screen;
 public class CoverFlowController extends Html5Controller {
 
     private long activeItem;
-	int timeoutcount = 0;
-	int timeoutnoactioncount = 0;
-	int maxtimeoutcount = 2; //(check every 10sec)
-	int maxtnoactiontimeoutcount = 1; //(check every 10sec)
-	
+    int timeoutcount = 0;
+    int timeoutnoactioncount = 0;
+    int maxtimeoutcount = 6; //(check every 10sec)
+    int maxtnoactiontimeoutcount = 2; //(check every 10sec)
+    int selectedItem = 0;
+    int totalItems = 0;
+    List<FsNode> nodes;
+    
     public CoverFlowController() { }
 	
     public void attach(String sel) {
@@ -57,10 +60,10 @@ public class CoverFlowController extends Html5Controller {
 	FsNode stationnode = model.getNode(path);
 	
 	if (stationnode!=null) {
-		model.setProperty("@contentrole",model.getProperty("@station/contentselect_content"));
-		FSList imagesList = model.getList("@images");
-		System.out.println("LEN="+imagesList.size());
-	    List<FsNode> nodes = imagesList.getNodes();
+	    model.setProperty("@contentrole",model.getProperty("@station/contentselect_content"));
+	    FSList imagesList = model.getList("@images");
+	    System.out.println("LEN="+imagesList.size());
+	    nodes = imagesList.getNodes();
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 	    
 	    data.put("title", stationnode.getSmartProperty("en", "title"));
@@ -74,6 +77,8 @@ public class CoverFlowController extends Html5Controller {
 	    d.put("items", nodes.size());
 	    screen.get(selector).update(d);
 	    
+	    totalItems = nodes.size();
+	    selectedItem = (int) (Math.round(nodes.size() / 2.0) - 1);
 	}
 		
 	model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
@@ -87,23 +92,31 @@ public class CoverFlowController extends Html5Controller {
     	String from = message.getId();
     	String command = message.getProperty("action");
     	
+    	timeoutnoactioncount = 0;
+    	
     	if (command.equals("left")) {
-    		JSONObject d = new JSONObject();
-    		d.put("command", "prev");
-    		screen.get("#coverflow").update(d);
+    	    selectedItem = selectedItem > 0 ? selectedItem-1 : 0;
+    	    JSONObject d = new JSONObject();
+    	    d.put("command", "prev");
+    	    screen.get("#coverflow").update(d);
     	} else if (command.equals("right")) {
-    		JSONObject d = new JSONObject();
-    		d.put("command", "next");
-    		screen.get("#coverflow").update(d);
+    	    selectedItem = selectedItem >= totalItems-1 ? totalItems-1 : selectedItem+1;
+    	    JSONObject d = new JSONObject();
+    	    d.put("command", "next");
+    	    screen.get("#coverflow").update(d);
     	} else if (command.equals("enter")) {
-			Screen client = ApplicationManager.getScreenByFullid(from);
-			client.getModel().setProperty("/screen/state","mainapp");
-			model.setProperty("@fromid", from);
-			model.setProperty("/screen/state","mainapp");
+    	    System.out.println("Selected item is "+selectedItem);
+    	    Screen client = ApplicationManager.getScreenByFullid(from);
+    	    client.getModel().setProperty("/screen/state","mainapp");
+    	    model.setProperty("@fromid", from);
+
+    	    FsNode item = nodes.get(selectedItem);
+    	    model.setProperty("/screen/selecteditem", item.getProperty("wantedselect")); 
+    	    model.setProperty("/screen/state","mainapp");
 			
-    		if (!model.getProperty("@photoinfospots/vars/state").equals("zoomandaudio")) {
-    			//model.notify("@photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
-    		}
+    	    if (!model.getProperty("@photoinfospots/vars/state").equals("zoomandaudio")) {
+    		//model.notify("@photoinfospots/image/selected", new FsNode("item", String.valueOf(activeItem)));
+    	    }
     	}
     }
 
@@ -112,21 +125,20 @@ public class CoverFlowController extends Html5Controller {
 	model.setProperty("@imageid", String.valueOf(activeItem));
     }
     
-	public void onTimeoutChecks(ModelEvent e) {
-		//System.out.println("TIME OUT CHECKS");
-		if (timeoutcount!=-1) {
-			timeoutcount++;
-			timeoutnoactioncount++;
-		}
-		//System.out.println("TIME OUT CHECKS 2 : "+timeoutcount+" "+timeoutnoactioncount);
-		if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
-			//System.out.println("APP TIMEOUT RESET WANTED");
-			//model.setProperty("@fromid",userincontrol);
-			screen.get(selector).remove();
-			timeoutcount=-1; // how do the remove not remove the notify ?
-			timeoutnoactioncount=-1; // how do the remove not remove the notify ?
-    		model.setProperty("/screen/state","apptimeout");
-		}
+    public void onTimeoutChecks(ModelEvent e) {
+	//System.out.println("TIME OUT CHECKS");
+	if (timeoutcount!=-1) {
+	    timeoutcount++;
+	    timeoutnoactioncount++;
 	}
-
+	//System.out.println("TIME OUT CHECKS 2 : "+timeoutcount+" "+timeoutnoactioncount);
+	if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
+	    //System.out.println("APP TIMEOUT RESET WANTED");
+	    //model.setProperty("@fromid",userincontrol);
+	    screen.get(selector).remove();
+	    timeoutcount=-1; // how do the remove not remove the notify ?
+	    timeoutnoactioncount=-1; // how do the remove not remove the notify ?
+	    model.setProperty("/screen/state","apptimeout");
+	}
+    }
 }
