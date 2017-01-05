@@ -306,7 +306,11 @@ h2.entryscreen {
 
 /* static entry screen */
 
-.subrow {
+.subrow_en {
+	display: none;
+}
+
+.subrow_nl {
 	display: none;
 }
 

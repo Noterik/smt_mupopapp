@@ -41,7 +41,6 @@ public class PhotoExploreController extends Html5Controller {
 	    List<FsNode> nodes = imagesList.getNodes();
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));
-	    data.put("idx", "function() { return idx++; }");
 	    screen.get(selector).parsehtml(data);
 	    screen.get(selector).loadScript(this);
 	    
@@ -97,7 +96,7 @@ public class PhotoExploreController extends Html5Controller {
 	    screen.get(selector).remove();
 	    timeoutcount=-1; // how do the remove not remove the notify ?
 	    timeoutnoactioncount=-1; // how do the remove not remove the notify ?
-	    model.setProperty("/screen/state","apptimeout");
+	    model.setProperty("/screen/state","contentselect");
 	}
     }	 
 }

@@ -26,7 +26,6 @@ PhotoExploreController.update = function(vars, data){
 	
 	switch (command) {
 		case "next": 
-			console.log("Current item before next = "+currentItem);
 			if (currentItem < images.length-1) {	
 				$("#image-wrapper"+images[currentItem].id).fadeOut();
 				currentItem++;
@@ -34,7 +33,6 @@ PhotoExploreController.update = function(vars, data){
 			}
 			break;
 		case "prev":
-			console.log("Current item before prev = "+currentItem);
 			if (currentItem > 0) {
 				$("#image-wrapper"+images[currentItem].id).fadeOut();
 				currentItem--;
@@ -45,7 +43,6 @@ PhotoExploreController.update = function(vars, data){
 };
 
 function fade() {
-	console.log("Fading");
 	$("#image-wrapper"+images[currentItem].id).fadeOut();
 	currentItem++;
 	$("#image-wrapper"+images[currentItem].id).fadeIn();

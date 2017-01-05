@@ -4,7 +4,7 @@
 	</div>
 </div>
 <div class="row" id="title"><h1 class="title"><span class="title-span">{{{title}}}</span></h1>
-<div class="subrow"><img src="http://images1.noterik.com/mupop/in_sv.png"/></div>
+<div class="subrow_{{language}}"><img src="http://images1.noterik.com/mupop/in_sv_{{language}}.png"/></div>
 </div>
 <div id="connect-row" class="row">
 	<div id="mobile-phone" class="inbl">
@@ -16,24 +16,24 @@
 		{{#stationselect}}
 			{{#codeselect}}
 				{{#showurl}}
-					<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>{{domain}}/{{jumper}}</b> and enter <b>{{codeselect}}</b> to control the screen</span></h2></div>
+					<h2 class="entryscreen"><span class="entryscreen-span">{{goto}} <b>{{domain}}/{{jumper}}</b> {{andenter}} <b>{{codeselect}}</b> {{tocontrolthescreen2}}</span></h2></div>
 				{{/showurl}}
 				{{^showurl}}
-					<h2 class="entryscreen"><span class="entryscreen-span">Enter code <b>{{codeselect}}</b> to control the screen</span></h2></div>
+					<h2 class="entryscreen"><span class="entryscreen-span">{{entercode}} <b>{{codeselect}}</b> to control the screen</span></h2></div>
 				{{/showurl}}
 				
 			{{/codeselect}}
 			{{^codeselect}}
 				{{#showurl}}
-					<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>{{domain}}/{{jumper}}</b> and select <b>{{labelid}}</b> ({{name}}) to control the screen</span></h2></div>
+					<h2 class="entryscreen"><span class="entryscreen-span">{{goto}} <b>{{domain}}/{{jumper}}</b> {{andselect}} <b>{{labelid}}</b> ({{name}}) {{tocontrolthescreen}}</span></h2></div>
 				{{/showurl}}
 				{{^showurl}}
-					<h2 class="entryscreen"><span class="entryscreen-span">Select station <b>{{labelid}}</b> ({{name}}) to control the screen</span></h2></div>
+					<h2 class="entryscreen"><span class="entryscreen-span">{{selectstation}} <b>{{labelid}}</b> ({{name}}) {{tocontrolthescreen}}</span></h2></div>
 				{{/showurl}}
 			{{/codeselect}}
 		{{/stationselect}}
 		{{^stationselect}}
-			<h2 class="entryscreen"><span class="entryscreen-span">Go to <b>{{domain}}/{{jumper}}</b> to control the screen</span></h2></div>
+			<h2 class="entryscreen"><span class="entryscreen-span">{{goto}} <b>{{domain}}/{{jumper}}</b> {{tocontrolthescreen}}</span></h2></div>
 		{{/stationselect}}
 	</div>
 </div>

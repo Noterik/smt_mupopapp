@@ -302,7 +302,11 @@ h2.entryscreen {
 
 /* static entry screen */
 
-.subrow {
+.subrow_en {
+	display: none;
+}
+
+.subrow_nl {
 	display: none;
 }
 
@@ -711,6 +715,8 @@ h2.zoomandaudio {
 .url_row_background {
 	background-color: #358ed6;
 }
+
+/** Photo explore **/
 
 #photoexplore_app {
 	background-color: #33475a;
