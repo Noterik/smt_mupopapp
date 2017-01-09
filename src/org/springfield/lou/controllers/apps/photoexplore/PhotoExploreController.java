@@ -41,6 +41,11 @@ public class PhotoExploreController extends Html5Controller {
 	    List<FsNode> nodes = imagesList.getNodes();
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));
+	    
+	    FsNode language_content = model.getNode("@language_photoexplore_coverflow_screen");
+	    data.put("logincode", language_content.getSmartProperty("en", "login_code"));
+	    data.put("code", model.getProperty("@station/codeselect"));
+	    
 	    screen.get(selector).parsehtml(data);
 	    screen.get(selector).loadScript(this);
 	    
@@ -64,14 +69,27 @@ public class PhotoExploreController extends Html5Controller {
     	
     	timeoutnoactioncount = 0;
     
-        if (command.equals("left")) {
+        if (command.equals("leftonzoom")) {
     	    JSONObject d = new JSONObject();
     	    d.put("command", "prev");
     	    screen.get(selector).update(d);
-    	} else if (command.equals("right")) {
+    	} else if (command.equals("rightonzoom")) {
     	    JSONObject d = new JSONObject();
     	    d.put("command", "next");
     	    screen.get(selector).update(d);
+    	} else if (command.equals("scale")) {        	
+            //String transformationCss = "scale("+(String) message.getProperty("value")+")";
+            //String originCss = message.getProperty("originX") + "% " + message.getProperty("originY") + "%";
+            
+            JSONObject d = new JSONObject();
+            d.put("command", "scale");
+            d.put("value", message.getProperty("value"));
+            d.put("originX", message.getProperty("originX"));
+            d.put("originY", message.getProperty("originY"));  
+            screen.get(selector).update(d);
+            
+           // screen.get("#presenterarea").css("transform", transformationCss);
+           // screen.get("#presenterarea").css("transform-origin", originCss);
     	}
     }
 	

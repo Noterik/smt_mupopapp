@@ -331,10 +331,10 @@ body {
 }
 
 h2.zoomandaudio {
-	font-size: 4.5vh;
+	font-size: 3.5vh;
 	margin: 0;
 	padding: 0;
-	padding-top: 0.5vh;
+	padding-top: 1.5vh;
 }
 
 #zoomandaudio-mobile-phone {
@@ -443,10 +443,10 @@ h1.coverflow {
 }
 
 h2.coverflow {
-	font-size: 4.5vh;
+	font-size: 3.5vh;
 	margin: 0;
 	padding: 0;
-	padding-top: 0.5vh;
+	padding-top: 1.5vh;
 }
 
 h2.mupop {
@@ -455,7 +455,7 @@ h2.mupop {
 	padding: 0;
 }
 
-#coverflow-mobile {
+#coverflow-mobile-phone {
 	height: 3.6vh;
 }
 

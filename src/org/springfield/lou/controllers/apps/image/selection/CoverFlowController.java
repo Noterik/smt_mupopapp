@@ -69,6 +69,10 @@ public class CoverFlowController extends Html5Controller {
 	    data.put("title", stationnode.getSmartProperty("en", "title"));
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));	
 	    
+	    FsNode language_content = model.getNode("@language_photoexplore_coverflow_screen");
+	    data.put("logincode", language_content.getSmartProperty("en", "login_code"));
+	    data.put("code", model.getProperty("@station/codeselect"));
+	    
 	    screen.get(selector).render(data);
 	    screen.get(selector).loadScript(this);
 			
@@ -132,8 +136,8 @@ public class CoverFlowController extends Html5Controller {
 	    timeoutnoactioncount++;
 	}
 	//System.out.println("TIME OUT CHECKS 2 : "+timeoutcount+" "+timeoutnoactioncount);
-	if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
-	    //System.out.println("APP TIMEOUT RESET WANTED");
+	if (timeoutcount > maxtimeoutcount || timeoutnoactioncount > maxtnoactiontimeoutcount) {
+	    System.out.println("Coverflow time out reset because "+timeoutcount+" > "+maxtimeoutcount+" or "+timeoutnoactioncount+" > "+maxtnoactiontimeoutcount);
 	    //model.setProperty("@fromid",userincontrol);
 	    screen.get(selector).remove();
 	    timeoutcount=-1; // how do the remove not remove the notify ?
