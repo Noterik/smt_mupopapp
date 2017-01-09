@@ -203,26 +203,17 @@ public class ExhibitionController extends Html5Controller {
 		if (stationnode!=null) {
 		    String app =  stationnode.getProperty("app"); // get the app name
 		    if (app!=null) {
-			System.out.println("APP2="+app);
-			//TODO: should be a case or loaded system
-			if (app.equals("photoexplore")) {
+		    	System.out.println("APP2="+app);
+		    	//TODO: should be a case or loaded system
+		    	if (app.equals("photoexplore")) {
 	    			screen.get("#exhibition").append("div","photoexplore_app",new PhotoExploreController());
-			} else if (app.equals("photoinfospots")) {
-			    screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
-			} else if (app.equals("interactivevideo")) {
-				//screen.loadStyleSheet("interactivevideo/soundandvision.css");
-				String isPlaying = model.getProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying");
-				System.out.println("ISSSSSSPLAYING="+isPlaying);
-				if(isPlaying != null && isPlaying.equals("true")){ // huh daniel ?
+		    	} else if (app.equals("photoinfospots")) {
+		    		screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
+		    	} else if (app.equals("interactivevideo")) {
 					screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
-				} else{
-					screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
-					model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/userJoined", "startExhibition", this);
-					//screen.get("#exhibition").append("div","interactivevideo_wait_screen", new WaitScreenController());
-				}					
-			}
-		    } else {
-			// should display error that no app was selected and curator should set it
+		    	} else {
+		    		// should display error that no app was selected and curator should set it
+		    	}
 		    }
 		} else {
 		    // should show some illegal station controller with urls to all the valid ones?
