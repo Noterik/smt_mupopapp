@@ -27,6 +27,8 @@ public class ExhibitionController extends Html5Controller {
     	
     }
     
+    
+    
     // wait screen
 	// content select
     // main app

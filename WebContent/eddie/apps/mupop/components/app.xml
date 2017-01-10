@@ -27,8 +27,11 @@
 		<contentrole>/screen['vars']/contentrole</contentrole>
 		<itemid>/screen['vars']/itemid</itemid>
 		<selecteditem>/screen/selecteditem</selecteditem>
+		<stateid>/screen['vars']/stateid</stateid>
+
 		
 		<language_static_entry_screen>/domain['mupop']/config['languages']/default['apps']/entryscreen['staticentryscreen']</language_static_entry_screen>
+		<language_photoexplore_coverflow_screen>/domain['mupop']/config['languages']/default['apps']/photoexplore['coverflow']</language_photoexplore_coverflow_screen>
 	
 	 	<exhibitions>/domain['mupop']/user['@username']/exhibition</exhibitions>
 	    <exhibition>/domain['mupop']/user['@username']/exhibition['@exhibitionid']</exhibition>

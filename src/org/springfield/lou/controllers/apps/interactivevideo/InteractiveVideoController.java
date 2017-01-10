@@ -4,6 +4,8 @@ package org.springfield.lou.controllers.apps.interactivevideo;
 import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
+import org.springfield.fs.FsPropertySet;
+import org.springfield.lou.application.ApplicationManager;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
@@ -17,6 +19,8 @@ import org.springfield.marge.Marge;
 public class InteractiveVideoController extends Html5Controller {
 	
 	String sharedspace;
+	String audiourl;
+	String timelineid;
 	
 	public InteractiveVideoController() {
 	}
@@ -40,7 +44,6 @@ public class InteractiveVideoController extends Html5Controller {
 			model.setProperty("@itemid",selecteditem);
 			itemnode = model.getNode("@item");
 		} else {
-			model.setDebug(true);
 			FSList items = model.getList("@items");
 			if (items.size()>0) {
 				itemnode = items.getNodes().get(0);
@@ -53,11 +56,13 @@ public class InteractiveVideoController extends Html5Controller {
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
 			data.put("url",itemnode.getProperty("videourl"));
+			audiourl = itemnode.getProperty("audiourl");
 			data.put("title", stationnode.getSmartProperty("en", "title"));
 			screen.get(selector).render(data);
 		}
 		
 			
+		/*
 		MasterClockManager.setApp(this);
 		MasterClockThread c = MasterClockManager.getMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
 		if(c == null) {
@@ -67,6 +72,7 @@ public class InteractiveVideoController extends Html5Controller {
 		} else {
 			c.restart();	
 		}
+		*/
 		
 		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/play", "onPlayEvent", this);
 		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/pause", "onPauseEvent", this);
@@ -75,11 +81,48 @@ public class InteractiveVideoController extends Html5Controller {
 		//model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
 		
 		playVideo();
-		model.onTimeLineNotify("@itemquestions","/shared/mupop/exhibition/"+exhibitionid+"/station/"+ stationid+"/currenttime","starttime","duration","onTimeLineEvent",this);
-		
+		timelineid = "/domain['mupop']/user['"+model.getProperty("@username")+"']/exhibition['"+model.getProperty("@exhibitionid")+"']/station['"+model.getProperty("@stationid")+"']/content['"+model.getProperty("@contentrole")+"']/item['"+model.getProperty("@itemid")+"']/question";
+		 System.out.println("DEEEE="+timelineid);
+		model.onTimeLineNotify(timelineid,"/shared/mupop/exhibition/"+exhibitionid+"/station/"+ stationid+"/currenttime","starttime","duration","onTimeLineEvent",this);
+		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
+		System.out.println("ADDING 1Sec timers");
+		model.onNotify("/shared[timers]/1second","on1SecondTimer",this);
+		model.onNotify("/shared[timers]/2second","on2SecondTimer",this);
+		model.onNotify("/shared[timers]/5second","on5SecondTimer",this);
+		model.onNotify("/shared[timers]/10second","on10SecondTimer",this);
 	}
 	
+	public void on1SecondTimer(ModelEvent e) {
+		System.out.println("1T="+e.getTargetFsNode().getProperty("value"));
+	}
 	
+	public void on2SecondTimer(ModelEvent e) {
+		System.out.println("2T="+e.getTargetFsNode().getProperty("value"));
+	}
+	
+	public void on5SecondTimer(ModelEvent e) {
+		System.out.println("5T="+e.getTargetFsNode().getProperty("value"));
+	}
+	
+	public void on10SecondTimer(ModelEvent e) {
+		System.out.println("10T="+e.getTargetFsNode().getProperty("value"));
+	}
+	
+	public void onClientStationEvent(ModelEvent e) {
+    	FsNode message = e.getTargetFsNode();
+    	String from = message.getId();
+    	String command = message.getProperty("action");
+      	System.out.println("CLIENT REQUEST ACTION="+command);
+    	if (command.equals("playrequest")) {
+			Screen client = ApplicationManager.getScreenByFullid(from);
+			 FsPropertySet ps = new FsPropertySet(); 
+			 ps.setProperty("action","playaudio");  
+			 ps.setProperty("audiourl",audiourl);  
+			 ps.setProperty("timeline",timelineid);
+			client.getModel().setProperties("/screen/audiocommand",ps);
+    		
+    	}
+	}
 
 	public void onTimeLineEvent(ModelEvent e) {
 		if (e.eventtype==ModelBindEvent.TIMELINENOTIFY_ENTER) {

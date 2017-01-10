@@ -24,6 +24,8 @@ PhotoExploreController.update = function(vars, data){
 	
 	var command = data['command'];
 	
+	console.log(data);
+	
 	switch (command) {
 		case "next": 
 			if (currentItem < images.length-1) {	
@@ -37,6 +39,13 @@ PhotoExploreController.update = function(vars, data){
 				$("#image-wrapper"+images[currentItem].id).fadeOut();
 				currentItem--;
 				$("#image-wrapper"+images[currentItem].id).fadeIn();
+			}
+			break;
+		case "scale": 
+			var scaleValue = parseFloat(data['value']);
+			if (scaleValue >= 1.0) {
+				$("#image-wrapper"+images[currentItem].id).css("transform", "scale("+data['value']+")");
+				$("#image-wrapper"+images[currentItem].id).css("transform-origin", data['originX']+"% "+ data['originY'] +"%");
 			}
 			break;
 	}

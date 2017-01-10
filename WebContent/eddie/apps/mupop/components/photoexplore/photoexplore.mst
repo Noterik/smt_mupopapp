@@ -16,7 +16,7 @@
 		<div class="vertical-center">
 			<div id="zoomandaudio-mobile-phone"></div>
 			<div id="join-text">
-				<h2 class="zoomandaudio">mupop.net/{{jumper}}</h2>
+				<h2 class="zoomandaudio">mupop.net/{{jumper}} - {{logincode}} {{code}}</h2>
 			</div>
 		</div>
 	</div>
