@@ -12,7 +12,6 @@ import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreen
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
 import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoController;
-import org.springfield.lou.controllers.apps.interactivevideo.WaitScreenController;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
 import org.springfield.lou.model.ModelEvent;
@@ -21,16 +20,14 @@ import org.springfield.lou.screen.Screen;
 public class ExhibitionController extends Html5Controller {
 	
     private String path;
-    private String state="init";
+    private String state="";
 
     public ExhibitionController() { 
     	
     }
-    
-    
-    
+
     // wait screen
-	// content select
+    // content select
     // main app
     
     
