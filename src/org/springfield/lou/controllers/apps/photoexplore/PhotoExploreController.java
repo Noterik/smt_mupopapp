@@ -13,8 +13,8 @@ public class PhotoExploreController extends Html5Controller {
 	
     int timeoutcount = 0;
     int timeoutnoactioncount = 0;
-    int maxtimeoutcount = 8; //(check every 10sec)
-    int maxtnoactiontimeoutcount = 7; //(check every 10sec)
+    int maxtimeoutcount = 4; //(check every 10sec)
+    int maxtnoactiontimeoutcount = 2; //(check every 10sec)
     String userincontrol;
 	
     public PhotoExploreController() { }
@@ -114,7 +114,11 @@ public class PhotoExploreController extends Html5Controller {
 	    screen.get(selector).remove();
 	    timeoutcount=-1; // how do the remove not remove the notify ?
 	    timeoutnoactioncount=-1; // how do the remove not remove the notify ?
-	    model.setProperty("/screen/state","contentselect");
+	    model.setProperty("/screen/state","contentselectforce");
+	    
+	    FsNode message = new FsNode("message",screen.getId());
+	    message.setProperty("request","contentselect");
+	    model.notify("@stationevents/fromclient",message);
 	}
     }	 
 }

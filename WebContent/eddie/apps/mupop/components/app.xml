@@ -26,8 +26,8 @@
 		<fromid>/screen['vars']/fromid</fromid>
 		<contentrole>/screen['vars']/contentrole</contentrole>
 		<itemid>/screen['vars']/itemid</itemid>
-		<stateid>/screen['vars']/stateid</stateid>
-		
+		<appstate>/shared['app']/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/appstate</appstate>
+				
 		<language_static_entry_screen>/domain['mupop']/config['languages']/default['apps']/entryscreen['staticentryscreen']</language_static_entry_screen>
 		<language_photoexplore_coverflow_screen>/domain['mupop']/config['languages']/default['apps']/photoexplore['coverflow']</language_photoexplore_coverflow_screen>
 	

@@ -33,6 +33,10 @@ function resizeStaticEntryScreen(){
 	}
 	
 	$("#image-wrapper").css({"width": width, "height" : height});
+	
+	if (wrapperHeight > height) {
+		$("#image-wrapper").css({"margin-top": (wrapperHeight-height) / 2});
+	}
 }
 
 jQuery(window).on('resize', resizeStaticEntryScreen);

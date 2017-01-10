@@ -43,10 +43,10 @@ PhotoExploreController.update = function(vars, data){
 			break;
 		case "scale": 
 			var scaleValue = parseFloat(data['value']);
-			if (scaleValue >= 1.0) {
-				$("#image-wrapper"+images[currentItem].id).css("transform", "scale("+data['value']+")");
-				$("#image-wrapper"+images[currentItem].id).css("transform-origin", data['originX']+"% "+ data['originY'] +"%");
-			}
+			if (scaleValue < 1.0) { scaleValue = 1.0 }	//Don't allow going smaller then 1.0
+			$("#image-wrapper"+images[currentItem].id).css("transform", "scale("+scaleValue+")");
+			$("#image-wrapper"+images[currentItem].id).css("transform-origin", data['originX']+"% "+ data['originY'] +"%");
+
 			break;
 	}
 };

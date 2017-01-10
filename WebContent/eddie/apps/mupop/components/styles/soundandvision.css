@@ -72,103 +72,207 @@ body {
 	overflow: hidden;
 }
 
-#title {
-	position: relative;
-	float: right;
-	top: 18%;
-	width: 45%;
-	text-align: center;
-	margin-right: 180px;
+@media screen and (orientation:portrait) { 
+	#title {
+		position: relative;
+		float: right;
+		top: 18%;
+		width: 45%;
+		text-align: center;
+		margin-right: 180px;
+	}
+	
+	h1.title {
+		text-align: right;
+		font-size: 8vh;
+		text-transform: uppercase;
+		font-weight: 700;
+	}
+	
+	.subrow_en {
+		position: absolute;
+		bottom: -88px;
+		right: -156px;
+	}
+	
+	.subrow_nl {
+		position: absolute;
+		bottom: -92px;
+		right: -166px;
+	}
+	
+	.title-span {
+		background-color: #009fda;
+		box-decoration-break: clone;
+		box-shadow: -10px 0 0 #009fda, 10px 0 0 #009fda;
+		font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
+	}
+	
+	#connect-row {
+		position: absolute;
+		top: 70%;
+		height: 150px;
+		left: 8%;
+		white-space: nowrap;
+	}
+	
+	#connect-info {
+		text-align: center;
+	}
+	
+	.inbl {
+		display: inline-block;
+	    vertical-align: middle;
+	}
+	
+	#mobile-phone {
+		width: 90px;
+		height: 150px;
+		text-align: center;
+		position: relative;
+	}
+	
+	#mobile-phone:before {
+		position: absolute;
+	  	font-family: FontAwesome;
+	  	font-size: 15em;
+	  	top: -0.36em;
+	  	left: 0;
+	  	content: "\f10b";
+	  	color: #e00034;
+	}
+	
+	.centerer {
+		height: 98%;
+		width: 98%;
+		background-color: #fff;
+		border-radius: 20px;
+	}
+	
+	#play-logo {
+		width: 50px;
+		height: 50px;
+		margin-top: 50px;
+	}
+	
+	.entryscreen-span {
+		background-color: #009fda;
+		box-decoration-break: clone;
+		box-shadow: -10px 0 0 #009fda, 10px 0 0 #009fda;
+		text-transform: uppercase;
+		font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
+		margin-left: 6px;
+		letter-spacing: 1px;
+		font-size: 3vh;
+	}
+	
+	#entryimage {
+		width: 100% !important;
+		height: 100% !important;
+	}	
+} 
+
+@media screen and (orientation:landscape) {
+	#title {
+		position: relative;
+		float: right;
+		top: 18%;
+		width: 45%;
+		text-align: center;
+		margin-right: 180px;
+	}
+	
+	h1.title {
+		text-align: right;
+		font-size: 8vw;
+		text-transform: uppercase;
+		font-weight: 700;
+	}
+	
+	.subrow_en {
+		position: absolute;
+		bottom: -88px;
+		right: -156px;
+	}
+	
+	.subrow_nl {
+		position: absolute;
+		bottom: -92px;
+		right: -166px;
+	}
+	
+	.title-span {
+		background-color: #009fda;
+		box-decoration-break: clone;
+		box-shadow: -10px 0 0 #009fda, 10px 0 0 #009fda;
+		font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
+	}
+	
+	#connect-row {
+		position: absolute;
+		top: 70%;
+		height: 150px;
+		left: 8%;
+		white-space: nowrap;
+	}
+	
+	#connect-info {
+		text-align: center;
+	}
+	
+	.inbl {
+		display: inline-block;
+	    vertical-align: middle;
+	}
+	
+	#mobile-phone {
+		width: 90px;
+		height: 150px;
+		text-align: center;
+		position: relative;
+	}
+	
+	#mobile-phone:before {
+		position: absolute;
+	  	font-family: FontAwesome;
+	  	font-size: 15em;
+	  	top: -0.36em;
+	  	left: 0;
+	  	content: "\f10b";
+	  	color: #e00034;
+	}
+	
+	.centerer {
+		height: 98%;
+		width: 98%;
+		background-color: #fff;
+		border-radius: 20px;
+	}
+	
+	#play-logo {
+		width: 50px;
+		height: 50px;
+		margin-top: 50px;
+	}
+	
+	.entryscreen-span {
+		background-color: #009fda;
+		box-decoration-break: clone;
+		box-shadow: -10px 0 0 #009fda, 10px 0 0 #009fda;
+		text-transform: uppercase;
+		font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
+		margin-left: 6px;
+		letter-spacing: 1px;
+		font-size: 3vw;
+	}
+	
+	#entryimage {
+		width: 100% !important;
+		height: 100% !important;
+	}
 }
 
-h1.title {
-	text-align: right;
-	font-size: 8vh;
-	text-transform: uppercase;
-	font-weight: 700;
-}
 
-.subrow_en {
-	position: absolute;
-	bottom: -88px;
-	right: -156px;
-}
-
-.subrow_nl {
-	position: absolute;
-	bottom: -92px;
-	right: -166px;
-}
-
-.title-span {
-	background-color: #009fda;
-	box-decoration-break: clone;
-	box-shadow: -10px 0 0 #009fda, 10px 0 0 #009fda;
-	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
-}
-
-#connect-row {
-	position: absolute;
-	top: 70%;
-	height: 150px;
-	left: 8%;
-	white-space: nowrap;
-}
-
-#connect-info {
-	text-align: center;
-}
-
-.inbl {
-	display: inline-block;
-    vertical-align: middle;
-}
-
-#mobile-phone {
-	width: 90px;
-	height: 150px;
-	text-align: center;
-	position: relative;
-}
-
-#mobile-phone:before {
-	position: absolute;
-  	font-family: FontAwesome;
-  	font-size: 15em;
-  	top: -0.36em;
-  	left: 0;
-  	content: "\f10b";
-  	color: #e00034;
-}
-
-.centerer {
-	height: 98%;
-	width: 98%;
-	background-color: #fff;
-	border-radius: 20px;
-}
-
-#play-logo {
-	width: 50px;
-	height: 50px;
-	margin-top: 50px;
-}
-
-.entryscreen-span {
-	background-color: #009fda;
-	box-decoration-break: clone;
-	box-shadow: -10px 0 0 #009fda, 10px 0 0 #009fda;
-	text-transform: uppercase;
-	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
-	margin-left: 6px;
-	letter-spacing: 1px;
-	font-size: 3vw;
-}
-
-#entryimage {
-	width: 100% !important;
-	height: 100% !important;
-}
 
 /** interactive video screen **/
 
@@ -388,114 +492,228 @@ h2.mupop {
 
 /* coverflow */
 
-#coverflow {
-	height: 100%;
-	background-color: #33475a;	
+@media screen and (orientation:portrait) {
+	#coverflow {
+		height: 100%;
+		background-color: #33475a;	
+	}
+	
+	.fill-height {
+		height: 100%;	
+	}
+	
+	#pairing {
+		display: none;
+	}
+	
+	#coverflow-bar {
+		display: none;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	
+	#coverflow-title {
+		height: 18%;
+	}
+	
+	#coverflow-container {
+		height: 75%;
+	}
+	
+	h1.coverflow {
+		position: relative;
+	  	top: 50%;
+	  	margin: 0;
+		color: #fff;
+		text-align: center;
+		font-size: 7vh;
+		letter-spacing: 1vw;
+		font-weight: 600;
+		text-shadow: 7px 5px 1px rgba(0, 0, 0, 0.5);
+		text-transform: uppercase;
+		transform: translateY(-50%);
+	  	-webkit-transform: translateY(-50%);
+	  	-ms-transform: translateY(-50%);
+	  	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif
+	}
+	
+	#url_row {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		background-color: #3a393e;
+		overflow: none;
+		height: 7%;
+		margin-left: 0;
+	}
+	
+	h2.coverflow {
+		font-size: 3.5vh;
+		margin: 0;
+		padding: 0;
+		padding-top: 1.5vh;
+	}
+	
+	h2.mupop {
+		font-size: 3vh;
+		margin: 0;
+		padding: 0;
+	}
+	
+	#coverflow-mobile-phone {
+		height: 3.6vh;
+	}
+	
+	#coverflow-mobile-phone:before {
+		position: relative;
+	  	font-family: FontAwesome;
+	  	font-size: 6.1vh;
+	  	line-height: 5.1vh;
+	  	content: "\f10b";
+	  	color: #fff;
+	  	padding-right: 1vw;
+	}
+	
+	.vertical-center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.fill-height {
+		height: 100%;
+	}
+	
+	.poweredby {
+		font-size: 2vh;
+		color: #cccccc;
+		padding: 0;
+		padding-right: 0.2vw;
+	}
+	
+	.max-height {
+		max-height: 100%;
+	}
+	
+	.nopadding {
+		padding: 0;
+	}
+	
+	.url_row_background {
+		background-color: #358ed6;
+	}	
 }
-
-.fill-height {
-	height: 100%;	
-}
-
-#pairing {
-	display: none;
-}
-
-#coverflow-bar {
-	display: none;
-	padding-left: 0;
-	padding-right: 0;
-}
-
-#coverflow-title {
-	height: 18%;
-}
-
-#coverflow-container {
-	height: 75%;
-}
-
-h1.coverflow {
-	position: relative;
-  	top: 50%;
-  	margin: 0;
-	color: #fff;
-	text-align: center;
-	font-size: 7vh;
-	letter-spacing: 1vw;
-	font-weight: 600;
-	text-shadow: 7px 5px 1px rgba(0, 0, 0, 0.5);
-	text-transform: uppercase;
-	transform: translateY(-50%);
-  	-webkit-transform: translateY(-50%);
-  	-ms-transform: translateY(-50%);
-  	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif
-}
-
-#url_row {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	background-color: #3a393e;
-	overflow: none;
-	height: 7%;
-	margin-left: 0;
-}
-
-h2.coverflow {
-	font-size: 3.5vh;
-	margin: 0;
-	padding: 0;
-	padding-top: 1.5vh;
-}
-
-h2.mupop {
-	font-size: 3vh;
-	margin: 0;
-	padding: 0;
-}
-
-#coverflow-mobile-phone {
-	height: 3.6vh;
-}
-
-#coverflow-mobile-phone:before {
-	position: relative;
-  	font-family: FontAwesome;
-  	font-size: 6.1vh;
-  	line-height: 5.1vh;
-  	content: "\f10b";
-  	color: #fff;
-  	padding-right: 1vw;
-}
-
-.vertical-center {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.fill-height {
-	height: 100%;
-}
-
-.poweredby {
-	font-size: 2vh;
-	color: #cccccc;
-	padding: 0;
-	padding-right: 0.2vw;
-}
-
-.max-height {
-	max-height: 100%;
-}
-
-.nopadding {
-	padding: 0;
-}
-
-.url_row_background {
-	background-color: #358ed6;
+	
+@media screen and (orientation:landscape) {
+	#coverflow {
+		height: 100%;
+		background-color: #33475a;	
+	}
+	
+	.fill-height {
+		height: 100%;	
+	}
+	
+	#pairing {
+		display: none;
+	}
+	
+	#coverflow-bar {
+		display: none;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	
+	#coverflow-title {
+		height: 18%;
+	}
+	
+	#coverflow-container {
+		height: 75%;
+	}
+	
+	h1.coverflow {
+		position: relative;
+	  	top: 50%;
+	  	margin: 0;
+		color: #fff;
+		text-align: center;
+		font-size: 7vh;
+		letter-spacing: 1vw;
+		font-weight: 600;
+		text-shadow: 7px 5px 1px rgba(0, 0, 0, 0.5);
+		text-transform: uppercase;
+		transform: translateY(-50%);
+	  	-webkit-transform: translateY(-50%);
+	  	-ms-transform: translateY(-50%);
+	  	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif
+	}
+	
+	#url_row {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		background-color: #3a393e;
+		overflow: none;
+		height: 7%;
+		margin-left: 0;
+	}
+	
+	h2.coverflow {
+		font-size: 3.5vh;
+		margin: 0;
+		padding: 0;
+		padding-top: 1.5vh;
+	}
+	
+	h2.mupop {
+		font-size: 3vh;
+		margin: 0;
+		padding: 0;
+	}
+	
+	#coverflow-mobile-phone {
+		height: 3.6vh;
+	}
+	
+	#coverflow-mobile-phone:before {
+		position: relative;
+	  	font-family: FontAwesome;
+	  	font-size: 6.1vh;
+	  	line-height: 5.1vh;
+	  	content: "\f10b";
+	  	color: #fff;
+	  	padding-right: 1vw;
+	}
+	
+	.vertical-center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.fill-height {
+		height: 100%;
+	}
+	
+	.poweredby {
+		font-size: 2vh;
+		color: #cccccc;
+		padding: 0;
+		padding-right: 0.2vw;
+	}
+	
+	.max-height {
+		max-height: 100%;
+	}
+	
+	.nopadding {
+		padding: 0;
+	}
+	
+	.url_row_background {
+		background-color: #358ed6;
+	}
 }
 
 /*! CoverflowJS - v3.0.2 - 2015-12-31

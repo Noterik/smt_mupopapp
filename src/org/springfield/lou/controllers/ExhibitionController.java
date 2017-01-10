@@ -25,7 +25,18 @@ public class ExhibitionController extends Html5Controller {
     
     public void attach(String sel) {	
 	selector = sel;
+	
+	String path = model.getProperty("/screen/exhibitionpath");
+    	String[] parts = path.split("/");
+    	String userid=parts[4];
+    	String exhibitionid=parts[6];
+    	String stationid=parts[8];
+    	model.setProperty("@username", userid);
+    	model.setProperty("@exhibitionid", exhibitionid);
+    	model.setProperty("@stationid", stationid);
+	
 	model.onPropertyUpdate("/screen/state","onStateChange",this);
+	model.setProperty("@appstate", state);
 	model.setProperty("/screen/state","init"); // will trigger a event 
 	model.onNotify("@station","onStationChange",this);
 	model.onNotify("@exhibition","onStationChange",this);
@@ -39,35 +50,38 @@ public class ExhibitionController extends Html5Controller {
     
     public void onStateChange(ModelEvent event) {
 	String state= event.getTargetFsNode().getProperty("state");
-	System.out.println("MAINSCREEN STATE CHANGE="+state+" (current state = "+this.state+")");
-    	
-	if (this.state.equals(state)) {
+	//boolean force = Boolean.parseBoolean(event.getTargetFsNode().getProperty("force"));
+	System.out.println("MAINSCREEN STATE CHANGE =" +state+" (current state = "+model.getProperty("@appstate")+")");
+	
+	String currentState = model.getProperty("@appstate");
+	
+	if (state.equals(currentState)) {
 	    //already in the correct state, no need to change main screen
 	    return;
 	}
-	
+
 	if (state.equals("init")) { // init the exhibition and probably show language selector
-    		initStep(); 
-    	} else if (state.equals("contentselect")) { // use a 'pre-app' to select the content we want to use (like coverflow)
-    		screen.get("#staticentryscreen").remove();
-    		contentSelectStep();
-    	} else if (state.equals("mainapp")) { // check station selection method if more than one station
-        	mainAppStep();
+	    initStep(); 
+    	} else if (state.equals("contentselect") && (!currentState.equals("mainapp"))) { // && !force)) { // use a 'pre-app' to select the content we want to use (like coverflow)
+    	    resetScreen();
+    	    contentSelectStep();
+    	} else if (state.equals("contentselectforce")) { //force contentselect due to timeout (better to fix this using a property in the modelevent, currently not possible due to single property that is set, should be a set)
+    	    state = "contentselect";
+    	    resetScreen();
+    	    contentSelectStep();
+       	} else if (state.equals("mainapp")) { // check station selection method if more than one station
+    	    resetScreen();
+    	    mainAppStep();
     	} else if (state.equals("apptimeout")) { // check station selection method if more than one station
-        	appTimeoutStep();
+    	    appTimeoutStep();
+    	} else {
+    	    //no state change
+    	    return;
     	}
+	model.setProperty("@appstate", state);
     }
     
-    private void initStep() {
-    	String path = model.getProperty("/screen/exhibitionpath");
-    	String[] parts = path.split("/");
-    	String userid=parts[4];
-    	String exhibitionid=parts[6];
-    	String stationid=parts[8];
-    	model.setProperty("@username", userid);
-    	model.setProperty("@exhibitionid", exhibitionid);
-    	model.setProperty("@stationid", stationid);
-    	
+    private void initStep() {    	
     	String appname = model.getProperty("@station/app");
     	System.out.println("APPNAME="+appname);
     	if (appname==null || appname.equals("") || appname.equals("none")) {
@@ -166,11 +180,13 @@ public class ExhibitionController extends Html5Controller {
     	// so the app has timed out either by user doing nothing or using app too long
     	// tell client to react and reset outselves
     	System.out.println("APP RESET");
+    	resetScreen();
     	model.setProperty("/screen/state","init"); 
-		
-	String userincontrol = model.getProperty("@fromid");
-	Screen client = ApplicationManager.getScreenByFullid(userincontrol);
-	client.getModel().setProperty("/screen/state","stationselect");
+    	
+    	//We need to inform all screens on this station connected
+    	FsNode message = new FsNode("message",screen.getId());
+    	message.setProperty("request","init");
+	model.notify("@stationevents/fromclient",message);
     }
     
     private void mainAppStep() {
