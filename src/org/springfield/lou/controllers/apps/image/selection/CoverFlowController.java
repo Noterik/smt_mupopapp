@@ -43,8 +43,8 @@ public class CoverFlowController extends Html5Controller {
     private long activeItem;
     int timeoutcount = 0;
     int timeoutnoactioncount = 0;
-    int maxtimeoutcount = 3; //(check every 10sec)
-    int maxtnoactiontimeoutcount = 2; //(check every 10sec)
+    int maxtimeoutcount = 30; //(check every 1sec)
+    int maxtnoactiontimeoutcount = 20; //(check every 1sec)
     int selectedItem = 0;
     int totalItems = 0;
     List<FsNode> nodes;
@@ -86,7 +86,8 @@ public class CoverFlowController extends Html5Controller {
 	}
 		
 	model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
-	model.onNotify("/app['timers']", "onTimeoutChecks", this);
+	//model.onNotify("/app['timers']", "onTimeoutChecks", this);
+	model.onNotify("/shared[timers]/1second","onTimeoutChecks",this); 
 		
 	screen.get("#coverflow").on("active","active", this);		
     }
@@ -118,6 +119,8 @@ public class CoverFlowController extends Html5Controller {
     	    client.getModel().setProperty("/screen/state","mainapp");
     	    model.setProperty("@fromid", from);
 
+    	    resetScreen();
+    	    
     	    //Inform app to switch to main app
     	    FsNode item = nodes.get(selectedItem);
     	    model.setProperty("/screen/selecteditem", item.getProperty("wantedselect")); 
@@ -141,6 +144,8 @@ public class CoverFlowController extends Html5Controller {
 	    timeoutcount++;
 	    timeoutnoactioncount++;
 	}
+	
+	System.out.println("S="+timeoutcount+" S2="+timeoutnoactioncount+" THIS="+this.hashCode());
 	//System.out.println("TIME OUT CHECKS 2 : "+timeoutcount+" "+timeoutnoactioncount);
 	if (timeoutcount > maxtimeoutcount || timeoutnoactioncount > maxtnoactiontimeoutcount) {
 	    System.out.println("Coverflow time out reset because "+timeoutcount+" > "+maxtimeoutcount+" or "+timeoutnoactioncount+" > "+maxtnoactiontimeoutcount);
@@ -154,6 +159,7 @@ public class CoverFlowController extends Html5Controller {
     }
     
     private void resetScreen() {
+    	System.out.println("COVERFLOW RESET CALLED");
     	screen.get("#staticentryscreen").remove();	
     	screen.get("#imagerotationentryscreen").remove();
     	screen.get("#coverflow").remove();

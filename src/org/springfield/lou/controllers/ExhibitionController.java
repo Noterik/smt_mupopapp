@@ -202,6 +202,8 @@ public class ExhibitionController extends Html5Controller {
     }
     
     private void mainAppStep() {
+    	
+    	
     	JSONObject data = new JSONObject();
     	path = model.getProperty("/screen/exhibitionpath");
 		FsNode stationnode = model.getNode(path);
