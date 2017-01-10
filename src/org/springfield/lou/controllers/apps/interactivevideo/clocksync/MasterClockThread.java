@@ -26,13 +26,19 @@ public class MasterClockThread extends Html5Controller {
 		//super("masterclockthread "+n);
 		app = a;
 		name = n;
-		app.model.onNotify("/shared[timers]/1second","on1SecondTimer",this);
 		stationid = app.model.getProperty("@stationid");
 		exhibitionid = app.model.getProperty("@exhibitionid");
 	}
     
+	public String getScreenId() {
+		return "/masterclock/"+this.hashCode();
+	}
+	
+	public int getApplicationHashCode() {
+		return this.hashCode();
+	}
+    
 	public void on1SecondTimer(ModelEvent e) {
-		System.out.println("MASTER CLOCK TIMER ");
 		doWork();
 	}
     
@@ -71,13 +77,15 @@ public class MasterClockThread extends Html5Controller {
 						System.out.println("ERROR MasterClockThread "+name);
 						e.printStackTrace();
 					}
-
-		System.out.println("running is false. exiting thread");
 	}
 	
 	public void seek(long newtime) {
 		streamtime = newtime;
 		//this.interrupt(); // interupt to take new times
+	}
+	
+	public long getStreamTime() {
+		return streamtime;
 	}
 	
 	public void freezeFor(long duration){
@@ -121,8 +129,15 @@ public class MasterClockThread extends Html5Controller {
 		return name;
 	}
 	
+	/*
 	public boolean running() {
 		return !paused;
+	}
+	*/
+	
+	public void start() {
+		System.out.println("master clock start called");
+		app.model.onNotify("/shared[timers]/1second","on1SecondTimer",this);	
 	}
 	
 	public void restart() {

@@ -76,9 +76,9 @@ public class StaticEntryScreenController extends Html5Controller {
     	    data.put("andenter", language_content.getSmartProperty(language, "andenter"));
     	    data.put("tocontrolthescreen", language_content.getSmartProperty(language, "tocontrolthescreen"));
     	    data.put("tocontrolthescreen2", language_content.getSmartProperty(language, "tocontrolthescreen2"));
-	    data.put("entercode", language_content.getSmartProperty(language, "entercode"));
-	    data.put("andselect", language_content.getSmartProperty(language, "andselect"));
-	    data.put("selectstation", language_content.getSmartProperty(language, "selectstation"));
+    	    data.put("entercode", language_content.getSmartProperty(language, "entercode"));
+    	    data.put("andselect", language_content.getSmartProperty(language, "andselect"));
+    	    data.put("selectstation", language_content.getSmartProperty(language, "selectstation"));
     	    
     	    data.put("entryimageurl", entryScreen);
     	    //TODO: get a default language for the mainscreen?

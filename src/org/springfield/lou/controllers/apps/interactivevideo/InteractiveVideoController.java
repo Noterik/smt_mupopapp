@@ -11,6 +11,7 @@ import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreen
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockManager;
 import org.springfield.lou.controllers.apps.interactivevideo.clocksync.MasterClockThread;
+import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelBindEvent;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
@@ -21,6 +22,7 @@ public class InteractiveVideoController extends Html5Controller {
 	String sharedspace;
 	String audiourl;
 	String timelineid;
+	MasterClockThread c;
 	
 	public InteractiveVideoController() {
 	}
@@ -29,7 +31,6 @@ public class InteractiveVideoController extends Html5Controller {
 		selector = sel;
 		sharedspace = model.getProperty("/screen/sharedspace");
 		screen.get(selector).loadScript(this);	
-		System.out.println("CHECK1");
 		//model.setProperty("@videoid", ""+1);
 		
 		String stationid = model.getProperty("@stationid");
@@ -58,42 +59,72 @@ public class InteractiveVideoController extends Html5Controller {
 			data.put("url",itemnode.getProperty("videourl"));
 			audiourl = itemnode.getProperty("audiourl");
 			data.put("title", stationnode.getSmartProperty("en", "title"));
+    	    String language = model.getProperty("@exhibition/language");
+    	    data.put("language", language);
+    	    
+    	    FsNode language_content = model.getNode("@language_static_entry_screen");
+    	    System.out.println("LANGSEL="+language);
+    	    System.out.println("MY NODE LANG="+language_content.asXML());
+    	    data.put("goto", language_content.getSmartProperty(language, "goto"));
+    	    data.put("andenter", language_content.getSmartProperty(language, "andenter"));
+    	    data.put("tocontrolthescreen", language_content.getSmartProperty(language, "tocontrolthescreen"));
+    	    data.put("tocontrolthescreen2", language_content.getSmartProperty(language, "tocontrolthescreen2"));
+    	    data.put("entercode", language_content.getSmartProperty(language, "entercode"));
+    	    data.put("andselect", language_content.getSmartProperty(language, "andselect"));
+    	    data.put("selectstation", language_content.getSmartProperty(language, "selectstation"));
+    	    data.put("jumper", model.getProperty("@exhibition/jumper"));
+    	    data.put("domain", LazyHomer.getExternalIpNumber());
+    	    data.put("name", model.getProperty("@station/name"));
+    	    data.put("labelid", model.getProperty("@station/labelid"));
+    	    String showurl = model.getProperty("@exhibition/showurl");
+    	    if (showurl!=null && showurl.equals("true")) {
+    	    	data.put("showurl","true");
+    	    }
+	    	String fullcode = model.getProperty("@station/codeselect");
+	    	data.put("codeselect",fullcode);
 			screen.get(selector).render(data);
 		}
 		
 			
-		/*
+		
 		MasterClockManager.setApp(this);
-		MasterClockThread c = MasterClockManager.getMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
+		c = MasterClockManager.getMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
 		if(c == null) {
 			c = MasterClockManager.addMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
-			c.setVideoLength(313000);
+			c.setVideoLength(472000);
 			c.start();
 		} else {
+			System.out.println("RESTART VIDEOSTATION");
 			c.restart();	
 		}
-		*/
+	
 		
 		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/play", "onPlayEvent", this);
 		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/pause", "onPauseEvent", this);
 		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime", "onClockUpdate", this);
-		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/exhibitionEnded", "onExhibitionEnd", this);
+		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/exhibitionEnded", "onVideoEnd", this);
 		//model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
 		
 		playVideo();
+
 		timelineid = "/domain['mupop']/user['"+model.getProperty("@username")+"']/exhibition['"+model.getProperty("@exhibitionid")+"']/station['"+model.getProperty("@stationid")+"']/content['"+model.getProperty("@contentrole")+"']/item['"+model.getProperty("@itemid")+"']/question";
-		 System.out.println("DEEEE="+timelineid);
 		model.onTimeLineNotify(timelineid,"/shared/mupop/exhibition/"+exhibitionid+"/station/"+ stationid+"/currenttime","starttime","duration","onTimeLineEvent",this);
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
-		System.out.println("ADDING 1Sec timers");
-		model.onNotify("/shared[timers]/1second","on1SecondTimer",this);
+
+		//screen.get("#lowerthird").html("GO TO MUPOP.NET/FASHION AND ENTER B7 TO CONTROL THE SCREEN");
+		model.onNotify("/shared[timers]/1second","on1SecondTimer",this); 
+		/* for testing
 		model.onNotify("/shared[timers]/2second","on2SecondTimer",this);
 		model.onNotify("/shared[timers]/5second","on5SecondTimer",this);
 		model.onNotify("/shared[timers]/10second","on10SecondTimer",this);
+		*/
 	}
 	
 	public void on1SecondTimer(ModelEvent e) {
-		System.out.println("1T="+e.getTargetFsNode().getProperty("value"));
+		//System.out.println("1T="+e.getTargetFsNode().getProperty("value"));
+		if (c!=null) {
+			System.out.println("STREAMTIME="+c.getStreamTime()/1000);
+		}
 	}
 	
 	public void on2SecondTimer(ModelEvent e) {
@@ -129,8 +160,7 @@ public class InteractiveVideoController extends Html5Controller {
 			System.out.println("Station:: GOT TIME EVENT ENTER");
 			if(e.getTargetFsNode().getName().equals("question")){
 				//pauseVideo();
-				System.out.println("GOT QUESTION EVENT!");
-					System.out.println("SCREEN MANAGER HERE!!!");
+					screen.get("#lowerthird").hide();
 					screen.get("#exhibition").append("div","questionscreen", new QuestionScreenController());
 					String stationid = model.getProperty("@stationid");
 					String exhibitionid = model.getProperty("@exhibitionid");
@@ -144,20 +174,24 @@ public class InteractiveVideoController extends Html5Controller {
 			System.out.println("Station:: GOT TIME EVENT END");
 			if(e.getTargetFsNode().getName().equals("question")){
 				screen.get("#questionscreen").remove();
-				//playVideo();
+				screen.get("#lowerthird").show();
+				screen.get("#lowerthird").html("GO TO MUPOP.NET/FASHION AND ENTER B7 TO CONTROL THE SCREEN");
 
 			}
 		}
 	}
 	
-	public void onExhibitionEnd(ModelEvent e){
+	public void onVideoEnd(ModelEvent e){
+		System.out.println("Station:: VIDEO ENDED RESTART IT");
+		playVideo();
+		/*
 		System.out.println("Station:: Exhibition Ended");
 		String stationid = model.getProperty("@stationid");
 		String exhibitionid = model.getProperty("@exhibitionid");
 		model.setProperty("/app/interactivevideo/exhibition/" +exhibitionid+ "/station/"+ stationid +"/vars/hasClockManager", "false");
 		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
 		screen.get(selector).remove();
-		
+		*/
 	}
 	
 	/*
