@@ -27,7 +27,8 @@
 		<contentrole>/screen['vars']/contentrole</contentrole>
 		<itemid>/screen['vars']/itemid</itemid>
 		<appstate>/shared['app']/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/appstate</appstate>
-				
+		<selecteditem>/screen/selecteditem</selecteditem>
+
 		<language_static_entry_screen>/domain['mupop']/config['languages']/default['apps']/entryscreen['staticentryscreen']</language_static_entry_screen>
 		<language_photoexplore_coverflow_screen>/domain['mupop']/config['languages']/default['apps']/photoexplore['coverflow']</language_photoexplore_coverflow_screen>
 	
@@ -48,6 +49,10 @@
 		
 		<videos>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/video</videos>
 		<video>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/video['@videoid']</video>
+		<items>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item</items>
+		<item>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']</item>
+		<itemquestions>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/question</itemquestions>
+		<itemquestion>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/question['@itemquestionid']</itemquestion>
 	
 		<stationevents>/shared['exhibitionevents']/exhibition['@exhibitionid']/station['@stationid']</stationevents>
 		<exhibitionevents>/shared['exhibitionevents']/exhibition['@exhibitionid']</exhibitionevents>

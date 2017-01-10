@@ -4,9 +4,10 @@ import java.util.Date;
 
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
 
-public class MasterClockThread extends Thread {
+public class MasterClockThread extends Html5Controller {
 	private boolean running = false;
 	private long streamtime = 0;
 	private String name;
@@ -18,21 +19,24 @@ public class MasterClockThread extends Thread {
 	long videoLength = 10000;
 	String stationid;
 	String exhibitionid;
+	int updateInterval = 1000;
+	int timeToCatchUp = 5000;
 	
     public MasterClockThread(Html5Controller a,String n) {
-		super("masterclockthread "+n);
+		//super("masterclockthread "+n);
 		app = a;
 		name = n;
-	}
-    
-	public void run() {
+		app.model.onNotify("/shared[timers]/1second","on1SecondTimer",this);
 		stationid = app.model.getProperty("@stationid");
 		exhibitionid = app.model.getProperty("@exhibitionid");
-		int updateInterval = 1000;
-		int timeToCatchUp = 5000;
-			
-		while (running) {
-			if (!paused){
+	}
+    
+	public void on1SecondTimer(ModelEvent e) {
+		System.out.println("MASTER CLOCK TIMER ");
+		doWork();
+	}
+    
+	public void doWork() {
 				try {	
 					long realtime = new Date().getTime()+5000; // 5 seconds from now I want you to be at xxxxx
 					if (streamtime > videoLength){
@@ -40,7 +44,7 @@ public class MasterClockThread extends Thread {
 						reset();
 						app.model.setProperty("/app/interactivevideo/exhibition/" +exhibitionid+ "/station/"+ stationid +"/vars/hasClockManager", "false");
 						app.model.notify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/exhibitionEnded");
-						continue;
+						return;
 					}
 					
 					app.model.setProperty("/shared/mupop/exhibition/"+exhibitionid+"/station/"+ stationid+"/currenttime", ""+virtual_streamtime);
@@ -67,16 +71,7 @@ public class MasterClockThread extends Thread {
 						System.out.println("ERROR MasterClockThread "+name);
 						e.printStackTrace();
 					}
-			}
-			try{
-				if(paused)
-					sleep(100);
-				else 
-					sleep(updateInterval);
-			} catch(InterruptedException i) {
-				if (!running) break;
-			}
-		}
+
 		System.out.println("running is false. exiting thread");
 	}
 	
@@ -141,13 +136,6 @@ public class MasterClockThread extends Thread {
 	}
 	
 	
-	public void start() {
-		System.out.println("Thread: Got start signal. Starting thread !!"+getClockName());
-		if (paused) resumeClock();
-		if (running == true) return;
-		running = true;
-		super.start();
-	}
     
     /**
      * Shutdown
