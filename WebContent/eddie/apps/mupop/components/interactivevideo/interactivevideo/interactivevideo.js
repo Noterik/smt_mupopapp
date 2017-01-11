@@ -10,21 +10,22 @@ InteractiveVideoController.update = function(vars, data){
 
 	var action = data['action'];
 	console.log(data['action']);
-	console.log(data);	
+	console.log("c="+data+" c="+$("#"+targetid)[0].currentTime*1000);	
 	switch (action) {
 	case "pause":
 		$("#"+targetid)[0].pause();
 		break;
 	case "play":
 		console.log("play action triggered");
-		$("#"+targetid)[0].play();
+		$("#"+targetid).trigger("play");
 		break;
 	case "wantedtime":
 	    var wt = data['wantedtime'].split(',');
 	    var realtime = wt[0];
 	    var streamtime = wt[1];
 		var audiotime = $("#"+targetid)[0].currentTime*1000;
-		var curtime = (new Date()).getTime();
+
+ 		var curtime = (new Date()).getTime();
 		curtime = curtime - eddie.getTimeOffset(); 
 		realtime = parseInt(realtime);
 		streamtime = parseInt(streamtime);
@@ -44,7 +45,7 @@ InteractiveVideoController.update = function(vars, data){
 		if (delta<-1000 || delta>1000) {
 			var newtime = ((audiotime+delta)+200)/1000;
 			console.log('seekto='+newtime);
-			$("#"+targetid)[0].currentTime = newtime;
+			//$("#"+targetid)[0].currentTime = newtime;
 		} else {
 		    var speedup = 1;
 		    if (delta<0) {
