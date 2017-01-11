@@ -77,6 +77,10 @@ function resizePhotoExplore(){
 		}
 		
 		$("#image-wrapper"+images[index].id).css({"width": width, "height" : height});
+		
+		if (wrapperHeight > height) {
+			$("#image-wrapper"+images[index].id).css({"margin-top": (wrapperHeight-height) / 2});
+		}
 	});
 }
 

@@ -15,10 +15,10 @@
 	<div id="url_row" class="row">
 	<div class="col-md-2 fill-height nopadding url_row_background">
 		<div class="vertical-center fill-height">
-			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height"/>
+			<img src="http://images1.noterik.com/mupop/beeld_en_geluid_logo.png" class="max-height-bg-logo"/>
 		</div>
 	</div>
-	<div class="col-md-4 col-md-offset-2">
+	<div class="col-md-6 col-md-offset-1">
 		<div class="vertical-center">
 			<div id="coverflow-mobile-phone"></div>
 			<div id="join-text">
@@ -26,7 +26,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-2 col-md-offset-2 fill-height nopadding url_row_background">
+	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background">
 		<div class="vertical-center fill-height">
 			<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
 		</div>

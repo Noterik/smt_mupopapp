@@ -14,7 +14,7 @@ public class PhotoExploreController extends Html5Controller {
 	int timeoutcount = 0;
 	int timeoutnoactioncount = 0;
 	int maxtimeoutcount = 60; //(check every 1sec)
-	int maxtnoactiontimeoutcount = 20; //(check every 1sec)
+	int maxtnoactiontimeoutcount = 45; //(check every 1sec)
 	String userincontrol;
 
 	public PhotoExploreController() { }

@@ -43,8 +43,8 @@ public class CoverFlowController extends Html5Controller {
     private long activeItem;
     int timeoutcount = 0;
     int timeoutnoactioncount = 0;
-    int maxtimeoutcount = 30; //(check every 1sec)
-    int maxtnoactiontimeoutcount = 20; //(check every 1sec)
+    int maxtimeoutcount = Integer.MAX_VALUE; //(check every 1sec)
+    int maxtnoactiontimeoutcount = 45; //(check every 1sec)
     int selectedItem = 0;
     int totalItems = 0;
     List<FsNode> nodes;
@@ -129,6 +129,7 @@ public class CoverFlowController extends Html5Controller {
     	    //Inform clients to switch to main app view
     	    FsNode m = new FsNode("message",screen.getId());
     	    m.setProperty("request","mainapp");
+    	    m.setProperty("itemid", item.getProperty("wantedselect"));
     	    model.notify("@stationevents/fromclient",m);
     	}
     }
