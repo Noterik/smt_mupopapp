@@ -4,6 +4,7 @@ var width;
 var height;
 var images;
 var currentItem = 0;
+var ready = false;
 
 PhotoExploreController.update = function(vars, data){
 	//init - this is also handled when returning on a page
@@ -13,6 +14,7 @@ PhotoExploreController.update = function(vars, data){
 		images = data['nodes'];
 
 		$("#image-wrapper"+images[0].id).show();
+		vars["ready"] = true;
 
 		//resize once the image is loaded
 		$(".zoomandaudio_image").on('load', resizePhotoExplore).each(function() {
@@ -26,28 +28,32 @@ PhotoExploreController.update = function(vars, data){
 	
 	console.log(data);
 	
-	switch (command) {
-		case "next": 
-			if (currentItem < images.length-1) {	
-				$("#image-wrapper"+images[currentItem].id).fadeOut();
-				currentItem++;
-				$("#image-wrapper"+images[currentItem].id).fadeIn();
-			}
-			break;
-		case "prev":
-			if (currentItem > 0) {
-				$("#image-wrapper"+images[currentItem].id).fadeOut();
-				currentItem--;
-				$("#image-wrapper"+images[currentItem].id).fadeIn();
-			}
-			break;
-		case "scale": 
-			var scaleValue = parseFloat(data['value']);
-			if (scaleValue < 1.0) { scaleValue = 1.0 }	//Don't allow going smaller then 1.0
-			$("#image-wrapper"+images[currentItem].id).css("transform", "scale("+scaleValue+")");
-			$("#image-wrapper"+images[currentItem].id).css("transform-origin", data['originX']+"% "+ data['originY'] +"%");
-
-			break;
+	if (vars["ready"] && vars["ready"] == true) {
+	
+		switch (command) {
+			case "next": 
+				if (currentItem < images.length-1) {	
+					$("#image-wrapper"+images[currentItem].id).fadeOut();
+					currentItem++;
+					$("#image-wrapper"+images[currentItem].id).fadeIn();
+				}
+				break;
+			case "prev":
+				if (currentItem > 0) {
+					$("#image-wrapper"+images[currentItem].id).fadeOut();
+					currentItem--;
+					$("#image-wrapper"+images[currentItem].id).fadeIn();
+				}
+				break;
+			case "scale": 
+				var scaleValue = parseFloat(data['value']);
+				if (scaleValue < 1.0) { scaleValue = 1.0 }	//Don't allow going smaller then 1.0
+				if (scaleValue > 25.0) { scaleValue = 25.0 } // Dont' allow going bigger then 25.0
+				$("#image-wrapper"+images[currentItem].id).css("transform", "scale("+scaleValue+")");
+				$("#image-wrapper"+images[currentItem].id).css("transform-origin", data['originX']+"% "+ data['originY'] +"%");
+	
+				break;
+		}
 	}
 };
 

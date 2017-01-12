@@ -18,6 +18,7 @@ public class CodeSelector {
 		String acode  = acodes.get("P"+rnd.nextInt(11));	
 		String ncode  = ncodes.get("P"+rnd.nextInt(9));	
 		String fullcode = acode+ncode;
+		System.out.println("ACCESS CODE = "+fullcode);
 		return fullcode;
 	}
 	

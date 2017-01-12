@@ -169,9 +169,10 @@ public class ExhibitionController extends Html5Controller {
     				model.setProperty("@fromid", from);
     				model.setProperty("/screen/state","mainapp");
     			}
+    		} else if (request.equals("contentselectforce")) {
+    		    model.setProperty("/screen/state", request);
     		}
     	}
-    	
     }
   
     
@@ -245,8 +246,8 @@ public class ExhibitionController extends Html5Controller {
     
     private void resetScreen() {
     	screen.get("#staticentryscreen").remove();	
-    	screen.get("#imagerotationentryscreen").remove();	
+    	screen.get("#imagerotationentryscreen").remove();
+    	screen.get("#coverflow").remove();
+    	screen.get("#photoexplore_app").remove();
     }
-
 }
-

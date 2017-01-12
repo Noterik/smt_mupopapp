@@ -16,7 +16,7 @@
 		{{#stationselect}}
 			{{#codeselect}}
 				{{#showurl}}
-					<h2 class="entryscreen"><span class="entryscreen-span">{{goto}} <b>{{domain}}/{{jumper}}</b> {{andenter}} <b>{{codeselect}}</b> {{tocontrolthescreen2}}</span></h2></div>
+					<h2 class="entryscreen"><span class="entryscreen-span">{{goto}} <span class="bg-red"><b>{{domain}}/{{jumper}}</b></span> {{andenter}} <span class="bg-red"><b>{{codeselect}}</b></span> {{tocontrolthescreen2}}</span></h2></div>
 				{{/showurl}}
 				{{^showurl}}
 					<h2 class="entryscreen"><span class="entryscreen-span">{{entercode}} <b>{{codeselect}}</b> to control the screen</span></h2></div>

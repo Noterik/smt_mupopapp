@@ -27,6 +27,7 @@ import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.application.ApplicationManager;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
 
@@ -67,6 +68,7 @@ public class CoverFlowController extends Html5Controller {
 	    JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 	    
 	    data.put("title", stationnode.getSmartProperty("en", "title"));
+	    data.put("domain", LazyHomer.getExternalIpNumber());
 	    data.put("jumper", exhibitionnode.getProperty("jumper"));	
 	    
 	    FsNode language_content = model.getNode("@language_photoexplore_coverflow_screen");
