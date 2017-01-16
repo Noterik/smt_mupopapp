@@ -1,4 +1,0 @@
-<div id="exhibition_waitscreen_container" style="background-image: url({{image_source}})">
-	<div id="exhibition_title">{{exhibition_title}}</div>
-	<div id="exhibition_url">Go to {{exhibition_url}} to join the exhibition!</div>
-</div>

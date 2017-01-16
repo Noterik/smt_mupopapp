@@ -89,16 +89,16 @@
 	</view>
 	
 	<view id="#interactivevideo_app">
-		<template>interactivevideo/interactivevideo/interactivevideo.mst</template>
-		<style>interactivevideo/interactivevideo/interactivevideo.css</style>
+		<template>interactivevideo/interactivevideo.mst</template>
+		<style>interactivevideo/interactivevideo.css</style>
 		<controller id="InteractiveVideoController">
-			<javascript>interactivevideo/interactivevideo/interactivevideo.js</javascript>
+			<javascript>interactivevideo/interactivevideo.js</javascript>
 		</controller>
 	</view>
 	
 	<view id="#interactivevideo_lowerthird">
-		<template>interactivevideo/interactivevideo/interactivevideo_lowerthird.mst</template>
-		<style>interactivevideo/interactivevideo/interactivevideo_lowerthird.css</style>
+		<template>interactivevideo/interactivevideo_lowerthird.mst</template>
+		<style>interactivevideo/interactivevideo_lowerthird.css</style>
 		<controller id="InteractiveVideoController">
 		</controller>
 	</view>
