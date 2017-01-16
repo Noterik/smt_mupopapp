@@ -62,7 +62,7 @@ public class MasterClockThread extends Html5Controller {
 					if(!frozen){
 						app.model.setProperty("/shared/exhibition/"+exhibitionid+"/station/"+stationid+"/vars/wantedtime", realtime+","+(streamtime+ timeToCatchUp));
 						app.model.setProperty("/shared/exhibition/"+exhibitionid+"/station/"+stationid+"/vars/curPlayTime", ""+streamtime);
-						System.out.println("wantedtime : "+ realtime+","+streamtime+" this="+this.hashCode()+" app="+app.hashCode());
+						//System.out.println("wantedtime : "+ realtime+","+streamtime+" this="+this.hashCode()+" app="+app.hashCode());
 						app.model.notify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime", new FsNode("wantedtime", realtime+","+(streamtime+timeToCatchUp)));
 						streamtime += updateInterval;
 					}

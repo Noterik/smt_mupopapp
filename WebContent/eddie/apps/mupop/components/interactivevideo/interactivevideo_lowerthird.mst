@@ -1,1 +1,6 @@
+{{^feedback}}
 {{goto}} <font color=black><b>{{domain}}/{{jumper}}</b></font> {{andenter}} <font color=black><b>{{codeselect}}</b></font> om ook mee te spelen
+{{/feedback}}
+{{#feedback}}
+Deze vraag werd door <font color=black>{{goodperc}}%</font> van de spelers goed beantwoord
+{{/feedback}}

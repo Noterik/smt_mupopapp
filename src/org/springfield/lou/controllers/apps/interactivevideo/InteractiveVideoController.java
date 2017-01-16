@@ -23,6 +23,8 @@ public class InteractiveVideoController extends Html5Controller {
 	String audiourl;
 	String timelineid;
 	MasterClockThread c;
+	Boolean feedback = false;
+	int feedbackcounter = 8;
 
 	public InteractiveVideoController() {
 	}
@@ -100,27 +102,26 @@ public class InteractiveVideoController extends Html5Controller {
 	public void on1SecondTimer(ModelEvent e) {
 		//System.out.println("1T="+e.getTargetFsNode().getProperty("value"));
 		if (c!=null) {
-			System.out.println("STREAMTIME="+c.getStreamTime()/1000);
+		//	System.out.println("STREAMTIME="+c.getStreamTime()/1000);
+		}
+		if (feedback) {
+			feedbackcounter--;
+			if (feedbackcounter<0) {
+				feedbackcounter=8;
+				feedback=false;
+				JSONObject data = new JSONObject();
+				data = addMetaData(data);
+				screen.get("#interactivevideo_lowerthird").render(data);
+			}
 		}
 	}
 
-	public void on2SecondTimer(ModelEvent e) {
-		System.out.println("2T="+e.getTargetFsNode().getProperty("value"));
-	}
-
-	public void on5SecondTimer(ModelEvent e) {
-		System.out.println("5T="+e.getTargetFsNode().getProperty("value"));
-	}
-
-	public void on10SecondTimer(ModelEvent e) {
-		System.out.println("10T="+e.getTargetFsNode().getProperty("value"));
-	}
 
 	public void onClientStationEvent(ModelEvent e) {
 		FsNode message = e.getTargetFsNode();
 		String from = message.getId();
 		String command = message.getProperty("action");
-		System.out.println("CLIENT REQUEST ACTION="+command);
+		//System.out.println("CLIENT REQUEST ACTION="+command);
 		if (command.equals("playrequest")) {
 			Screen client = ApplicationManager.getScreenByFullid(from);
 			FsPropertySet ps = new FsPropertySet(); 
@@ -150,88 +151,39 @@ public class InteractiveVideoController extends Html5Controller {
 				//	}
 			}
 		} else if (e.eventtype==ModelBindEvent.TIMELINENOTIFY_LEAVE) {
-			System.out.println("Station:: GOT TIME EVENT END");
+			//System.out.println("Station:: GOT TIME EVENT END");
 			if(e.getTargetFsNode().getName().equals("question")){
 				screen.get("#questionscreen").remove();
 				screen.get("#interactivevideo_lowerthird").show();
 				JSONObject data = new JSONObject();
-				data = addMetaData(data);
-				System.out.println("DATA="+data.toJSONString());
-				screen.get("#interactivevideo_lowerthird").render(data);
-
+				//data = addMetaData(data);
+				//System.out.println("DATA="+data.toJSONString());
+				data.put("feedback", "true");
+				FsNode uncachednode = model.getNode(e.getTargetFsNode().getPath());
+				String correctanswersstring =uncachednode.getProperty("correctanswers");
+				String totalanswersstring =uncachednode.getProperty("totalanswers");
+				System.out.println("TA="+correctanswersstring+" "+totalanswersstring);
+				try {
+					int correctanswers = Integer.parseInt(correctanswersstring);
+					int totalanswers = Integer.parseInt(totalanswersstring);
+					
+					float result = (correctanswers/(float)totalanswers)*100;
+					data.put("goodperc",Math.round(result));
+					screen.get("#interactivevideo_lowerthird").render(data);
+					feedback = true;
+				} catch(Exception error) {}
 			}
 		}
 	}
+	
+
 
 	public void onVideoEnd(ModelEvent e){
 		System.out.println("Station:: VIDEO ENDED RESTART IT");
 		playVideo();
-		/*
-		System.out.println("Station:: Exhibition Ended");
-		String stationid = model.getProperty("@stationid");
-		String exhibitionid = model.getProperty("@exhibitionid");
-		model.setProperty("/app/interactivevideo/exhibition/" +exhibitionid+ "/station/"+ stationid +"/vars/hasClockManager", "false");
-		screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
-		screen.get(selector).remove();
-		 */
 	}
 
-	/*
-	public void onPlayEvent(ModelEvent e){
-		System.out.println("Play Event");
-		playVideo();
 
-	}
-	 */
-
-	/*
-	public void onPauseEvent(ModelEvent e){
-		System.out.println("Pause Event");
-		pauseVideo();
-
-	}
-	 */
-
-	/*
-	public void onUserJoined(ModelEvent e){
-		System.out.println("User Joined");
-		String stationid = model.getProperty("@stationid");
-		String exhibitionid = model.getProperty("@exhibitionid");
-
-		if(model.getProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying").equals("false")) return;
-
-		MasterClockManager.setApp(this);
-		MasterClockThread c = MasterClockManager.getMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
-		if (c == null) {
-			c = MasterClockManager.addMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
-			System.out.println("Sending start signal to thread");
-			c.start();
-		} else {
-			c.restart();
-		}
-
-	}
-	 */
-
-	/*
-	public void pauseClock(ModelEvent e){
-		System.out.println("Pause Clock Event");
-		pauseVideo();
-
-		if (model.getProperty("/screen/isClockManager").equals("false")) return;
-
-		String stationid = model.getProperty("@stationid");
-		String exhibitionid = model.getProperty("@exhibitionid");
-		model.setProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying", "false");
-		MasterClockManager.setApp(this);
-		MasterClockThread c = MasterClockManager.getMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
-
-		if (c == null )
-			c = MasterClockManager.addMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
-		if (c.running())
-			c.pause();
-	}
-	 */
 
 	public void playVideo(){
 		JSONObject nd = new JSONObject();
@@ -240,24 +192,6 @@ public class InteractiveVideoController extends Html5Controller {
 		screen.get(selector).update(nd);
 	}
 
-	/*
-	public void pauseVideo(){
-		JSONObject nd = new JSONObject();
-		nd.put("action","pause");
-		nd.put("target", "interactivevideo_video_c");
-		screen.get(selector).update(nd);
-	}
-	 */
-
-	/*
-	public void seekVideo(long milliseconds){
-		JSONObject nd = new JSONObject();
-		nd.put("action","seek");
-		nd.put("target", "interactivevideo_video_c");
-		nd.put("seekingvalue", milliseconds+"");
-		screen.get(selector).update(nd);
-	}
-	 */
 
 	public void onClockUpdate(ModelEvent e) {
 		//System.out.println("ClockUpdate");
@@ -270,23 +204,7 @@ public class InteractiveVideoController extends Html5Controller {
 		screen.get(selector).update(nd);
 	}
 
-	/*
-	public void destroyed() {
-		super.destroyed();
-		if (model.getProperty("/screen/isClockManager").equals("false")) return;
-		System.out.println("Clock Master exiting..");
-		String stationid = model.getProperty("@stationid");
-		String exhibitionid = model.getProperty("@exhibitionid");	
-		model.setProperty("/app/interactivevideo/exhibition/" +exhibitionid+ "/station/"+ stationid +"/vars/hasClockManager", "false");	
-	}
-	 */
 
-	/*
-	public void startExhibition(ModelEvent e){
-	    screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
-	    screen.get("#staticentryscreen").remove();
-	}
-	 */
 
 	private JSONObject addMetaData(JSONObject data) {
 		String language = model.getProperty("@exhibition/language");
