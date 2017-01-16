@@ -45,7 +45,7 @@ InteractiveVideoController.update = function(vars, data){
 		if (delta<-1000 || delta>1000) {
 			var newtime = ((audiotime+delta)+200)/1000;
 			console.log('seekto='+newtime);
-			//$("#"+targetid)[0].currentTime = newtime;
+			$("#"+targetid)[0].currentTime = newtime;
 		} else {
 		    var speedup = 1;
 		    if (delta<0) {

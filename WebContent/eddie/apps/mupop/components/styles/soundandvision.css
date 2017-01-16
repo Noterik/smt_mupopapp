@@ -324,7 +324,7 @@ h1.videotitle {
 	font-family: akzidenz-grotesk-condensed,bebas_neueregular,Helvetica Neue,Arial,sans-serif;
 }
 
-.video-lowerthird {
+#interactivevideo_lowerthird {
 	position: absolute;
 	width: 80%;
 	height: 10%;

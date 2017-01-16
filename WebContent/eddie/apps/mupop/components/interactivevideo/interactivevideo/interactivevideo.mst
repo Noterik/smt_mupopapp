@@ -2,6 +2,8 @@
 	<source id="interactivevideo_video" src="{{url}}" type="video/mp4">
 </video>
 <div class="videotitlerow" id="videotitle"><h1 class="videotitle"><span class="videotitle-span">{{title}}</span></h1></div>
-<img id="videologo" src="http://images1.noterik.com/mupop/in_sv.png"/>
-<div class="video-lowerthird" id="lowerthird">{{goto}} <b>{{domain}}/{{jumper}}</b> {{andenter}} <b>{{codeselect}}</b> {{tocontrolthescreen2}}</div>
+<img id="videologo" src="http://images1.noterik.com/mupop/in_sv_nl.png"/>
+<div id="interactivevideo_lowerthird">
+{{goto}} <font color=black><b>{{domain}}/{{jumper}}</b></font> {{andenter}} <font color=black><b>{{codeselect}}</b></font> om ook mee te spelen
+</div>
 </div>

@@ -65,6 +65,8 @@ public class PhotoInfoSpotsController extends Html5Controller {
     			//static entry screen
     			state = "staticentryscreen";
     			model.setProperty("@photoinfospots/vars/state", state);
+        		screen.get("#staticentryscreen").remove(); // extra checks daniel
+        		screen.get("#staticentryscreen").remove(); // extra checks daniel.
     			screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
     			//notify all pending screens as this could be a reload
     			model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
@@ -94,6 +96,8 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	    
     		state = "coverflow";
     		model.setProperty("@photoinfospots/vars/state", state);
+    		screen.get("#coverflow").remove(); // extra checks daniel
+    		screen.get("#coverflow").remove(); // extra checks daniel
     		screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
     	} else {
     		FsNode node = imagesList.getNodes().get(0);

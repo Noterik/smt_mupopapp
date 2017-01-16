@@ -69,7 +69,7 @@ public class InteractiveVideoController extends Html5Controller {
 		c = MasterClockManager.getMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
 		if(c == null) {
 			c = MasterClockManager.addMasterClock("/exhibition/"+exhibitionid+"/station/"+stationid);
-			c.setVideoLength(472000);
+			c.setVideoLength(517000);
 			c.start();
 		} else {
 			System.out.println("RESTART VIDEOSTATION");
@@ -89,7 +89,6 @@ public class InteractiveVideoController extends Html5Controller {
 		model.onTimeLineNotify(timelineid,"/shared/mupop/exhibition/"+exhibitionid+"/station/"+ stationid+"/currenttime","starttime","duration","onTimeLineEvent",this);
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
 
-		//screen.get("#lowerthird").html("GO TO MUPOP.NET/FASHION AND ENTER B7 TO CONTROL THE SCREEN");
 		model.onNotify("/shared[timers]/1second","on1SecondTimer",this); 
 		/* for testing
 		model.onNotify("/shared[timers]/2second","on2SecondTimer",this);
@@ -154,10 +153,11 @@ public class InteractiveVideoController extends Html5Controller {
 			System.out.println("Station:: GOT TIME EVENT END");
 			if(e.getTargetFsNode().getName().equals("question")){
 				screen.get("#questionscreen").remove();
-				screen.get("#lowerthird").show();
+				screen.get("#interactivevideo_lowerthird").show();
 				JSONObject data = new JSONObject();
 				data = addMetaData(data);
-				screen.get("#lowerthird").render(data);
+				System.out.println("DATA="+data.toJSONString());
+				screen.get("#interactivevideo_lowerthird").render(data);
 
 			}
 		}

@@ -96,6 +96,13 @@
 		</controller>
 	</view>
 	
+	<view id="#interactivevideo_lowerthird">
+		<template>interactivevideo/interactivevideo/interactivevideo_lowerthird.mst</template>
+		<style>interactivevideo/interactivevideo/interactivevideo_lowerthird.css</style>
+		<controller id="InteractiveVideoController">
+		</controller>
+	</view>
+	
 	<view id="#interactivevideo_wait_screen">
 		<template>interactivevideo/waitingscreen/waitingscreen.mst</template>
 		<style>interactivevideo/waitingscreen/waitingscreen.css</style>

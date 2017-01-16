@@ -4,12 +4,16 @@ var width;
 var height;
 var images;
 var currentItem = 0;
-var ready = false;
 
 PhotoExploreController.update = function(vars, data){
 	//init - this is also handled when returning on a page
 	if (!vars["loaded"]) {	
 		vars["loaded"] = true;
+		currentItem = 0;
+		width = -1;
+		height = -1;
+		images = null;
+		
 		
 		images = data['nodes'];
 

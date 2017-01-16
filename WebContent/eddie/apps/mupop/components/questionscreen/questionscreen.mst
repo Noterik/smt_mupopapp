@@ -1,4 +1,3 @@
 <div id="question_contrainer">
 	<img id="question_image" src="{{question_image}}">
-	<div id="question_text">{{question_text}}</div>
 </div>

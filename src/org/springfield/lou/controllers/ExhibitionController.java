@@ -119,6 +119,8 @@ public class ExhibitionController extends Html5Controller {
         	String waitscreen_content = model.getProperty("@station/waitscreen_content");
     		System.out.println("STATIC ENTRY SCREEN WANTED ="+waitscreen+" set="+waitscreen_content);
     		if (waitscreen.equals("static")) {
+        		screen.get("#staticentryscreen").remove(); // extra checks daniel
+        		screen.get("#staticentryscreen").remove(); // extra checks daniel
     			screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
     		} else if (waitscreen.equals("kenburn")) {
         		screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
@@ -182,6 +184,8 @@ public class ExhibitionController extends Html5Controller {
     	System.out.println("MuPoP MAIN : content select step called ="+type);
     	if (type!=null && !type.equals("")) {
     		if (type.equals("coverflow")) {
+        		screen.get("#coverflow").remove(); // extra checks daniel
+        		screen.get("#coverflow").remove(); // extra checks daniel
     			screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
     			return;
     		}
@@ -230,10 +234,14 @@ public class ExhibitionController extends Html5Controller {
 		    	System.out.println("APP2="+app);
 		    	//TODO: should be a case or loaded system
 		    	if (app.equals("photoexplore")) {
+	        		screen.get("#photoexplore_app").remove(); // extra checks daniel
+	        		screen.get("#photoexplore_app").remove(); // extra checks daniel
 	    			screen.get("#exhibition").append("div","photoexplore_app",new PhotoExploreController());
 		    	} else if (app.equals("photoinfospots")) {
 		    		screen.get("#exhibition").append("div","photoinfospots_app", new PhotoInfoSpotsController());
 		    	} else if (app.equals("interactivevideo")) {
+	        		screen.get("#interactivevideo_app").remove(); // extra checks daniel
+	        		screen.get("#interactivevideo_app").remove(); // extra checks daniel
 					screen.get("#exhibition").append("div","interactivevideo_app", new InteractiveVideoController());
 		    	} else {
 		    		// should display error that no app was selected and curator should set it

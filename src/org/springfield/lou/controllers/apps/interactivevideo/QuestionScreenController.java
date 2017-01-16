@@ -15,7 +15,7 @@ public class QuestionScreenController extends Html5Controller  {
 		String exhibitionid = model.getProperty("@exhibitionid");
 		JSONObject data= new JSONObject(); 
  		data.put("question_image", "http://images3.noterik.com/mupop/questionscreen_image.png");
- 		data.put("question_text", "ANSWER THE QUESTION");
+ 		data.put("question_text", "");
  		screen.get(selector).render(data);
 	}
 	
