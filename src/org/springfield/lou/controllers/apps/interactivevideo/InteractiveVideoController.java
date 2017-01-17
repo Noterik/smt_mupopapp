@@ -78,12 +78,8 @@ public class InteractiveVideoController extends Html5Controller {
 			c.restart();	
 		}
 
-
-		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/play", "onPlayEvent", this);
-		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/pause", "onPauseEvent", this);
 		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime", "onClockUpdate", this);
 		model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/exhibitionEnded", "onVideoEnd", this);
-		//model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
 
 		playVideo();
 
@@ -92,18 +88,9 @@ public class InteractiveVideoController extends Html5Controller {
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
 
 		model.onNotify("/shared[timers]/1second","on1SecondTimer",this); 
-		/* for testing
-		model.onNotify("/shared[timers]/2second","on2SecondTimer",this);
-		model.onNotify("/shared[timers]/5second","on5SecondTimer",this);
-		model.onNotify("/shared[timers]/10second","on10SecondTimer",this);
-		 */
 	}
 
 	public void on1SecondTimer(ModelEvent e) {
-		//System.out.println("1T="+e.getTargetFsNode().getProperty("value"));
-		if (c!=null) {
-		//	System.out.println("STREAMTIME="+c.getStreamTime()/1000);
-		}
 		if (feedback) {
 			feedbackcounter--;
 			if (feedbackcounter<0) {
