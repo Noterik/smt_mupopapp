@@ -519,6 +519,11 @@ h1.videotitle {
 		padding-right: 0.2vw;
 	}
 	
+	.poweredbywrapper {
+		text-align: center;
+		 padding-top: 2.5vh;
+	}
+	
 	.max-height {
 		max-height: 100%;
 	}
@@ -705,6 +710,11 @@ h1.videotitle {
 		color: #cccccc;
 		padding: 0;
 		padding-right: 0.2vw;
+	}
+	
+	.poweredbywrapper {
+		text-align: center;
+		 padding-top: 0.5vh;
 	}
 	
 	.max-height {

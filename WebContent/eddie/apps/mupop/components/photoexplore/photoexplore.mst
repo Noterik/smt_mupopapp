@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background">
-		<div class="fill-height" style="text-align:center; padding-top:2.5vh;">
+		<div class="fill-height">
 			<span class="poweredby">Powered by </span><div><h2 class="mupop">MUPOP</h2>
 		</div>
 	</div>
