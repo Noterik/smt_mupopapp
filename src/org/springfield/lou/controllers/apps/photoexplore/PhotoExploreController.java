@@ -1,5 +1,6 @@
 package org.springfield.lou.controllers.apps.photoexplore;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.simple.JSONObject;
@@ -38,6 +39,10 @@ public class PhotoExploreController extends Html5Controller {
 
 			FSList imagesList = model.getList("@itemimages");
 			System.out.println("Found "+imagesList.size()+" images");
+			String renderoption = model.getProperty("@item/renderoption");
+			if (renderoption!=null && !renderoption.equals("") && !renderoption.equals("none")) {
+				imagesList = rewriteUrls(imagesList,renderoption);
+			}
 
 			List<FsNode> nodes = imagesList.getNodes();
 			JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
@@ -47,6 +52,8 @@ public class PhotoExploreController extends Html5Controller {
 			FsNode language_content = model.getNode("@language_photoexplore_coverflow_screen");
 			data.put("logincode", language_content.getSmartProperty("en", "login_code"));
 			data.put("code", model.getProperty("@station/codeselect"));
+
+			System.out.println("RENDER OPTION="+renderoption);
 
 			screen.get(selector).parsehtml(data);
 			screen.get(selector).loadScript(this);
@@ -63,6 +70,20 @@ public class PhotoExploreController extends Html5Controller {
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
 		//model.onNotify("/app['timers']", "onTimeoutChecks", this);
 		model.onNotify("/shared[timers]/1second","onTimeoutChecks",this); 
+	}
+	
+	public FSList rewriteUrls(FSList nodes,String renderoption) {
+		for(Iterator<FsNode> iter = nodes.getNodes().iterator() ; iter.hasNext(); ) {
+			FsNode node = (FsNode)iter.next();	
+			String oldurl = node.getProperty("url");
+			if (oldurl.startsWith("http://")) {
+				node.setProperty("url","http://"+LazyHomer.getExternalIpNumber()+"/edna/external/"+oldurl.substring(7)+"?script="+renderoption);
+			} else if (oldurl.startsWith("https://")) {
+				node.setProperty("url","http://"+LazyHomer.getExternalIpNumber()+"/edna/external/"+oldurl.substring(8)+"?script="+renderoption);
+			}
+		//	System.out.println("URL REWRITE="+node.getProperty("url"));
+		}
+		return nodes;
 	}
 
 	public void onClientStationEvent(ModelEvent e) {	    
@@ -109,7 +130,6 @@ public class PhotoExploreController extends Html5Controller {
 			timeoutnoactioncount++;
 		}
 
-		System.out.println("R="+timeoutcount+" R2="+timeoutnoactioncount+" THIS="+this.hashCode());
 		if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
 			System.out.println("APP TIMEOUT RESET WANTED");
 			model.setProperty("@fromid",userincontrol);

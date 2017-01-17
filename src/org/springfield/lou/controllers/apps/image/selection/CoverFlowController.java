@@ -148,7 +148,6 @@ public class CoverFlowController extends Html5Controller {
 	    timeoutnoactioncount++;
 	}
 	
-	System.out.println("S="+timeoutcount+" S2="+timeoutnoactioncount+" THIS="+this.hashCode());
 	//System.out.println("TIME OUT CHECKS 2 : "+timeoutcount+" "+timeoutnoactioncount);
 	if (timeoutcount > maxtimeoutcount || timeoutnoactioncount > maxtnoactiontimeoutcount) {
 	    System.out.println("Coverflow time out reset because "+timeoutcount+" > "+maxtimeoutcount+" or "+timeoutnoactioncount+" > "+maxtnoactiontimeoutcount);
