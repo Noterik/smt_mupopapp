@@ -181,13 +181,14 @@ public class InteractiveVideoController extends Html5Controller {
 
 
 	public void onClockUpdate(ModelEvent e) {
-		//System.out.println("ClockUpdate");
+		System.out.println("ClockUpdate");
 		JSONObject nd = new JSONObject();
 		String stationid = model.getProperty("@stationid");
 		String exhibitionid = model.getProperty("@exhibitionid");
 		nd.put("action","wantedtime");
 		nd.put("target", "interactivevideo_video_c");
 		nd.put("wantedtime", model.getProperty("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime"));
+		System.out.println("wanted time:"+model.getProperty("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/wantedtime")+" this="+this.hashCode());
 		screen.get(selector).update(nd);
 	}
 
