@@ -14,9 +14,10 @@
 
 #videologo {
 	position: absolute;
-	height: 10%;
-	right:10%;
-	top: 10%;	
+	width: 275px;
+	height: 69px;
+	right: -103px;
+	bottom: -53px;
 }
 
 
