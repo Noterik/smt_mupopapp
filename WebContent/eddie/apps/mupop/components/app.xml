@@ -113,6 +113,7 @@
 		<template>photoinfospots/photoinfospots.mst</template>
 		<style>photoinfospots/photoinfospots.css</style>
 		<controller id="PhotoInfoSpotsController">
+			<javascript>photoinfospots/PhotoInfoSpotsController.js</javascript>
 		</controller>
 	</view>
 	

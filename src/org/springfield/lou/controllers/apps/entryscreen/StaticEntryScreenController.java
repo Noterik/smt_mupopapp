@@ -70,6 +70,7 @@ public class StaticEntryScreenController extends Html5Controller {
     	    data.put("language", language);
     	    
     	    FsNode language_content = model.getNode("@language_static_entry_screen");
+    	    if (language==null) language="en";
     	    System.out.println("LANGSEL="+language);
     	    System.out.println("MY NODE LANG="+language_content.asXML());
     	    data.put("goto", language_content.getSmartProperty(language, "goto"));

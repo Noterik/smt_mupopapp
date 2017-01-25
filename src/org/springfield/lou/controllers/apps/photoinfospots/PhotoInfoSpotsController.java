@@ -1,181 +1,240 @@
-/* 
-* PhotoInfoSpotsController.java
-* 
-* Copyright (c) 2016 Noterik B.V.
-* 
-* This file is part of smt_mupopapp, related to the Noterik Springfield project.
-*
-* smt_mupopapp is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* smt_mupopapp is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with smt_mupopapp.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package org.springfield.lou.controllers.apps.photoinfospots;
+
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
+import org.springfield.fs.FSListManager;
 import org.springfield.fs.FsNode;
+import org.springfield.fs.FsPropertySet;
 import org.springfield.lou.controllers.Html5Controller;
-import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
-import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
-import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
-import org.springfield.lou.controllers.apps.image.spotting.ZoomAndAudioController;
+import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 
-/**
- * PhotoInfoSpotsController.java
- *
- * @author Pieter van Leeuwen
- * @copyright Copyright: Noterik B.V. 2016
- * @package org.springfield.lou.controllers.apps.photoinfospots
- * 
- */
 public class PhotoInfoSpotsController extends Html5Controller {
-
-    String state = "";
+	private Map<String, HashMap<String, Double>> spots = new HashMap<String, HashMap<String, Double>>();
+	private Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
+	List<FsNode> nodes;
+	private Map<String, FsNode> selecteditems = new HashMap<String, FsNode>();
 	
-    public PhotoInfoSpotsController() { 
-    	
-    }
-
-    public void attach(String sel) {
-    	selector = sel;
 	
-    	String path = model.getProperty("/screen/exhibitionpath");
-    	System.out.println("EXHIPATH="+path);
-    	FsNode stationnode = model.getNode(path);
-    	if (stationnode!=null) {
-    		JSONObject data = new JSONObject();
-    		screen.get(selector).render(data);
-    	}
 
-    	String waitscreenmode = model.getProperty("@station/waitscreenmode");
-	
-    	//check if we need to load a waiting screen
-    	if (waitscreenmode!=null && !waitscreenmode.equals("off")) { 
-    		if (waitscreenmode.equals("static")) {
-    			//static entry screen
-    			state = "staticentryscreen";
-    			model.setProperty("@photoinfospots/vars/state", state);
-        		screen.get("#staticentryscreen").remove(); // extra checks daniel
-        		screen.get("#staticentryscreen").remove(); // extra checks daniel.
-    			screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
-    			//notify all pending screens as this could be a reload
-    			model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
-    		} else if (waitscreenmode.equals("imagerotation")) {
-    			//image rotation entry screen
-    			state = "imagerotationentryscreen";
-    			model.setProperty("@photoinfospots/vars/state", state);
-    			screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
-    			//notify all pending screens as this could be a reload
-    			model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
-    		}
+	public PhotoInfoSpotsController() {}
 
-    		model.onNotify("@photoinfospots/device/connected", "onDeviceConnected", this);
-    		model.onNotify("@photoinfospots/image/selected", "onImageSelected", this);
-    		model.onNotify("@photoinfospots/image/spotting", "onCoverflowRequested", this);
-    		model.onNotify("@exhibition/entryscreen/requested", "onEntryScreenRequested", this);
-    	} else {
-    		System.out.println("NO WAITSCREEN LOADING IMAGE");
-    		loadImageSelection();
-    	}
-    }
-	
-    public void loadImageSelection() {
-    	FSList imagesList = model.getList("@images");
-	    System.out.println("imagesList size="+imagesList.size());
-    	if (imagesList.size() > 1) {
-	    
-    		state = "coverflow";
-    		model.setProperty("@photoinfospots/vars/state", state);
-    		screen.get("#coverflow").remove(); // extra checks daniel
-    		screen.get("#coverflow").remove(); // extra checks daniel
-    		screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
-    	} else {
-    		FsNode node = imagesList.getNodes().get(0);
-    		model.setProperty("@imageid", node.getId());
-    		loadZoomAndAudio();
-    	}
-    }
-	
-    public void loadZoomAndAudio() {
-	state = "zoomandaudio";
-	String newstate = model.getProperty("@photoinfospots/vars/state");
-	System.out.println("ZOOMSTATE="+newstate);
-	if (model.getProperty("@photoinfospots/vars/state")!=null && !model.getProperty("@photoinfospots/vars/state").equals(state)) {
-	    model.setProperty("@photoinfospots/vars/state", state);
-	    screen.get("#exhibition").append("div", "zoomandaudio", new ZoomAndAudioController());
-	}
-    }
-
-    //Mobile device connected
-    public void onDeviceConnected(ModelEvent e) {
-	System.out.println("Received device is connected!");
-	    
-	if (state.equals("staticentryscreen")) {
-	    screen.get("#staticentryscreen").remove();
-	    loadImageSelection();
-	} else if (state.equals("imagerotationentryscreen")) {
-	    screen.get("#imagerotationentryscreen").remove();
-	    loadImageSelection();
-	} else { /* nothing to change on the mainscreen */ }
-    }
-
-    //Coverflow requested returning from zoomandaudio
-    public void onCoverflowRequested(ModelEvent e) {
-	screen.get("#zoomandaudio").remove();
-	loadImageSelection();
-    }
-	
-    //Image selected in coverflow
-    public void onImageSelected(ModelEvent e) {
-	screen.get("#coverflow").remove();
-	FsNode target = e.getTargetFsNode();
-
-	model.setProperty("@imageid", target.getId());
-	model.setProperty("@photoinfospots/vars/imageid", target.getId());
-	loadZoomAndAudio();
-    }
-    
-    public void onEntryScreenRequested(ModelEvent e) {
-	FsNode target = (FsNode) e.target;	
-
-	if (model.getProperty("@exhibitionid").equals(target.getProperty("exhibition"))) {
-	    if (state.equals("coverflow")) {
-		screen.get("#coverflow").remove();
-	    } else if (state.equals("zoomandaudio")) {
-		screen.get("#zoomandaudio").remove();
-	    }
-	    String waitscreenmode = model.getProperty("@station/waitscreenmode");
+	public void attach(String sel) {
+		selector = sel;
+		System.out.println("ATTACH ON INFOSPOT");
 		
-	    //check if we need to load a waiting screen
-	    if (waitscreenmode!=null && !waitscreenmode.equals("off")) { 
-		if (waitscreenmode.equals("static")) {
-		    //static entry screen
-		    state = "staticentryscreen";
-		    model.setProperty("@photoinfospots/vars/state", state);
-		    screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
-		    //notify all pending screens as this could be a reload
-		    model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
-		} else if (waitscreenmode.equals("imagerotation")) {
-		    //image rotation entry screen
-		    state = "imagerotationentryscreen";
-		    model.setProperty("@photoinfospots/vars/state", state);
-		    screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
-		    //notify all pending screens as this could be a reload
-		    model.notify("@photoinfospots/entryscreen/loaded", new FsNode("entryscreen", "loaded"));
+		model.setProperty("@contentrole","mainapp");
+		String selecteditem = model.getProperty("@selecteditem");
+		FsNode itemnode = null;
+		if (selecteditem!=null) {
+			model.setProperty("@itemid",selecteditem);
+			itemnode = model.getNode("@item");
+		} else {
+			FSList items = model.getList("@items");
+			if (items.size()>0) {
+				itemnode = items.getNodes().get(0);
+				model.setProperty("@itemid",itemnode.getId());
+			}
+
 		}
-	    } else {
-		loadImageSelection();
-	    }
+		System.out.println("ITEMNODE="+itemnode+" SEL="+selecteditem);
+
+		FsNode exhibitionnode = model.getNode("@exhibition");
+		FsNode imagenode = model.getNode("@image");
+
+		if (itemnode != null) {
+			nodes = model.getList("@item/mask").getNodes();
+			System.out.println("MASK COUNT="+nodes.size());
+			loadMasks();
+
+			
+			JSONObject data = FSList.ArrayToJSONObject(nodes,screen.getLanguageCode(),"maskurl,audiourl"); 
+
+			data.put("jumper", exhibitionnode.getProperty("jumper"));
+			data.put("url","https://s3-eu-west-1.amazonaws.com/springfield-storage/mupop/images/upload_1485253265708.png");
+
+			screen.get(selector).render(data);
+			System.out.println("SELECTOR="+selector);
+			screen.get(selector).loadScript(this);
+
+			JSONObject d = new JSONObject();	
+			d.put("command","init");
+			screen.get(selector).update(d);
+		}
+		model.onPropertiesUpdate("@photoinfospots/spot/move", "onPositionChange", this);		
+		model.onNotify("@photoinfospots/spotting/player", "onAudioLoaded", this);
+
 	}
-    }
+
+	public void loadImages() {
+		for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
+			FsNode node = (FsNode)iter.next();	
+			String mask = node.getProperty("mask");
+			try {
+				URL url = new URL(mask);		
+				BufferedImage nimg = ImageIO.read(url);
+				images.put(node.getId(), nimg);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}		
+	}
+	
+	public void loadMasks() {
+		for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
+			FsNode node = (FsNode)iter.next();	
+			String mask = node.getProperty("maskurl");
+			try {
+				URL url = new URL(mask);		
+				BufferedImage nimg = ImageIO.read(url);
+				images.put(node.getId(), nimg);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}		
+	}
+
+	public void checkOverlays() {
+		//new check, so clear old cache
+		selecteditems.clear();
+
+		//loop over every layer
+		for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
+			FsNode node = (FsNode)iter.next();	
+			BufferedImage cimg = images.get(node.getId());
+			if (cimg!=null) {
+				try {	    	
+					int width = cimg.getWidth();
+					int height = cimg.getHeight();
+
+					boolean selected = false;
+					Iterator it = spots.entrySet().iterator();
+					//loop over every connected client to allow multi highlighting
+					while (it.hasNext()) {
+						Map.Entry<String, HashMap<String, Double>> pair = (Map.Entry<String, HashMap<String, Double>>) it.next();
+						double xp = pair.getValue().get("x");
+						double yp = pair.getValue().get("y");
+
+						//make sure to divide by a double, otherwise you will get a
+						// int value when dividing two ints
+						double x = (width/100.0)*xp;
+						double y = (height/100.0)*yp;
+
+						int p = cimg.getRGB((int)x,(int)y);
+						int a = (p>>24) & 0xff;
+						int r = (p>>16) & 0xff;
+						int g = (p>>8) & 0xff;
+						int b = p & 0xff;
+
+						if (a>200 && g>100) {
+							selecteditems.put(pair.getKey(), node);
+							selected = true;
+							break;
+						}
+					}
+
+					if (selected) {
+						screen.get("#zoomandaudio_layer"+node.getId()).css("opacity","0.3");
+					} else {
+						screen.get("#zoomandaudio_layer"+node.getId()).css("opacity","0");
+					}   
+				} catch(Exception e){
+					//e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void onPositionChange(ModelEvent e) {
+		FsPropertySet set = (FsPropertySet)e.target;
+
+		try {
+			double x  = Double.parseDouble(set.getProperty("x"));
+			double y  = Double.parseDouble(set.getProperty("y"));
+			String color = set.getProperty("color");
+
+			String action = set.getProperty("action");
+			String deviceid = set.getProperty("deviceid");
+			System.out.println("DEVICEID="+deviceid);
+			String language = set.getProperty("language");
+
+			long currentTime = new Date().getTime();
+
+			//check for a new spot
+			if (!spots.containsKey(deviceid)) {
+				screen.get("#zoomandaudio_spots_holder").append("<div class='zoomandaudio_spot' id='zoomandaudio_spot_"+deviceid+"'><div class='zoomandaudio_spot_outer' id='zoomandaudio_spot_outer_"+deviceid+"'><div class='zoomandaudio_spot_inner' style='background-color:"+color+"'></div></div></div>");
+			}
+
+			//update last seen
+			HashMap<String, Double> spot = new HashMap<String, Double>();
+			spot.put("lastseen", (double) new Date().getTime());
+			spot.put("x", x);
+			spot.put("y", y);
+			spots.put(deviceid, spot);
+
+			//TODO: better to to this timeout based instead upon a move
+			Iterator it = spots.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, HashMap<String, Double>> pair = (Map.Entry<String, HashMap<String, Double>>) it.next();
+				if (pair.getValue().get("lastseen") + 60000 < currentTime) {
+					screen.get("#zoomandaudio_spot_"+pair.getKey()).remove();
+					it.remove();
+					selecteditems.remove(deviceid);
+				}
+			}
+
+			//check overlays after updating connected client list
+			checkOverlays();
+
+			if (action.equals("move")) { // its a move event so lets just move the dot
+				JSONObject d = new JSONObject();	
+				d.put("command","spot_move");
+				d.put("spotid", "#zoomandaudio_spot_"+deviceid);
+				d.put("x", x);
+				d.put("y", y);
+				screen.get(selector).update(d);
+			} else if (action.equals("up")) {
+				if (selecteditems.get(deviceid) != null) {
+					FsNode message = new FsNode("message","1");
+					message.setProperty("action", "startaudio");
+					System.out.println("NODE="+selecteditems.get(deviceid).asXML());
+					message.setProperty("url", selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
+					System.out.println("SEND AUDIO="+selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
+					//message.setProperty("text", selecteditems.get(deviceid).getSmartProperty(language, "text"));
+					message.setProperty("text","");
+					message.setProperty("deviceid", deviceid);
+					model.notify("@photoinfospots/spot/audio", message);
+
+					String[] animation = new String[]{"border-top: 6px solid grey", "-webkit-animation: rotation .6s infinite linear", "-moz-animation: rotation .6s infinite linear", "-o-animation: rotation .6s infinite linear", "animation: rotation .6s infinite linear"};
+					screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
+				} else {
+					String[] animation = new String[]{"border-top: 6px solid white", "-webkit-animation: none !important", "-moz-animation: none !important", "-o-animation: none !important", "animation: none !important"};
+					screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
+				}
+			}
+		} catch(Exception error) {
+			System.out.println("PhotoInfoSpots - count not move stop of play sound");
+			error.printStackTrace();
+		}	
+	}
+
+
+	public void onAudioLoaded(ModelEvent e) {
+		FsNode target = e.getTargetFsNode();
+
+		String deviceid = target.getProperty("deviceid");
+		String[] animation = new String[]{"border-top: 6px solid white", "-webkit-animation: none !important", "-moz-animation: none !important", "-o-animation: none !important", "animation: none !important"};
+
+		screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
+	}
 }
