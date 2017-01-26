@@ -430,6 +430,11 @@ h2.mupop {
 	height: 100%;
 }
 
+.poweredbywrapper {
+	text-align: center;
+	padding-top: 0.5vh;
+}
+
 .poweredby {
 	font-size: 2vh;
 	color: #cccccc;
@@ -439,6 +444,10 @@ h2.mupop {
 
 .max-height {
 	max-height: 100%;
+}
+
+.bg-logo {
+	display: none;
 }
 
 .nopadding {
@@ -491,7 +500,7 @@ body {
 	overflow: hidden;
 }
 
-#zoomandaudio {
+#photoinfospots_app {
 	background-color: #000;	
 	height: 100%;
 }

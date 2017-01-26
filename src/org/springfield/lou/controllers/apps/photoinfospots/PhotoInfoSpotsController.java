@@ -25,8 +25,12 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	List<FsNode> nodes;
 	private Map<String, FsNode> selecteditems = new HashMap<String, FsNode>();
 	
-	
-
+	int timeoutcount = 0;
+	int timeoutnoactioncount = 0;
+	int maxtimeoutcount = 60; //(check every 1sec)
+	int maxtnoactiontimeoutcount = 45; //(check every 1sec)
+	String userincontrol;
+		
 	public PhotoInfoSpotsController() {}
 
 	public void attach(String sel) {
@@ -54,20 +58,23 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 		if (itemnode != null) {
 			nodes = model.getList("@item/mask").getNodes();
-			System.out.println("MASK COUNT="+nodes.size());
 			loadMasks();
 
-			
 			JSONObject data = FSList.ArrayToJSONObject(nodes,screen.getLanguageCode(),"maskurl,audiourl"); 
 
+			data.put("domain", LazyHomer.getExternalIpNumber());
 			data.put("jumper", exhibitionnode.getProperty("jumper"));
+			
 			model.setProperty("@contentrole","mainapp");
 			model.setProperty("@itemid",selecteditem);
 			
 			data.put("url",model.getProperty("@item/url"));
-
+			
+			if (model.getProperty("@station/codeselect") != null) {
+			    data.put("code", model.getProperty("@station/codeselect"));
+			}
+			
 			screen.get(selector).render(data);
-			System.out.println("SELECTOR="+selector);
 			screen.get(selector).loadScript(this);
 
 			JSONObject d = new JSONObject();	
@@ -76,7 +83,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		}
 		model.onPropertiesUpdate("@photoinfospots/spot/move", "onPositionChange", this);		
 		model.onNotify("@photoinfospots/spotting/player", "onAudioLoaded", this);
-
+		model.onNotify("/shared[timers]/1second","onTimeoutChecks",this); 
 	}
 
 	public void loadImages() {
@@ -159,7 +166,8 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	}
 
 	public void onPositionChange(ModelEvent e) {
-		FsPropertySet set = (FsPropertySet)e.target;
+	    	timeoutnoactioncount = 0;
+	    	FsPropertySet set = (FsPropertySet)e.target;
 
 		try {
 			double x  = Double.parseDouble(set.getProperty("x"));
@@ -213,8 +221,10 @@ public class PhotoInfoSpotsController extends Html5Controller {
 					System.out.println("NODE="+selecteditems.get(deviceid).asXML());
 					message.setProperty("url", selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
 					System.out.println("SEND AUDIO="+selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
-					//message.setProperty("text", selecteditems.get(deviceid).getSmartProperty(language, "text"));
-					message.setProperty("text","");
+					
+					String transcript = selecteditems.get(deviceid).getSmartProperty(language, "transcript") == null ? "" : selecteditems.get(deviceid).getSmartProperty(language, "transcript");
+					message.setProperty("text", transcript);
+					
 					message.setProperty("deviceid", deviceid);
 					model.notify("@photoinfospots/spot/audio", message);
 
@@ -227,17 +237,40 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			}
 		} catch(Exception error) {
 			System.out.println("PhotoInfoSpots - count not move stop of play sound");
-			error.printStackTrace();
+			System.out.println(error.getMessage());
+			System.out.println(error.getStackTrace());
 		}	
 	}
 
 
 	public void onAudioLoaded(ModelEvent e) {
-		FsNode target = e.getTargetFsNode();
+	    	timeoutnoactioncount = 0;
+	    	FsNode target = e.getTargetFsNode();
 
 		String deviceid = target.getProperty("deviceid");
 		String[] animation = new String[]{"border-top: 6px solid white", "-webkit-animation: none !important", "-moz-animation: none !important", "-o-animation: none !important", "animation: none !important"};
 
 		screen.get("#zoomandaudio_spot_outer_"+deviceid).css(animation);
+	}
+	
+	public void onTimeoutChecks(ModelEvent e) {
+		if (timeoutcount!=-1) {
+			timeoutcount++;
+			timeoutnoactioncount++;
+		}
+
+		if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
+			System.out.println("APP TIMEOUT RESET WANTED");
+			model.setProperty("@fromid",userincontrol);
+			//screen.remove(selector);
+			screen.get(selector).remove();
+			timeoutcount=-1; // how do the remove not remove the notify ?
+			timeoutnoactioncount=-1; // how do the remove not remove the notify ?
+			model.setProperty("/screen/state","contentselectforce");
+
+			FsNode message = new FsNode("message",screen.getId());
+			message.setProperty("request","contentselect");
+			model.notify("@stationevents/fromclient",message);
+		}
 	}
 }

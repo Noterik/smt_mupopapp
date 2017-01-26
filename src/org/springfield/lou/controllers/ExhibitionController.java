@@ -14,7 +14,7 @@ import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
 import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoController;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
-import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController_old;
+//import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController_old;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
 
@@ -260,5 +260,6 @@ public class ExhibitionController extends Html5Controller {
     	screen.get("#imagerotationentryscreen").remove();
     	screen.get("#coverflow").remove();
     	screen.get("#photoexplore_app").remove();
+    	screen.get("#photoinfospots_app").remove();
     }
 }

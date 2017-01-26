@@ -73,8 +73,10 @@ public class CoverFlowController extends Html5Controller {
 
 			FsNode language_content = model.getNode("@language_photoexplore_coverflow_screen");
 			data.put("logincode", language_content.getSmartProperty("en", "login_code"));
-			data.put("code", model.getProperty("@station/codeselect"));
-
+			if (model.getProperty("@station/codeselect") != null) {
+			    data.put("code", model.getProperty("@station/codeselect"));
+			}
+			
 			screen.get(selector).render(data);
 			screen.get(selector).loadScript(this);
 

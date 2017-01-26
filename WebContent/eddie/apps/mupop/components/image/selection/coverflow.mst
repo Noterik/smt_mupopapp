@@ -15,14 +15,15 @@
 	<div id="url_row" class="row">
 	<div class="col-md-2 fill-height nopadding url_row_background">
 		<div class="vertical-center fill-height">
-			<img src="http://images1.noterik.com/mupop/beeld_en_geluid_logo.png" class="max-height-bg-logo"/>
+			<img src="http://images1.noterik.com/mupop/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
+			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height espace-logo"/>
 		</div>
 	</div>
 	<div class="col-md-6 col-md-offset-1">
 		<div class="vertical-center">
 			<div id="coverflow-mobile-phone"></div>
 			<div id="join-text">
-				<h2 class="coverflow">{{domain}}/{{jumper}} - {{code}}</h2>
+				<h2 class="coverflow">{{domain}}/{{jumper}} {{#code}}- {{code}}{{/code}}</h2>
 			</div>
 		</div>
 	</div>
