@@ -61,7 +61,10 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			JSONObject data = FSList.ArrayToJSONObject(nodes,screen.getLanguageCode(),"maskurl,audiourl"); 
 
 			data.put("jumper", exhibitionnode.getProperty("jumper"));
-			data.put("url","https://s3-eu-west-1.amazonaws.com/springfield-storage/mupop/images/upload_1485253265708.png");
+			model.setProperty("@contentrole","mainapp");
+			model.setProperty("@itemid",selecteditem);
+			
+			data.put("url",model.getProperty("@item/url"));
 
 			screen.get(selector).render(data);
 			System.out.println("SELECTOR="+selector);
