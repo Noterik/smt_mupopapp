@@ -35,7 +35,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 	public void attach(String sel) {
 		selector = sel;
-		System.out.println("ATTACH ON INFOSPOT");
 		
 		model.setProperty("@contentrole","mainapp");
 		String selecteditem = model.getProperty("@selecteditem");
@@ -51,7 +50,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			}
 
 		}
-		System.out.println("ITEMNODE="+itemnode+" SEL="+selecteditem);
 
 		FsNode exhibitionnode = model.getNode("@exhibition");
 		FsNode imagenode = model.getNode("@image");
@@ -176,7 +174,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 			String action = set.getProperty("action");
 			String deviceid = set.getProperty("deviceid");
-			System.out.println("DEVICEID="+deviceid);
 			String language = set.getProperty("language");
 
 			long currentTime = new Date().getTime();
@@ -218,9 +215,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 				if (selecteditems.get(deviceid) != null) {
 					FsNode message = new FsNode("message","1");
 					message.setProperty("action", "startaudio");
-					System.out.println("NODE="+selecteditems.get(deviceid).asXML());
 					message.setProperty("url", selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
-					System.out.println("SEND AUDIO="+selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
 					
 					String transcript = selecteditems.get(deviceid).getSmartProperty(language, "transcript") == null ? "" : selecteditems.get(deviceid).getSmartProperty(language, "transcript");
 					message.setProperty("text", transcript);
@@ -260,7 +255,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		}
 
 		if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
-			System.out.println("APP TIMEOUT RESET WANTED");
 			model.setProperty("@fromid",userincontrol);
 			//screen.remove(selector);
 			screen.get(selector).remove();
