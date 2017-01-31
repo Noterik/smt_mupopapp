@@ -44,15 +44,17 @@ public class ExhibitionController extends Html5Controller {
     	model.setProperty("@exhibitionid", exhibitionid);
     	model.setProperty("@stationid", stationid);
 	
-	model.onPropertyUpdate("/screen/state","onStateChange",this);
-	model.setProperty("@appstate", state);
-	model.setProperty("/screen/state","init"); // will trigger a event 
-	model.onNotify("@station","onStationChange",this);
-	model.onNotify("@exhibition","onStationChange",this);
+    	model.onPropertyUpdate("/screen/state","onStateChange",this);
+    	model.setProperty("@appstate", state);
+    	model.setProperty("/screen/state","init"); // will trigger a event 
+    	model.onNotify("@station","onStationChange",this);
+    	model.onNotify("@exhibition","onStationChange",this);
     }
     
     public void onStationChange(ModelEvent event) {
     	resetScreen();
+    	state="";
+    	model.setProperty("@appstate", state);
     	model.setProperty("/screen/state","init");
     	
     }
@@ -87,7 +89,7 @@ public class ExhibitionController extends Html5Controller {
     	    //no state change
     	    return;
     	}
-	model.setProperty("@appstate", state);
+		model.setProperty("@appstate", state);
     }
     
     private void initStep() {    	
