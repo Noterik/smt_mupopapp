@@ -339,6 +339,18 @@ h2.entryscreen {
 	overflow: hidden;
 }
 
+#entryimage {
+	width: 100%;
+}
+
+.subrow_en {
+	display: none;
+}
+	
+.subrow_nl {
+	display: none;
+}
+
 /* coverflow */
 
 #coverflow {
