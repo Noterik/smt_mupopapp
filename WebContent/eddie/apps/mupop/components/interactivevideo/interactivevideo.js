@@ -9,14 +9,14 @@ InteractiveVideoController.update = function(vars, data){
 	// $("#" + targetid).parent().append("<div id=\"notificationbox\" style=\"position: absolute; top: 0;\"></div>");
 
 	var action = data['action'];
-	console.log(data['action']);
-	console.log("c="+data+" c="+$("#"+targetid)[0].currentTime*1000);	
+	//console.log(data['action']);
+	//console.log("c="+data+" c="+$("#"+targetid)[0].currentTime*1000);	
 	switch (action) {
 	case "pause":
 		$("#"+targetid)[0].pause();
 		break;
 	case "play":
-		console.log("play action triggered");
+		//console.log("play action triggered");
 		$("#"+targetid).trigger("play");
 		break;
 	case "wantedtime":
@@ -39,17 +39,17 @@ InteractiveVideoController.update = function(vars, data){
 		// so how far are we off ?
 		var delta = streamtime - expectedtime;
 		
-		console.log('RT='+realtime+' ST='+streamtime+' CT='+curtime+' AT='+audiotime+' TG='+timegap+' ET='+expectedtime+" DELTA="+delta);
+		//console.log('RT='+realtime+' ST='+streamtime+' CT='+curtime+' AT='+audiotime+' TG='+timegap+' ET='+expectedtime+" DELTA="+delta);
 		
 		// lets act on it 
 		if (delta<-1000 || delta>1000) {
 			var newtime = ((audiotime+delta)+200)/1000;
-			console.log('seekto='+newtime);
+			//console.log('seekto='+newtime);
 			$("#"+targetid)[0].currentTime = newtime;
 		} else {
 		    var speedup = 1;
 		    if (delta<0) {
-		    	console.log('neg='+delta);
+		    	//console.log('neg='+delta);
 		    	if (delta<-200) {
 					speedup = 0.97;
 				} else if (delta<-100) {
@@ -60,7 +60,7 @@ InteractiveVideoController.update = function(vars, data){
 					speedup = 1;
 				}
 		    } else {    
-		    	console.log('pos='+delta);
+		    	//console.log('pos='+delta);
 				if (delta<50) {
 					speedup = 1.00;
 				} else if (delta<200) {
@@ -72,14 +72,14 @@ InteractiveVideoController.update = function(vars, data){
 				}
 			}
 			
-			console.log('speedup='+speedup);
+			//console.log('speedup='+speedup);
 		   // so if are within 500ms lets speedup and see if we can catch it
 		   $("#"+targetid)[0].playbackRate = speedup;
 		   
 		}		
 		break;
 	case "seek":
-		console.log('s='+data['seekingvalue'] / 1000);
+		//console.log('s='+data['seekingvalue'] / 1000);
 		$("#"+targetid)[0].currentTime = data['seekingvalue'] / 1000;
 		break;
 	case "autoplay":
@@ -91,7 +91,7 @@ InteractiveVideoController.update = function(vars, data){
 	case "newvideo":
 		$("#videosrc").attr("src","http://images1.noterik.com/videoremote/"+data['mp4']+".mp4");
 		$("#"+targetid)[0].load();
-		console.log('mp4='+data['mp4']);
+		//console.log('mp4='+data['mp4']);
 		break;
 	default:
 		break;

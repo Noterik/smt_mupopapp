@@ -55,10 +55,8 @@ public class CoverFlowController extends Html5Controller {
 	public void attach(String sel) {
 		selector = sel;
 
-		String path = model.getProperty("/screen/exhibitionpath");
-
 		FsNode exhibitionnode = model.getNode("@exhibition");
-		FsNode stationnode = model.getNode(path);
+		FsNode stationnode = model.getNode("@station");
 
 		if (stationnode!=null) {
 			model.setProperty("@contentrole",model.getProperty("@station/contentselect_content"));

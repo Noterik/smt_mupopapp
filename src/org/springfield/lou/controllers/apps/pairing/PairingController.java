@@ -60,7 +60,9 @@ public class PairingController extends Html5Controller {
 					ei = hidnode.getProperty("exhibitionid");
 					si = hidnode.getProperty("stationid");
 					if (!un.equals("") && !ei.equals("") && !si.equals("")) {
-						model.setProperty("/screen/exhibitionpath","/domain/mupop/user/"+un+"/exhibition/"+ei+"/station/"+si);
+						model.setProperty("@username", un);
+						model.setProperty("@exhibitionid", ei);
+						model.setProperty("@stationid", si);
 						screen.get("#screen").append("div", "exhibition",new ExhibitionController());
 					} else {
 						JSONObject data = new JSONObject();
@@ -89,7 +91,7 @@ public class PairingController extends Html5Controller {
 	}
 	
 	public void onDashboardMessage(ModelEvent e) {
-//		System.out.println("DASHBOARDMESSAGE="+e.getTargetFsNode().asXML());
+		System.out.println("DASHBOARDMESSAGE="+e.getTargetFsNode().asXML());
 		screen.get("#screen").location("");
 	}
 	

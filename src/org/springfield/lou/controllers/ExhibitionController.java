@@ -35,14 +35,6 @@ public class ExhibitionController extends Html5Controller {
     public void attach(String sel) {	
 	selector = sel;
 	
-	String path = model.getProperty("/screen/exhibitionpath");
-    	String[] parts = path.split("/");
-    	String userid=parts[4];
-    	String exhibitionid=parts[6];
-    	String stationid=parts[8];
-    	model.setProperty("@username", userid);
-    	model.setProperty("@exhibitionid", exhibitionid);
-    	model.setProperty("@stationid", stationid);
 	
     	model.onPropertyUpdate("/screen/state","onStateChange",this);
     	model.setProperty("@appstate", state);
@@ -166,10 +158,15 @@ public class ExhibitionController extends Html5Controller {
     			System.out.println("WHOOOuUUU="+model.getProperty("@station/contentselect"));
     			String contentselect = model.getProperty("@station/contentselect");
     			if (contentselect!=null && !contentselect.equals("none")) {
+        			client.getModel().setProperty("@exhibitionid",model.getProperty("@exhibitionid"));
+        			client.getModel().setProperty("@stationid",model.getProperty("@stationid"));
+        			client.getModel().setProperty("@username",model.getProperty("@username"));
     				client.getModel().setProperty("/screen/state","contentselect");
     				model.setProperty("@fromid", from);
     				model.setProperty("/screen/state","contentselect");	
     			} else {
+        			client.getModel().setProperty("@exhibitionid",model.getProperty("@exhibitionid"));
+        			client.getModel().setProperty("@stationid",model.getProperty("@stationid"));
     				client.getModel().setProperty("/screen/state","mainapp");
     				model.setProperty("@fromid", from);
     				model.setProperty("/screen/state","mainapp");
@@ -213,10 +210,10 @@ public class ExhibitionController extends Html5Controller {
     	
     	
     	JSONObject data = new JSONObject();
-    	path = model.getProperty("/screen/exhibitionpath");
-		FsNode stationnode = model.getNode(path);
+		FsNode stationnode = model.getNode("@station");
     	System.out.println("MuPoP MAIN : mainapp step called ="+stationnode.asXML());
 		
+    	/*
     	String[] parts = path.split("/");
     	String userid=parts[4];
     	String exhibitionid=parts[6];
@@ -224,12 +221,13 @@ public class ExhibitionController extends Html5Controller {
     	model.setProperty("@username", userid);
     	model.setProperty("@exhibitionid", exhibitionid);
     	model.setProperty("@stationid", stationid);
+    	*/
 		
     	data.put("path",path);
     	//data.put("element",model.getProperty("/screen/element"));
     	System.out.println("exhibition controller called");
     	screen.get(selector).render(data);
-    	model.setProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying", "false");
+    	//model.setProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying", "false");
     	
 		if (stationnode!=null) {
 		    String app =  stationnode.getProperty("app"); // get the app name

@@ -45,9 +45,7 @@ public class StaticEntryScreenController extends Html5Controller {
     public void attach(String sel) {
     	String selector = sel;
 
-    	String path = model.getProperty("/screen/exhibitionpath");
-		
-    	FsNode stationnode = model.getNode(path);
+    	FsNode stationnode = model.getNode("@station");
     	FsNode exhibitionnode = model.getNode("@exhibition");
     	if (stationnode!=null) {
     	    JSONObject data = new JSONObject();
@@ -55,14 +53,13 @@ public class StaticEntryScreenController extends Html5Controller {
     	    //check if a specific entry screen image is configured
     	    String entryScreen = null;
     	    //load first image
-    	    model.setDebug(true);
     	    model.setProperty("@contentrole",model.getProperty("@station/waitscreen_content"));
     	    FSList imagesList = model.getList("@images");
-    	    model.setDebug(false);
+
 		    
     	    if (imagesList.size() > 0) {
-    		FsNode first = imagesList.getNodes().get(0);
-    		entryScreen = first.getProperty("url");
+    	    	FsNode first = imagesList.getNodes().get(0);
+    	    	entryScreen = first.getProperty("url");
     	    }
     	    
     	    //language translations
@@ -109,7 +106,6 @@ public class StaticEntryScreenController extends Html5Controller {
     	    	
     	    	data.put("codeselect",fullcode);
     	    }
-    	    
     	    screen.get(selector).render(data);
     	    screen.get(selector).loadScript(this);
 	    

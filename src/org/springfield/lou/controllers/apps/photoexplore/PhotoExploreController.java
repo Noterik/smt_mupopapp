@@ -28,10 +28,9 @@ public class PhotoExploreController extends Html5Controller {
 
 		userincontrol = model.getProperty("@fromid");
 
-		String path = model.getProperty("/screen/exhibitionpath");
 
 		FsNode exhibitionnode = model.getNode("@exhibition");
-		FsNode stationnode = model.getNode(path);
+		FsNode stationnode = model.getNode("@station");
 
 		if (stationnode!=null) {
 			model.setProperty("@contentrole","mainapp");

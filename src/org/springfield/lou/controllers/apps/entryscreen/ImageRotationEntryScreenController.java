@@ -43,9 +43,8 @@ public class ImageRotationEntryScreenController extends Html5Controller{
     public void attach(String sel) {
 	String selector = sel;
 
-	String path = model.getProperty("/screen/exhibitionpath");
 		
-	FsNode stationnode = model.getNode(path);
+	FsNode stationnode = model.getNode("@station");
 	FsNode exhibitionnode = model.getNode("@exhibition");
 	
 	if (stationnode!=null) {

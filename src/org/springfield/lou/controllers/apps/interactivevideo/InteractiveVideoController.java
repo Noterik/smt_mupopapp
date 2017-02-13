@@ -37,8 +37,7 @@ public class InteractiveVideoController extends Html5Controller {
 
 		String stationid = model.getProperty("@stationid");
 		String exhibitionid = model.getProperty("@exhibitionid");
-		//String path = model.getProperty("/screen/exhibitionpath");	
-		//String video = model.getProperty("@video");
+
 		model.setProperty("@contentrole","mainapp");
 		String selecteditem = model.getProperty("@selecteditem");
 		System.out.println("CHECK2");
