@@ -1,22 +1,21 @@
 /* 
-* StaticEntryScreenController.java
 * 
-* Copyright (c) 2016 Noterik B.V.
+* Copyright (c) 2017 Noterik B.V.
 * 
-* This file is part of smt_mupopapp, related to the Noterik Springfield project.
+* This file is part of MuPoP framework
 *
-* smt_mupopapp is free software: you can redistribute it and/or modify
+* MuPoP framework is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* smt_mupopapp is distributed in the hope that it will be useful,
+* MuPoP framework is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with smt_mupopapp.  If not, see <http://www.gnu.org/licenses/>.
+* along with MuPoP framework .  If not, see <http://www.gnu.org/licenses/>.
 */
 package org.springfield.lou.controllers.apps.entryscreen;
 
