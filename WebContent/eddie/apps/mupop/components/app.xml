@@ -117,6 +117,13 @@
 		</controller>
 	</view>
 	
+	<view id="#trivia_app">
+		<template>trivia/trivia.mst</template>
+		<style>trivia/trivia.css</style>
+		<controller id="TriviaController">
+		</controller>
+	</view>
+	
 	<view id="#questionscreen">
 		<template>questionscreen/questionscreen.mst</template>
 		<style>questionscreen/questionscreen.css</style>

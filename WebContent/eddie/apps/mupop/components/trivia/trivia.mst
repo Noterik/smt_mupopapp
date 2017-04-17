@@ -1,0 +1,9 @@
+<div id="trivia-image-container">
+Trivia mainscreen
+</div>
+<div id="trivia-status-container">
+ STATUS
+</div>
+<div id="trivia-joininfo-container">
+	Join
+</div>
