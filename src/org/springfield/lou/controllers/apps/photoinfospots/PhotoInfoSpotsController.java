@@ -282,21 +282,48 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	
 	public void onTimeoutChecks(ModelEvent e) {
 		if (timeoutcount!=-1) {
-			timeoutcount++;
-			timeoutnoactioncount++;
+		    timeoutcount++;
+		    timeoutnoactioncount++;
 		}
 
 		if (timeoutcount>maxtimeoutcount || timeoutnoactioncount>maxtnoactiontimeoutcount) {
-			model.setProperty("@fromid",userincontrol);
-			//screen.remove(selector);
-			screen.get(selector).remove();
-			timeoutcount=-1; // how do the remove not remove the notify ?
-			timeoutnoactioncount=-1; // how do the remove not remove the notify ?
-			model.setProperty("/screen/state","contentselectforce");
+		    	System.out.println("Photoinfospots timeout");
+		    
+		    	model.setProperty("@fromid",userincontrol);
 
-			FsNode message = new FsNode("message",screen.getId());
-			message.setProperty("request","contentselect");
-			model.notify("@stationevents/fromclient",message);
+			timeoutcount=-1; // how do the remove not remove the notify ?
+			timeoutnoactioncount=-1; // how do the remove not remove the notify ?			
+			
+			String waitscreen = model.getProperty("@station/waitscreen");
+			String contentselect = model.getProperty("@station/contentselect");
+    			
+			//if we have a contentselect screen configured get back to there
+			if (contentselect!=null && !contentselect.equals("none")) {
+			    System.out.println("Resetting back to contentselect");
+			    
+			    screen.get(selector).remove();
+			    model.setProperty("/screen/state","contentselectforce");
+			    
+			    //Inform clients to switch
+			    FsNode message = new FsNode("message",screen.getId());
+			    message.setProperty("request","contentselect");
+			    model.notify("@stationevents/fromclient",message);
+			}
+			//if we don't have a contentselect check if we have a waitscreen configured
+			else if (waitscreen!=null && !waitscreen.equals("") && !waitscreen.equals("none")) {
+			    System.out.println("Resetting back to waitscreen");
+			    
+			    screen.get(selector).remove();
+			    model.setProperty("/screen/state","init");
+				
+			    //Inform clients to switch
+			    FsNode message = new FsNode("message",screen.getId());
+			    message.setProperty("request","init");
+			    model.notify("@stationevents/fromclient",message);
+			}
+
+			//else we don't need to do anything (not even a refresh!)
+			//just keep this app forever
 		}
 	}
 }
