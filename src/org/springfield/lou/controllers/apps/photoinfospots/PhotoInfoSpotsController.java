@@ -93,10 +93,22 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			
 			screen.get(selector).render(data);
 			screen.get(selector).loadScript(this);
-
+			
+			
 			JSONObject d = new JSONObject();	
 			d.put("command","init");
 			screen.get(selector).update(d);
+			String scale = model.getProperty("@item/scale");
+			if (scale!=null && !scale.equals("")) {
+				screen.get("#image-scale-wrapper").css("transform","scale("+scale+")");
+			}
+			String origin = model.getProperty("@item/origin");
+			if (scale!=null && !origin.equals("")) {
+				screen.get("#image-scale-wrapper").css("transform-origin",origin);
+			}
+			
+			
+
 		}
 		model.onPropertiesUpdate("@photoinfospots/spot/move", "onPositionChange", this);		
 		model.onNotify("@photoinfospots/spotting/player", "onAudioLoaded", this);
