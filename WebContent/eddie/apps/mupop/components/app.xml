@@ -53,7 +53,7 @@
 		<item>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']</item>
 		<itemquestions>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/question</itemquestions>
 		<itemquestion>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/question['@itemquestionid']</itemquestion>
-	
+		<itemanwser>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/answer['1']</itemanwser>
 		<stationevents>/shared['exhibitionevents']/exhibition['@exhibitionid']/station['@stationid']</stationevents>
 		<exhibitionevents>/shared['exhibitionevents']/exhibition['@exhibitionid']</exhibitionevents>
 		

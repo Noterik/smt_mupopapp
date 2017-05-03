@@ -48,6 +48,7 @@ public class TriviaController extends Html5Controller {
 		selector = sel;
 		fillPage();
 		model.onNotify("/shared[timers]/1second","on1SecondTimer",this); 
+		model.onNotify("@itemanwser","onClientAnswer",this);
 	}
 	
 	private void fillPage() {
@@ -69,6 +70,10 @@ public class TriviaController extends Html5Controller {
 		FsNode msgnode=new FsNode("msgnode","1");
 		msgnode.setProperty("itemid",model.getProperty("@itemid"));
 		model.notify("@appstate",msgnode);
+	}
+	
+	public void onClientAnswer(ModelEvent e) {
+		System.out.println("CLIENTS="+e.getTargetFsNode().asXML());
 	}
 
 	public void on1SecondTimer(ModelEvent e) {
