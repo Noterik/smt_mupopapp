@@ -744,9 +744,14 @@ h2.zoomandaudio {
 	top: 0%;
 }
 
+#trivia-image {
+	position: absolute;
+	width: 100%;
+	height: 100%;	
+}
+
 #trivia-status-container {
 	position: absolute;
-	background-color: #666666;
 	width: 30%;
 	height: 93%;
 	right: 0%;

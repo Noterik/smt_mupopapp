@@ -1,5 +1,5 @@
 <div id="trivia-image-container">
-Trivia mainscreen
+	<img id="trivia-image" src="{{imageurl}}">
 </div>
 <div id="trivia-status-container">
  STATUS
