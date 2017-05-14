@@ -28,6 +28,7 @@
 		<itemid>/screen['vars']/itemid</itemid>
 		<appstate>/shared['app']/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/appstate</appstate>
 		<selecteditem>/screen/selecteditem</selecteditem>
+		<triviaplayerid>/screen['vars']/triviaplayerid</triviaplayerid>
 
 		<language_static_entry_screen>/domain['mupop']/config['languages']/default['apps']/entryscreen['staticentryscreen']</language_static_entry_screen>
 		<language_photoexplore_coverflow_screen>/domain['mupop']/config['languages']/default['apps']/photoexplore['coverflow']</language_photoexplore_coverflow_screen>
@@ -58,6 +59,9 @@
 		<exhibitionevents>/shared['exhibitionevents']/exhibition['@exhibitionid']</exhibitionevents>
 		
 		<photoinfospots>/shared['photoinfospots']/exhibition['@exhibitionid']/station['@stationid']</photoinfospots>
+		
+		<triviaplayerslist>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']</triviaplayerslist>
+		<triviaplayer>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']/player['@triviaplayerid']</triviaplayer>
 	</model>
 
 	<view id="#screen">
@@ -121,6 +125,7 @@
 		<template>trivia/trivia.mst</template>
 		<style>trivia/trivia.css</style>
 		<controller id="TriviaController">
+			<javascript>trivia/TriviaController.js</javascript>
 		</controller>
 	</view>
 	

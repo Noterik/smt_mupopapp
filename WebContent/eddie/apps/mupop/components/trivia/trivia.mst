@@ -1,9 +1,74 @@
+<div id="trivia-invitation-row">
+	<div id="trivia-invitation-text" class="col-md-6 col-md-offset-3">
+		<div class="vertical-center">
+			<h2 class="zoomandaudio">Join the game!</h2>
+		</div>
+	</div>
+Join the game!
+</div>
+<div id="trivia-left-column"><!-- keep a consistent border around the image (top, left, right, bottom) --></div>
+
 <div id="trivia-image-container">
-	<img id="trivia-image" src="{{imageurl}}">
+	<div id="trivia-image-wrapper" class="center-block">
+		<img id="trivia-image" src="{{imageurl}}" class="{{type}}">
+	</div>
 </div>
+
+<div id="trivia-right-column"><!-- keep a consistent border around the image (top, left, right, bottom) --></div>
+
 <div id="trivia-status-container">
- STATUS
+	<div class="trivia-scores">
+		<h2 class="trivia-scores-header">
+			Highscores
+		</h2>
+		<div id="trivia-scores-scores">
+			<div class="trivia-score-player">
+				{{#highscores}}
+				<span class="trivia-score-playername">{{rank}}. {{playername}}</span><span class="trivia-score-points">{{highscore}}</span><br/>
+				{{/highscores}}
+			</div>
+		</div>
+	</div>
+	<div class="trivia-scores">
+		<h2 class="trivia-scores-header">
+			Scores
+		</h2>
+		<div>
+			<div class="trivia-score-player">
+			{{#scores}}
+				<span class="trivia-score-playername trivia-answered-{{answeredcorrect}}">{{rank}}. {{playername}}</span><span class="trivia-score-points">{{score}}</span><br/>
+			{{/scores}}
+			</div>
+		</div>
+	</div>
+	<div id="trivia-multiplier">
+		{{#multiplier}}
+		<h2>Points x {{multiplier}}</h2>
+		{{/multiplier}}
+	</div>
+	<div id="trivia-question-timer">
+		Time left to answer: <span></span>
+	</div>
 </div>
-<div id="trivia-joininfo-container">
-	Join
+
+<div id="trivia-url-row" class="row">
+	<div class="col-md-2 fill-height nopadding">
+		<div class="vertical-center fill-height">
+			<!--<img src="http://images1.noterik.com/mupop/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
+			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height espace-logo"/>-->
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="vertical-center">
+			<div id="trivia-mobile-phone"></div>
+			<div id="join-text">
+				<h2 class="zoomandaudio">{{domain}}/{{jumper}} {{#code}}- {{code}}{{/code}}</h2>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 fill-height nopadding">
+		<div class="fill-height poweredbywrapper">
+			<!--<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>-->
+		</div>
+	</div>
 </div>

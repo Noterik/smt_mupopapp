@@ -49,6 +49,4 @@ function resize(){
 	$("#zoomandaudio_spots_holder").css({"width": width, "height" : height});
 }
 
-console.log("JAVASCRIPT INFOSPOTS STARTED");
-
 jQuery(window).on('resize', resize);
