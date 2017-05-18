@@ -753,7 +753,7 @@ h2.zoomandaudio {
 
 #trivia-status-container {
 	position: absolute;
-	background-color: #2e639c;
+	background-color: #cbc5d2;
 	width: 25%;
 	height: 100%;
 	right: 0%;
@@ -855,6 +855,15 @@ h2.zoomandaudio {
 	font-size: 24px;
 }
 
+
+.trivia-feedback-player {
+	position: absolute;
+	top: 30%;
+	margin-top: 20%;
+	margin-left: 30%;
+	margin-right: 15%;
+	font-size: 24px;
+}
 .trivia-score-playername {
 	float: left;
 }
@@ -878,7 +887,7 @@ h2.zoomandaudio {
 	margin-right: 5%;
 	text-align: center;
 	font-style: oblique;
-	font-size: 20px;
+	font-size: 3vh;	
 }
 
 .trivia-answered-correct {
@@ -888,6 +897,48 @@ h2.zoomandaudio {
 .trivia-answered-incorrect {
 	color: #f00;
 }
+
+.trivia-answered-yes {
+	color: #ffffff;
+}
+
+.trivia-answered-no {
+	color: #7766cf;
+}
+
+#trivia-feedback-logo {
+	position: absolute;
+	bottom: 2%;
+	width: 15%;
+	right: 5%;
+	z-index: 2000;	
+}
+
+#trivia-feedback-container {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 75%;
+	background-color: rgba(173,163,207, .8);
+	color: #fff;
+	text-align: center;
+	font-size: 4vh;
+	z-index: 2000;
+}
+
+#trivia-feedback-intro {
+	position: absolute;
+	top: 20%;
+	left: 20%;
+}
+
+#trivia-feedback-outtro {
+	position: absolute;
+	bottom: 20%;
+	left: 20%;
+}
+
 
 .trivia-image-defocus {
 	-webkit-animation: blur 6s linear forwards;

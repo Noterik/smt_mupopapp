@@ -89,31 +89,31 @@ public class TriviaPlayer {
     }
     
     public String getPlayerName() {
-	return playername;
+    	return playername;
     }
     
     public int getScore() {
-	return score;
+    	return score;
     }
     
     public int getHighScore() {
-	return highscore;
+    	return highscore;
     }
     
     public int getQuestionId() {
-	return questionId;
+    	return questionId;
     }
     
     public int getAnswerId() {
-	return answerId;
+    	return answerId;
     }
     
     public String getClientId() {
-	return clientId;
+    	return clientId;
     }
     
     public boolean getAnsweredCorrect() {
-	return answeredCorrect;
+    	return answeredCorrect;
     }
     
     public void setScore(int score) {

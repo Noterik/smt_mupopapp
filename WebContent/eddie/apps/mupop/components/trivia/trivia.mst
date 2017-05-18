@@ -14,6 +14,29 @@ Join the game!
 	</div>
 </div>
 
+{{#feedback}}
+<div id="trivia-feedback-container">
+			{{#feedback-intro}}
+			<div id="trivia-feedback-intro">{{feedback-intro}}</div>
+			{{/feedback-intro}}
+			<div class="trivia-feedback-player">
+
+			{{#scores}}
+				<span class="trivia-score-playername trivia-answered-{{answeredcorrect}}">{{rank}}. {{playername}}</span><span class="trivia-score-points">{{score}}</span><br/>
+			{{/scores}}
+
+			</div>
+			{{#feedback-outtro}}
+			<div id="trivia-feedback-outtro">{{feedback-outtro}}</div>
+			{{/feedback-outtro}}
+</div>
+{{/feedback}}
+
+{{#logo}}
+	<img id="trivia-feedback-logo" src="{{logo}}" />
+{{/logo}}
+
+
 <div id="trivia-right-column"><!-- keep a consistent border around the image (top, left, right, bottom) --></div>
 
 <div id="trivia-status-container">
@@ -31,12 +54,12 @@ Join the game!
 	</div>
 	<div class="trivia-scores">
 		<h2 class="trivia-scores-header">
-			Scores
+			Players
 		</h2>
 		<div>
 			<div class="trivia-score-player">
 			{{#scores}}
-				<span class="trivia-score-playername trivia-answered-{{answeredcorrect}}">{{rank}}. {{playername}}</span><span class="trivia-score-points">{{score}}</span><br/>
+				<span class="trivia-score-playername trivia-answered-{{answered}}">{{rank}}. {{playername}}</span><span class="trivia-score-points">{{score}}</span><br/>
 			{{/scores}}
 			</div>
 		</div>
@@ -47,7 +70,13 @@ Join the game!
 		{{/multiplier}}
 	</div>
 	<div id="trivia-question-timer">
+		{{#feedback}}
+		Next round in : <span></span>
+		{{/feedback}}
+		{{^feedback}}
 		Time left to answer: <span></span>
+		{{/feedback}}
+		
 	</div>
 </div>
 
