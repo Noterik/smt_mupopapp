@@ -59,7 +59,10 @@ Join the game!
 		<div>
 			<div class="trivia-score-player">
 			{{#scores}}
-				<span class="trivia-score-playername trivia-answered-{{answered}}">{{rank}}. {{playername}}</span><span class="trivia-score-points">{{score}}</span><br/>
+				<span class="trivia-score-playername trivia-answered-{{answered}}">{{rank}}. {{playername}}
+				{{#answersignal}}&nbsp;(answered){{/answersignal}}
+				{{^answersignal}}&nbsp;(thinking){{/answersignal}}
+				</span><span class="trivia-score-points">{{score}}</span><br/>
 			{{/scores}}
 			</div>
 		</div>
@@ -71,10 +74,10 @@ Join the game!
 	</div>
 	<div id="trivia-question-timer">
 		{{#feedback}}
-		Next round in : <span></span>
+		Next round in<br /> <span id="trivia-nexttimer">{{timer}}</span>
 		{{/feedback}}
 		{{^feedback}}
-		Time left to answer: <span></span>
+		Time left to answer<br /> <span id="trivia-answertimer">{{timer}}</span>
 		{{/feedback}}
 		
 	</div>

@@ -97,6 +97,7 @@ public class TriviaController extends Html5Controller {
 			score.put("answeredcorrect", triviaPlayer.getAnsweredCorrect() == true ? "correct" : "incorrect");
 			if (triviaPlayer.getAnswerId()!=0) {
 				score.put("answered","yes");
+				score.put("answersignal","true"); // needed for mustache
 			} else {
 				score.put("answered","no");
 			}
@@ -142,16 +143,13 @@ public class TriviaController extends Html5Controller {
 		if (logo!=null) {
 			data.put("logo",logo);
 		}
+		data.put("timer",timeout);
 		screen.get(selector).render(data);
 		screen.get(selector).loadScript(this);
 
-		JSONObject d = new JSONObject();
+		
+		JSONObject d = new JSONObject(); // can this also be removed
 		d.put("command", "init");
-		screen.get(selector).update(d);
-
-		d = new JSONObject();	
-		d.put("command","timeupdate");
-		d.put("time", timeout);
 		screen.get(selector).update(d);
 	}
 
@@ -186,11 +184,6 @@ public class TriviaController extends Html5Controller {
 
 
 	public void on1SecondTimer(ModelEvent e) {
-		JSONObject d = new JSONObject();	
-		d.put("command","timeupdate");
-		d.put("time", timeout);
-		screen.get(selector).update(d);
-
 		if (timeout > 0) {
 			timeout = timeout - 1;
 
@@ -224,7 +217,8 @@ public class TriviaController extends Html5Controller {
 		msgnode.setProperty("command","timer");
 		msgnode.setProperty("timer", ""+timeout);
 		model.notify("@appstate", msgnode);
-		System.out.println("FEEDBACK="+feedback+" t="+timeout);
+		screen.get("#trivia-nexttimer").html(""+timeout);
+		screen.get("#trivia-answertimer").html(""+timeout);
 	}
 
 	private FsNode getNextItem() {	
@@ -387,24 +381,10 @@ public class TriviaController extends Html5Controller {
 					if (!player.getValue().getAnsweredCorrect()) {
 						getPoints = false;
 					}
-					/*
-					if (questionAndAnswersMapping.get(triviaPlayer.getQuestionId()) == triviaPlayer.getAnswerId()) {
-						//Question answered correct!
-						System.out.println("Answered correctly by "+player.getKey());
-						player.getValue().setAnsweredCorrect(true);
-					} else {
-						//Question answered incorrect
-						getPoints = false;
-						System.out.println("Answered incorrectly by "+player.getKey());
-						player.getValue().setAnsweredCorrect(false);
-					}
-					*/
+
 				} else {
-					//player did not answer question, remove from active players and give notice
 					playersToBeRemoved.add(player.getKey());
-
 					System.out.println("No answer from "+player.getKey());
-
 					//I'm nice so other players still get their points
 					//getPoints = false;
 				}
@@ -434,6 +414,18 @@ public class TriviaController extends Html5Controller {
 					triviaPlayer.setScore(0);
 				}
 			}
+			
+			//send questionId to players screen id
+			FsNode msgnode = new FsNode("msgnode", "1");
+			msgnode.setProperty("itemid", model.getProperty("@itemid"));
+			msgnode.setProperty("command","scoreupdate");
+			msgnode.setProperty("answerid",""+triviaPlayer.getAnswerId());
+			msgnode.setProperty("score", ""+triviaPlayer.getScore());	
+			msgnode.setProperty("answercorrect", ""+triviaPlayer.getAnsweredCorrect());	
+			msgnode.setProperty("screenid", triviaPlayer.getClientId());
+			msgnode.setProperty("feedback", ""+feedback);
+			model.notify("@appstate", msgnode);
+		
 		}
 	}
 
