@@ -139,7 +139,15 @@ public class TriviaController extends Html5Controller {
 			data.put("feedback-outtro","Get ready for the next round");
 			data.put("feedback","true");
 		}
-		String logo = "http://betadash.mupop.net/eddie/img/logo_EF.png";
+		String logo = "http://betadash.mupop.net/eddie/img/phc_logo_square_purple.png";
+		FsNode ex = model.getNode("@exhibition");
+		System.out.println("LOGO EXI="+ex);
+		if (ex!=null) {
+			System.out.println("LOGO EXI="+ex.asXML());
+			if (ex.getId().equals("1494918612906")) {
+				logo = "http://betadash.mupop.net/eddie/img/logo_EF.png";
+			}
+		}
 		if (logo!=null) {
 			data.put("logo",logo);
 		}

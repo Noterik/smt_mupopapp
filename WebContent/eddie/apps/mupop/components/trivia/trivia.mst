@@ -74,10 +74,10 @@ Join the game!
 	</div>
 	<div id="trivia-question-timer">
 		{{#feedback}}
-		Next round in<br /> <span id="trivia-nexttimer">{{timer}}</span>
+		Next round in<br /> <span id="trivia-nexttimer">{{timer}}</span> Seconds
 		{{/feedback}}
 		{{^feedback}}
-		Time left to answer<br /> <span id="trivia-answertimer">{{timer}}</span>
+		Seconds left to answer<br /> <span id="trivia-answertimer">{{timer}}</span>
 		{{/feedback}}
 		
 	</div>
