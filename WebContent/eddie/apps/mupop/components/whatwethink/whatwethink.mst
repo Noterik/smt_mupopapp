@@ -1,0 +1,29 @@
+<div id="whatwethink-question-row">
+	{{question}}
+</div>
+
+<div id="whatwethink-statements-row">
+	<div id="whatwethink-statements-left-column">
+		A : {{answer1}}
+	</div>
+	<div id="whatwethink-statements-right-column">
+		B : {{answer2}}
+	</div>
+</div>
+<div id="whatwethink-trackpad-row">
+	<div id="whatwethink-trackpad-left-column">
+	</div>
+	<div id="whatwethink-trackpad-right-column">
+	</div>
+</div>
+<div id="whatwethink-timer-one">
+{{timeout-msg}}
+</div>
+
+{{#feedback}}
+<div id="whatwethink-feedback-container">
+<div id="whatwethink-timer-two">
+{{timeout-msg}}
+</div>
+</div>
+{{/feedback}}

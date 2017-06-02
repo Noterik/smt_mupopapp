@@ -26,6 +26,7 @@
 		<fromid>/screen['vars']/fromid</fromid>
 		<contentrole>/screen['vars']/contentrole</contentrole>
 		<itemid>/screen['vars']/itemid</itemid>
+		<itemquestionid>/screen['vars']/itemquestionid</itemquestionid>
 		<appstate>/shared['app']/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/appstate</appstate>
 		<selecteditem>/screen/selecteditem</selecteditem>
 		<triviaplayerid>/screen['vars']/triviaplayerid</triviaplayerid>
@@ -126,6 +127,13 @@
 		<style>trivia/trivia.css</style>
 		<controller id="TriviaController">
 			<javascript>trivia/TriviaController.js</javascript>
+		</controller>
+	</view>
+	
+	<view id="#whatwethink_app">
+		<template>whatwethink/whatwethink.mst</template>
+		<style>whatwethink/whatwethink.css</style>
+		<controller id="WhatWeThinkController">
 		</controller>
 	</view>
 	
