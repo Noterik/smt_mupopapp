@@ -15,6 +15,13 @@
 	</div>
 	<div id="whatwethink-trackpad-right-column">
 	</div>
+	<div id="whatwethink-statements-dots">
+	{{#nodes}}
+	{{#x}}
+		<div class="whatwethink-statements-dot" style="top:{{y}}%;left:{{x}}%;background-color: red;"> </div>
+	{{/x}}
+	{{/nodes}}
+	</div>
 </div>
 <div id="whatwethink-timer-one">
 {{timeout-msg}}

@@ -30,6 +30,7 @@
 		<appstate>/shared['app']/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/appstate</appstate>
 		<selecteditem>/screen/selecteditem</selecteditem>
 		<triviaplayerid>/screen['vars']/triviaplayerid</triviaplayerid>
+		<whatwethinkplayerid>/screen['vars']/whatwethinkplayerid</whatwethinkplayerid>
 
 		<language_static_entry_screen>/domain['mupop']/config['languages']/default['apps']/entryscreen['staticentryscreen']</language_static_entry_screen>
 		<language_photoexplore_coverflow_screen>/domain['mupop']/config['languages']/default['apps']/photoexplore['coverflow']</language_photoexplore_coverflow_screen>
@@ -60,9 +61,13 @@
 		<exhibitionevents>/shared['exhibitionevents']/exhibition['@exhibitionid']</exhibitionevents>
 		
 		<photoinfospots>/shared['photoinfospots']/exhibition['@exhibitionid']/station['@stationid']</photoinfospots>
+		<whatwethinkdots>/shared['whatwethink']/exhibition['@exhibitionid']/station['@stationid']</whatwethinkdots>
 		
 		<triviaplayerslist>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']</triviaplayerslist>
 		<triviaplayer>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']/player['@triviaplayerid']</triviaplayer>
+		<whatwerhinkplayerslist>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']</whatwerhinkplayerslist>
+		<whatwethinkplayer>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']/player['@whatwethinkplayerid']</whatwethinkplayer>
+
 	</model>
 
 	<view id="#screen">

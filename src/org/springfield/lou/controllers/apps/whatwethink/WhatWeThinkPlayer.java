@@ -57,9 +57,10 @@ public class WhatWeThinkPlayer {
 	questionId = 0;
 	answerId = 0;
 	answeredCorrect = false;
+	System.out.println("PLAYERNAME="+playername);
 	
-	model.setProperty("@triviaplayerid", playername.toLowerCase());
-	playerDetails = model.getNode("@triviaplayer");
+	model.setProperty("@whatwethinkplayerid", playername.toLowerCase());
+	playerDetails = model.getNode("@whatwethinkplayer");
 	
 	//TODO: I would rather use model.getNode("@triviaplayerslist/player['"+playername.toLowerCase()+"']"); 
 	//but this gives nullpointer

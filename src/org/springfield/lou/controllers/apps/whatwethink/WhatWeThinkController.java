@@ -31,7 +31,6 @@ import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
-import org.springfield.lou.controllers.apps.trivia.TriviaPlayer;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 
@@ -43,6 +42,7 @@ public class WhatWeThinkController extends Html5Controller {
 	private int questioncounter=1;
 	private FsNode item = null;
 	private FsNode question = null;
+	private String lastchanged;
 	
 	private boolean feedback = true;
 	private HashMap<String,WhatWeThinkPlayer> activePlayers;
@@ -52,10 +52,19 @@ public class WhatWeThinkController extends Html5Controller {
 	public void attach(String sel) {	
 		selector = sel;
 		model.setProperty("@contentrole", "mainapp");
-		System.out.println("WHAT WE THINK STARTED !");
 		activePlayers = new HashMap<String, WhatWeThinkPlayer>();
 		fillPage();
 		model.onNotify("/shared[timers]/1second", "on1SecondTimer", this);
+		model.onNotify("/shared[timers]/50ms","on50MillisSecondsTimer",this); 
+		model.onNotify("@stationevents/towhatwethinkserver", "onClientMsg", this);
+	}
+	
+	public void on50MillisSecondsTimer(ModelEvent e) {
+		String changed = model.getProperty("@whatwethinkdots/changed");
+		if (changed!=null && !changed.equals(lastchanged)) {
+			fillDots();
+			lastchanged = changed;
+		}
 	}
 	
 	public void on1SecondTimer(ModelEvent e) {
@@ -77,7 +86,15 @@ public class WhatWeThinkController extends Html5Controller {
 					timeout = 10;
 					getNextStatement();
 					fillPage();
-					//sendRandomQuestions();
+					//send questionId to players screen id  (daniel should not be a message!)
+					FsNode msgnode = new FsNode("msgnode", "1");
+					msgnode.setProperty("itemid", model.getProperty("@itemid"));
+					msgnode.setProperty("itemquestionid", model.getProperty("@itemquestionid"));
+					msgnode.setProperty("feedback",""+feedback);
+					msgnode.setProperty("command","newquestion");
+					msgnode.setProperty("screenid","all");
+					model.notify("@appstate", msgnode);
+
 				}
 			} else {	
 				feedback = !feedback;
@@ -106,14 +123,14 @@ public class WhatWeThinkController extends Html5Controller {
 		screen.get("#trivia-answertimer").html(""+timeout);
 		*/
 		
-		System.out.println("WWT: timeout "+timeout+" players="+activePlayers.size()+" feedback="+feedback);
+//		System.out.println("WWT: timeout "+timeout+" players="+activePlayers.size()+" feedback="+feedback);
 		screen.get("#whatwethink-timer-one").html(""+timeout+" sec");
 		screen.get("#whatwethink-timer-two").html("next statement in "+timeout+" sec");
 	}
 
 	
 	private void fillPage() {
-		System.out.println("WHAT WE THINK : Fill page");
+	//	System.out.println("WHAT WE THINK : Fill page");
 		JSONObject data = new JSONObject();
 		if (feedback) {
 			data.put("timeout-msg",""+timeout+" sec");
@@ -132,7 +149,7 @@ public class WhatWeThinkController extends Html5Controller {
 		model.setProperty("@itemid",""+itemcounter);
 		item = model.getNode("@item");
 		if (item!=null) {
-			System.out.println("ITEM="+item);
+		//	System.out.println("ITEM="+item);
 		} else {
 			// load the next item !
 		}
@@ -141,7 +158,7 @@ public class WhatWeThinkController extends Html5Controller {
 		model.setProperty("@itemquestionid",""+questioncounter);
 		question = model.getNode("@itemquestion");
 		if (question!=null) {
-			System.out.println("QUESTION="+item.asXML());	
+			//System.out.println("QUESTION="+item.asXML());	
 			// move to the next one
 			questioncounter++;
 		} else {
@@ -161,6 +178,56 @@ public class WhatWeThinkController extends Html5Controller {
 		}
 		
 	}
+	
+	public void onClientMsg(ModelEvent e) {
+		FsNode message = e.getTargetFsNode();
+		String clientScreenId = message.getId();
+		String command = message.getProperty("command");
+		System.out.println("WWT CLIENT MSG COMMAND="+command);
+		if (command.equals("join")) {
+			String playername = message.getProperty("username");
+			WhatWeThinkPlayer player = new WhatWeThinkPlayer(model, playername, clientScreenId);
+			activePlayers.put(playername, player);	
+			
+			
+			//send questionId to players screen id  (daniel should not be a message!)
+			FsNode msgnode = new FsNode("msgnode", "1");
+			msgnode.setProperty("itemid", model.getProperty("@itemid"));
+			msgnode.setProperty("itemquestionid", model.getProperty("@itemquestionid"));
+			msgnode.setProperty("feedback",""+feedback);
+			msgnode.setProperty("command","newquestion");
+			msgnode.setProperty("screenid", player.getClientId());
+			model.notify("@appstate", msgnode);
+			
+		} else if (command.equals("answer")) {
+			String answerId = message.getProperty("value");
+			String state = message.getProperty("answer");
+			String playername = message.getProperty("playername");
+			if (activePlayers.containsKey(playername)) {
+				activePlayers.get(playername).setAnswerId(Integer.parseInt(answerId));
+				if (state.equals("correct")) {
+					activePlayers.get(playername).setAnsweredCorrect(true);
+				} else {
+					activePlayers.get(playername).setAnsweredCorrect(false);
+				}
+			} else {
+				//Got answer from non active player,
+				//refresh this clients screen
+			}
+			fillPage();
+		}
+	}
+	
+	private void fillDots() {
+		FSList fslist = model.getList("@whatwethinkdots");
+		if (fslist!=null) {
+			System.out.println("SIZE="+fslist.size());
+			JSONObject data = fslist.toJSONObject("en","x,y,c"); // turn the lists into a json object
+			screen.get(selector).render(data,"whatwethink-statements-dots");
+		}
+	}
+
+
 
 	
 }
