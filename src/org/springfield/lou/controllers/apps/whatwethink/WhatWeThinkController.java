@@ -82,7 +82,7 @@ public class WhatWeThinkController extends Html5Controller {
 			timeout = timeout - 1;
 
 		} else {
-			if (activePlayers.size() > 0) {
+			if (1==1) { // need fix :)
 				toggleFeedBack();
 				if (feedback) {
 					timeout = 5;
