@@ -18,7 +18,7 @@
 	<div id="whatwethink-statements-dots">
 	{{#nodes}}
 	{{#x}}
-		<div class="whatwethink-statements-dot" style="top:{{y}}%;left:{{x}}%;background-color: red;"> </div>
+		<div class="whatwethink-statements-dot" style="top:{{y}}%;left:{{x}}%;background-color: {{c}};"> </div>
 	{{/x}}
 	{{/nodes}}
 	</div>

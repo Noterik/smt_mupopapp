@@ -19,6 +19,7 @@
  */
 package org.springfield.lou.controllers.apps.whatwethink;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,16 +44,19 @@ public class WhatWeThinkController extends Html5Controller {
 	private FsNode item = null;
 	private FsNode question = null;
 	private String lastchanged;
+	private ArrayList<String> colorbucket;
+	private int colorcounter=0;
 	
 	private boolean feedback = true;
-	private HashMap<String,WhatWeThinkPlayer> activePlayers;
+	private HashMap<String,FsNode> activePlayers;
 	
 	public WhatWeThinkController() { }
 	
 	public void attach(String sel) {	
 		selector = sel;
+		colorbucket = fillColorBucket();
 		model.setProperty("@contentrole", "mainapp");
-		activePlayers = new HashMap<String, WhatWeThinkPlayer>();
+		activePlayers = new HashMap<String, FsNode>();
 		fillPage();
 		model.onNotify("/shared[timers]/1second", "on1SecondTimer", this);
 		model.onNotify("/shared[timers]/50ms","on50MillisSecondsTimer",this); 
@@ -67,13 +71,21 @@ public class WhatWeThinkController extends Html5Controller {
 		}
 	}
 	
+	private void toggleFeedBack() {
+		feedback = !feedback;
+		FsNode msgnode = new FsNode("msgnode", "1");
+		msgnode.setProperty("command","feedbackstate");
+		msgnode.setProperty("feedback", ""+feedback);
+		model.notify("@appstate", msgnode);
+	}
+	
 	public void on1SecondTimer(ModelEvent e) {
 		if (timeout > 0) {
 			timeout = timeout - 1;
 
 		} else {
 			if (activePlayers.size() > 0) {
-				feedback = !feedback;
+				toggleFeedBack();
 				if (feedback) {
 					timeout = 5;
 					//handleAnswers();	
@@ -97,7 +109,7 @@ public class WhatWeThinkController extends Html5Controller {
 
 				}
 			} else {	
-				feedback = !feedback;
+				toggleFeedBack();
 				if (feedback) {
 					timeout = 10;	
 					fillPage();
@@ -113,12 +125,13 @@ public class WhatWeThinkController extends Html5Controller {
 				}
 			}
 		}
-		/*
+
 		FsNode msgnode = new FsNode("msgnode", "1");
 		msgnode.setProperty("itemid", model.getProperty("@itemid"));
 		msgnode.setProperty("command","timer");
 		msgnode.setProperty("timer", ""+timeout);
 		model.notify("@appstate", msgnode);
+		/*
 		screen.get("#trivia-nexttimer").html(""+timeout);
 		screen.get("#trivia-answertimer").html(""+timeout);
 		*/
@@ -136,6 +149,7 @@ public class WhatWeThinkController extends Html5Controller {
 			data.put("timeout-msg",""+timeout+" sec");
 			data.put("feedback", "true");
 		}
+		
 		if (question!=null) { // just to make sure
 			data.put("question",question.getProperty("question"));	
 			data.put("answer1",question.getProperty("answer1"));
@@ -183,23 +197,37 @@ public class WhatWeThinkController extends Html5Controller {
 		FsNode message = e.getTargetFsNode();
 		String clientScreenId = message.getId();
 		String command = message.getProperty("command");
-		System.out.println("WWT CLIENT MSG COMMAND="+command);
+//		System.out.println("WWT CLIENT MSG COMMAND="+command);
 		if (command.equals("join")) {
-			String playername = message.getProperty("username");
-			WhatWeThinkPlayer player = new WhatWeThinkPlayer(model, playername, clientScreenId);
-			activePlayers.put(playername, player);	
+			String playername = message.getProperty("username");	
+			// should we not ceheck for the old one?
+			FsNode player  = activePlayers.get(playername);
+			if (player==null) {
+				String newcolor = colorbucket.get(colorcounter++);
+				player =  new FsNode("player",playername);
+				player.setProperty("playername", playername);
+				player.setProperty("color", newcolor);
+				player.setProperty("clientScreenId", clientScreenId);
+				//player = new WhatWeThinkPlayer(model, playername, clientScreenId,newcolor);
+				activePlayers.put(playername, player);
+			} else {
+				// update its screenid 
+				player.setProperty("clientScreenId", clientScreenId);
+			}
 			
-			
+			System.out.println("RRRRR="+player);
 			//send questionId to players screen id  (daniel should not be a message!)
 			FsNode msgnode = new FsNode("msgnode", "1");
 			msgnode.setProperty("itemid", model.getProperty("@itemid"));
+			msgnode.setProperty("color", player.getProperty("color"));
 			msgnode.setProperty("itemquestionid", model.getProperty("@itemquestionid"));
 			msgnode.setProperty("feedback",""+feedback);
 			msgnode.setProperty("command","newquestion");
-			msgnode.setProperty("screenid", player.getClientId());
+			msgnode.setProperty("screenid", player.getProperty("clientScreenId"));
 			model.notify("@appstate", msgnode);
 			
 		} else if (command.equals("answer")) {
+			/*
 			String answerId = message.getProperty("value");
 			String state = message.getProperty("answer");
 			String playername = message.getProperty("playername");
@@ -215,6 +243,7 @@ public class WhatWeThinkController extends Html5Controller {
 				//refresh this clients screen
 			}
 			fillPage();
+			*/
 		}
 	}
 	
@@ -226,6 +255,43 @@ public class WhatWeThinkController extends Html5Controller {
 			screen.get(selector).render(data,"whatwethink-statements-dots");
 		}
 	}
+	
+	private ArrayList<String> fillColorBucket() {
+		ArrayList<String> bucket = new ArrayList<String>();
+		// fixed colors
+		bucket.add("#ff0000");
+		bucket.add("#0ff000");
+		bucket.add("#00ff00");
+		bucket.add("#000ff0");
+		bucket.add("#ffff00");
+		bucket.add("#993399");
+		bucket.add("#0000ff");
+		bucket.add("#33ccff");
+		bucket.add("#000f0f");
+		bucket.add("#00f00f");
+		bucket.add("#0f000f");
+		bucket.add("#f0000f");
+		for (int i=0;i<5000;i++) {
+			String newcolor = generateColor();
+			if (!bucket.contains(newcolor)) {
+				bucket.add(newcolor);
+			}
+		}
+		return bucket;
+	}
+	
+	private String generateColor() {	    
+		//to get rainbow, pastel colors
+		Random random = new Random();
+		final float hue = random.nextFloat();
+		// Saturation between 0.6 and 0.8
+		final float saturation = (random.nextInt(2000) + 6000) / 10000f;
+		final float luminance = 0.9f;
+		final Color color = Color.getHSBColor(hue, saturation, luminance);
+
+		return "#"+Integer.toHexString(color.getRGB()).substring(2);
+	}
+
 
 
 
