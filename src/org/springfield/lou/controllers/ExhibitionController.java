@@ -75,7 +75,6 @@ public class ExhibitionController extends Html5Controller {
     public void onStateChange(ModelEvent event) {
 	String state= event.getTargetFsNode().getProperty("state");
 	//boolean force = Boolean.parseBoolean(event.getTargetFsNode().getProperty("force"));
-	System.out.println("MAINSCREEN STATE CHANGE =" +state+" (current state = "+model.getProperty("@appstate")+")");
 	
 	String currentState = model.getProperty("@appstate");
 	
@@ -107,7 +106,6 @@ public class ExhibitionController extends Html5Controller {
     
     private void initStep() {    	
     	String appname = model.getProperty("@station/app");
-    	System.out.println("APPNAME="+appname);
     	if (appname==null || appname.equals("") || appname.equals("none")) {
     		// no app selected, set html to reflect this
     		screen.get("#exhibition").html("<div id=\"noappselected\">No App Selected</div>");
@@ -133,7 +131,6 @@ public class ExhibitionController extends Html5Controller {
     	String waitscreen = model.getProperty("@station/waitscreen");
     	if (waitscreen!=null && !waitscreen.equals("") && !waitscreen.equals("none")) {
         	String waitscreen_content = model.getProperty("@station/waitscreen_content");
-    		System.out.println("STATIC ENTRY SCREEN WANTED ="+waitscreen+" set="+waitscreen_content);
     		if (waitscreen.equals("static")) {
         		screen.get("#staticentryscreen").remove(); // extra checks daniel
         		screen.get("#staticentryscreen").remove(); // extra checks daniel
@@ -149,15 +146,12 @@ public class ExhibitionController extends Html5Controller {
     }
     
     public void onClientExhibitionEvent(ModelEvent e) {
-    	//System.out.println("CLIENT Exhibition EVENT="+e);
     	FsNode message = e.getTargetFsNode();
     	String from = message.getId();
     	String request = message.getProperty("request");
-    	//System.out.println("REQ="+request);
     	if (request!=null) { // so its a request for something !
     		if (request.equals("join")) {
     			// ok lets see what we need todo and reply back to client
-    			System.out.println("FROM="+from);
     			Screen client = ApplicationManager.getScreenByFullid(from);
     			client.getModel().setProperty("/screen/state","stationselect");
     		}
@@ -166,17 +160,13 @@ public class ExhibitionController extends Html5Controller {
     }
   
     public void onClientStationEvent(ModelEvent e) {
-    	//System.out.println("CLIENT station EVENT="+e);
     	FsNode message = e.getTargetFsNode();
     	String from = message.getId();
     	String request = message.getProperty("request");
-    	//System.out.println("REQ="+request);
     	if (request!=null) { // so its a request for something !
     		if (request.equals("station")) {
     			// ok lets see what we need todo and reply back to client
-    			System.out.println("FROM="+from);
     			Screen client = ApplicationManager.getScreenByFullid(from);
-    			System.out.println("WHOOOuUUU="+model.getProperty("@station/contentselect"));
     			String contentselect = model.getProperty("@station/contentselect");
     			if (contentselect!=null && !contentselect.equals("none")) {
         			client.getModel().setProperty("@exhibitionid",model.getProperty("@exhibitionid"));
@@ -202,7 +192,6 @@ public class ExhibitionController extends Html5Controller {
     
     private void contentSelectStep() {
     	String type = model.getProperty("@station/contentselect");
-    	System.out.println("MuPoP MAIN : content select step called ="+type);
     	if (type!=null && !type.equals("")) {
     		if (type.equals("coverflow")) {
         		screen.get("#coverflow").remove(); // extra checks daniel
@@ -217,7 +206,6 @@ public class ExhibitionController extends Html5Controller {
     private void appTimeoutStep() {
     	// so the app has timed out either by user doing nothing or using app too long
     	// tell client to react and reset outselves
-    	System.out.println("APP RESET");
     	resetScreen();
     	model.setProperty("/screen/state","init"); 
     	
@@ -232,28 +220,16 @@ public class ExhibitionController extends Html5Controller {
     	
     	JSONObject data = new JSONObject();
 		FsNode stationnode = model.getNode("@station");
-    	System.out.println("MuPoP MAIN : mainapp step called ="+stationnode.asXML());
 		
-    	/*
-    	String[] parts = path.split("/");
-    	String userid=parts[4];
-    	String exhibitionid=parts[6];
-    	String stationid=parts[8];
-    	model.setProperty("@username", userid);
-    	model.setProperty("@exhibitionid", exhibitionid);
-    	model.setProperty("@stationid", stationid);
-    	*/
 		
     	data.put("path",path);
     	//data.put("element",model.getProperty("/screen/element"));
-    	System.out.println("exhibition controller called");
     	screen.get(selector).render(data);
     	//model.setProperty("/shared/app/interactivevideo/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/isplaying", "false");
     	
 		if (stationnode!=null) {
 		    String app =  stationnode.getProperty("app"); // get the app name
 		    if (app!=null) {
-		    	System.out.println("APP2="+app);
 		    	//TODO: should be a case or loaded system
 		    	if (app.equals("photoexplore")) {
 	        		screen.get("#photoexplore_app").remove(); // extra checks daniel

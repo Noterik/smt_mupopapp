@@ -65,9 +65,6 @@
 		
 		<triviaplayerslist>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']</triviaplayerslist>
 		<triviaplayer>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']/player['@triviaplayerid']</triviaplayer>
-		<whatwerhinkplayerslist>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']</whatwerhinkplayerslist>
-		<whatwethinkplayer>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']/player['@whatwethinkplayerid']</whatwethinkplayer>
-
 	</model>
 
 	<view id="#screen">

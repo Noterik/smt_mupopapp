@@ -48,7 +48,6 @@ public class WhatWeThinkController extends Html5Controller {
 	private int colorcounter=0;
 	
 	private boolean feedback = true;
-	private HashMap<String,FsNode> activePlayers;
 	
 	public WhatWeThinkController() { }
 	
@@ -56,7 +55,6 @@ public class WhatWeThinkController extends Html5Controller {
 		selector = sel;
 		colorbucket = fillColorBucket();
 		model.setProperty("@contentrole", "mainapp");
-		activePlayers = new HashMap<String, FsNode>();
 		fillPage();
 		model.onNotify("/shared[timers]/1second", "on1SecondTimer", this);
 		model.onNotify("/shared[timers]/50ms","on50MillisSecondsTimer",this); 
@@ -136,14 +134,12 @@ public class WhatWeThinkController extends Html5Controller {
 		screen.get("#trivia-answertimer").html(""+timeout);
 		*/
 		
-//		System.out.println("WWT: timeout "+timeout+" players="+activePlayers.size()+" feedback="+feedback);
 		screen.get("#whatwethink-timer-one").html(""+timeout+" sec");
 		screen.get("#whatwethink-timer-two").html("next statement in "+timeout+" sec");
 	}
 
 	
 	private void fillPage() {
-	//	System.out.println("WHAT WE THINK : Fill page");
 		JSONObject data = new JSONObject();
 		if (feedback) {
 			data.put("timeout-msg",""+timeout+" sec");
@@ -159,20 +155,13 @@ public class WhatWeThinkController extends Html5Controller {
 	}
 	
 	private void getNextStatement() {
-		System.out.println("WWT: get next statement");
 		model.setProperty("@itemid",""+itemcounter);
 		item = model.getNode("@item");
-		if (item!=null) {
-		//	System.out.println("ITEM="+item);
-		} else {
-			// load the next item !
-		}
 		
 		// ok lets now get the question
 		model.setProperty("@itemquestionid",""+questioncounter);
 		question = model.getNode("@itemquestion");
 		if (question!=null) {
-			//System.out.println("QUESTION="+item.asXML());	
 			// move to the next one
 			questioncounter++;
 		} else {
@@ -197,11 +186,15 @@ public class WhatWeThinkController extends Html5Controller {
 		FsNode message = e.getTargetFsNode();
 		String clientScreenId = message.getId();
 		String command = message.getProperty("command");
-//		System.out.println("WWT CLIENT MSG COMMAND="+command);
 		if (command.equals("join")) {
-			String playername = message.getProperty("username");	
+			
+			String playername = message.getProperty("username");
+			FsNode player = model.getNode("@station/player['"+playername+"']");
+			System.out.println("DBPLAYER="+player);
+			
+	
 			// should we not ceheck for the old one?
-			FsNode player  = activePlayers.get(playername);
+			//FsNode player  = activePlayers.get(playername);
 			if (player==null) {
 				String newcolor = colorbucket.get(colorcounter++);
 				player =  new FsNode("player",playername);
@@ -209,13 +202,14 @@ public class WhatWeThinkController extends Html5Controller {
 				player.setProperty("color", newcolor);
 				player.setProperty("clientScreenId", clientScreenId);
 				//player = new WhatWeThinkPlayer(model, playername, clientScreenId,newcolor);
-				activePlayers.put(playername, player);
+				
+				//activePlayers.put(playername, player);
+				model.putNode("@station", player);
 			} else {
 				// update its screenid 
 				player.setProperty("clientScreenId", clientScreenId);
 			}
 			
-			System.out.println("RRRRR="+player);
 			//send questionId to players screen id  (daniel should not be a message!)
 			FsNode msgnode = new FsNode("msgnode", "1");
 			msgnode.setProperty("itemid", model.getProperty("@itemid"));
@@ -250,7 +244,6 @@ public class WhatWeThinkController extends Html5Controller {
 	private void fillDots() {
 		FSList fslist = model.getList("@whatwethinkdots");
 		if (fslist!=null) {
-			System.out.println("SIZE="+fslist.size());
 			JSONObject data = fslist.toJSONObject("en","x,y,c"); // turn the lists into a json object
 			screen.get(selector).render(data,"whatwethink-statements-dots");
 		}
