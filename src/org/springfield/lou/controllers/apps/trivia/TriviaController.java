@@ -117,23 +117,26 @@ public class TriviaController extends Html5Controller {
 
 		ArrayList<JSONObject> highscores = new ArrayList<JSONObject>();
 
-		NavigableMap<Integer, String> hscores = updateHighScoreList();
+		NavigableMap<Integer, ArrayList<String>> hscores = updateHighScoreList();
 
-		for (Map.Entry<Integer, String> highscore : hscores.descendingMap().entrySet()) {
+		for (Map.Entry<Integer, ArrayList<String>> highscore : hscores.descendingMap().entrySet()) {
+		    for (String player : highscore.getValue()) {
 			if (i > 10) {
-				break;
+			    break;
 			}
-
+			    
 			JSONObject score = new JSONObject();
-
-			score.put("playername", highscore.getValue());
+			
+			score.put("playername", player);
 			score.put("highscore", highscore.getKey());
 			score.put("rank", i);
 			i++;	    
 
 			highscores.add(score);
+		    }
 		}
 		data.put("highscores", highscores);
+		
 		if (feedback) {
 			data.put("feedback-intro","Scores gained this round");
 			data.put("feedback-outtro","Get ready for the next round");
@@ -438,10 +441,10 @@ public class TriviaController extends Html5Controller {
 	}
 
 	//update high scores
-	private TreeMap<Integer, String> updateHighScoreList() {
+	private TreeMap<Integer, ArrayList<String>> updateHighScoreList() {
 		System.out.println("Checking high scores");
 
-		Map<Integer, String> scores = new HashMap<Integer, String>();
+		Map<Integer, ArrayList<String>> scores = new HashMap<Integer, ArrayList<String>>();
 
 		FSList players = model.getList("@triviaplayerslist/player");
 
@@ -451,17 +454,26 @@ public class TriviaController extends Html5Controller {
 				String name = player.getProperty("name");
 				String hs = player.getProperty("highscore");
 
-				System.out.println("player "+name+" highscore "+hs);
-
 				if (hs != null && !hs.equals("")) {
-					scores.put(Integer.parseInt(hs), name);
+				   ArrayList<String> playerscores = scores.get(Integer.parseInt(hs));
+				   if (playerscores == null) {
+				       playerscores = new ArrayList<String>();
+				       scores.put(Integer.parseInt(hs), playerscores);
+				   }
+				   playerscores.add(name);				   
 				} else {
-					scores.put(0, name);	
+				    ArrayList<String> playerscores = scores.get(0);
+				    if (playerscores == null) {
+					playerscores = new ArrayList<String>();	
+					scores.put(0, playerscores);
+				    }
+				    playerscores.add(name);					    
 				}
 			}
-			return new TreeMap<Integer, String>(scores);
+			
+			return new TreeMap<Integer, ArrayList<String>>(scores);
 		}
 
-		return new TreeMap<Integer, String>();
+		return new TreeMap<Integer, ArrayList<String>>();
 	}
 }
