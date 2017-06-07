@@ -21,8 +21,10 @@ package org.springfield.lou.controllers.apps.whatwethink;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Random;
@@ -44,8 +46,8 @@ public class WhatWeThinkController extends Html5Controller {
 	private FsNode item = null;
 	private FsNode question = null;
 	private String lastchanged;
-	private ArrayList<String> colorbucket;
-	private int colorcounter=0;
+	private static ArrayList<String> colorbucket;
+	//private int colorcounter=0;
 	
 	private boolean feedback = true;
 	
@@ -86,7 +88,7 @@ public class WhatWeThinkController extends Html5Controller {
 				toggleFeedBack();
 				if (feedback) {
 					timeout = 5;
-					//handleAnswers();	
+					handleAnswers();	
 					fillPage();
 					//FsNode msgnode = new FsNode("msgnode", "1");
 					//msgnode.setProperty("command","feedbackstate");
@@ -96,6 +98,7 @@ public class WhatWeThinkController extends Html5Controller {
 					timeout = 10;
 					getNextStatement();
 					fillPage();
+					fillDots();
 					//send questionId to players screen id  (daniel should not be a message!)
 					FsNode msgnode = new FsNode("msgnode", "1");
 					msgnode.setProperty("itemid", model.getProperty("@itemid"));
@@ -116,9 +119,11 @@ public class WhatWeThinkController extends Html5Controller {
 					//msgnode.setProperty("feedback", ""+feedback);
 					//model.notify("@appstate", msgnode);
 				} else {
+					//handleAnswers();
 					timeout = 5;
 					getNextStatement();
 					fillPage();
+					fillDots();
 					//sendRandomQuestions();
 				}
 			}
@@ -136,6 +141,68 @@ public class WhatWeThinkController extends Html5Controller {
 		
 		screen.get("#whatwethink-timer-one").html(""+timeout+" sec");
 		screen.get("#whatwethink-timer-two").html("next statement in "+timeout+" sec");
+	}
+	
+	private void loadAnswers(String questionid) {
+		FSList list = model.getList("@station/player");
+		if (list!=null) {
+			List<FsNode> nodes = list.getNodes();
+			if (nodes != null) {
+				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+					FsNode node = (FsNode) iter.next();
+					System.out.println("DB PLAYER LOAD="+node.asXML());
+					FsNode pnode = model.getNode("@whatwethinkdots/results/"+node.getId()); // based on a bug needs fixing
+					System.out.println("MEMNODE="+pnode);
+					
+					String dataline = node.getProperty("pos_"+questionid);
+					if (dataline!=null && !dataline.equals("")) {
+						String[] parts = dataline.split(",");
+						pnode.setProperty("x",parts[0]);
+						pnode.setProperty("y",parts[1]);
+						System.out.println("LX="+parts[0]);
+						System.out.println("LY="+parts[1]);
+					} else {
+						pnode.setProperty("x","-1");
+						pnode.setProperty("y","-1");
+					}
+				}
+			}
+		}
+		
+	}
+	
+	private void handleAnswers() {
+		System.out.println("HANDLE ANSWERS");
+		FSList list = model.getList("@whatwethinkdots/results");
+		System.out.println("H1="+list);
+		Long now = new Date().getTime();
+		if (list!=null) {
+			System.out.println("H2="+list.size());
+			List<FsNode> nodes = list.getNodes();
+			if (nodes != null) {
+				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+					FsNode node = (FsNode) iter.next();
+					//System.out.println("H3="+node.asXML());
+					String ls = node.getProperty("lastseen");
+					if (ls!=null && !ls.equals("")) {
+						long lsl = Long.parseLong(ls);
+						if (now-lsl>(10*60*1000)) {
+							node.setProperty("c","#666666");
+						}
+					} else {
+						node.setProperty("c","#666666");
+					}
+					String id  = node.getId();
+					//FsNode dbnode  = model.getNode("@station/player['"+id+"']");
+					String qid = model.getProperty("@itemquestionid");
+					String dataline = node.getProperty("x")+","+node.getProperty("y");
+					model.setProperty("@station/player['"+id+"']/pos_"+qid,dataline);
+					//node.setProperty("x","-1");
+					//node.setProperty("y","-1");
+				}	
+
+			}
+		}
 	}
 
 	
@@ -180,6 +247,8 @@ public class WhatWeThinkController extends Html5Controller {
 			}
 		}
 		
+		loadAnswers(question.getId());
+		
 	}
 	
 	public void onClientMsg(ModelEvent e) {
@@ -196,10 +265,14 @@ public class WhatWeThinkController extends Html5Controller {
 			// should we not ceheck for the old one?
 			//FsNode player  = activePlayers.get(playername);
 			if (player==null) {
-				String newcolor = colorbucket.get(colorcounter++);
+				// get tge current number of players to find the color 
+				FSList players = model.getList("@station/player");
+				System.out.println("SIZEEEEE="+players.size());
+				String newcolor = colorbucket.get(players.size());
 				player =  new FsNode("player",playername);
 				player.setProperty("playername", playername);
 				player.setProperty("color", newcolor);
+				player.setProperty("lastseen",""+new Date().getTime());
 				player.setProperty("clientScreenId", clientScreenId);
 				//player = new WhatWeThinkPlayer(model, playername, clientScreenId,newcolor);
 				
@@ -208,6 +281,7 @@ public class WhatWeThinkController extends Html5Controller {
 			} else {
 				// update its screenid 
 				player.setProperty("clientScreenId", clientScreenId);
+				player.setProperty("lastseen",""+new Date().getTime());
 			}
 			
 			//send questionId to players screen id  (daniel should not be a message!)
@@ -215,11 +289,12 @@ public class WhatWeThinkController extends Html5Controller {
 			msgnode.setProperty("itemid", model.getProperty("@itemid"));
 			msgnode.setProperty("color", player.getProperty("color"));
 			msgnode.setProperty("itemquestionid", model.getProperty("@itemquestionid"));
+			
 			msgnode.setProperty("feedback",""+feedback);
 			msgnode.setProperty("command","newquestion");
 			msgnode.setProperty("screenid", player.getProperty("clientScreenId"));
 			model.notify("@appstate", msgnode);
-			
+			fillDots();
 		} else if (command.equals("answer")) {
 			/*
 			String answerId = message.getProperty("value");
