@@ -47,6 +47,7 @@ public class WhatWeThinkController extends Html5Controller {
 	private FsNode question = null;
 	private String lastchanged;
 	private static ArrayList<String> colorbucket;
+	private FSList axis;
 	//private int colorcounter=0;
 	
 	private boolean feedback = true;
@@ -56,12 +57,17 @@ public class WhatWeThinkController extends Html5Controller {
 	public void attach(String sel) {	
 		selector = sel;
 		colorbucket = fillColorBucket();
+		
+		
 		model.setProperty("@contentrole", "mainapp");
+		axis = model.getList("@itemaxis");
 		fillPage();
 		model.onNotify("/shared[timers]/1second", "on1SecondTimer", this);
 		model.onNotify("/shared[timers]/50ms","on50MillisSecondsTimer",this); 
 		model.onNotify("@stationevents/towhatwethinkserver", "onClientMsg", this);
 	}
+	
+
 	
 	public void on50MillisSecondsTimer(ModelEvent e) {
 		String changed = model.getProperty("@whatwethinkdots/changed");
@@ -150,17 +156,13 @@ public class WhatWeThinkController extends Html5Controller {
 			if (nodes != null) {
 				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
 					FsNode node = (FsNode) iter.next();
-					System.out.println("DB PLAYER LOAD="+node.asXML());
 					FsNode pnode = model.getNode("@whatwethinkdots/results/"+node.getId()); // based on a bug needs fixing
-					System.out.println("MEMNODE="+pnode);
 					
 					String dataline = node.getProperty("pos_"+questionid);
 					if (dataline!=null && !dataline.equals("")) {
 						String[] parts = dataline.split(",");
 						pnode.setProperty("x",parts[0]);
 						pnode.setProperty("y",parts[1]);
-						System.out.println("LX="+parts[0]);
-						System.out.println("LY="+parts[1]);
 					} else {
 						pnode.setProperty("x","-1");
 						pnode.setProperty("y","-1");
@@ -172,17 +174,13 @@ public class WhatWeThinkController extends Html5Controller {
 	}
 	
 	private void handleAnswers() {
-		System.out.println("HANDLE ANSWERS");
 		FSList list = model.getList("@whatwethinkdots/results");
-		System.out.println("H1="+list);
 		Long now = new Date().getTime();
 		if (list!=null) {
-			System.out.println("H2="+list.size());
 			List<FsNode> nodes = list.getNodes();
 			if (nodes != null) {
 				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
 					FsNode node = (FsNode) iter.next();
-					//System.out.println("H3="+node.asXML());
 					String ls = node.getProperty("lastseen");
 					if (ls!=null && !ls.equals("")) {
 						long lsl = Long.parseLong(ls);
@@ -193,15 +191,102 @@ public class WhatWeThinkController extends Html5Controller {
 						node.setProperty("c","#666666");
 					}
 					String id  = node.getId();
-					//FsNode dbnode  = model.getNode("@station/player['"+id+"']");
 					String qid = model.getProperty("@itemquestionid");
 					String dataline = node.getProperty("x")+","+node.getProperty("y");
 					model.setProperty("@station/player['"+id+"']/pos_"+qid,dataline);
-					//node.setProperty("x","-1");
-					//node.setProperty("y","-1");
+					
+					updateProfile(question,id);
 				}	
 
 			}
+		}
+	}
+	
+	private void updateProfile(FsNode question,String id) {
+		FsNode player = model.getNode("@station/player['"+id+"']");
+		// limit to users that changed something in last 15seconds !
+		String calcline = question.getProperty("calc");
+		calcline=calcline+",";
+		String[] cparts = calcline.split(",");
+		String acalc=null;
+		String bcalc=null;
+		
+		if (cparts[0].startsWith("A")) {
+			acalc = cparts[0].split("=")[1];
+		}
+		if (cparts[1].startsWith("A")) {
+			acalc = cparts[1].split("=")[1];
+		}
+		if (cparts[0].startsWith("B")) {
+			bcalc = cparts[0].split("=")[1];
+		}
+		if (cparts[1].startsWith("B")) {
+			bcalc = cparts[1].split("=")[1];
+		}
+		
+		// create the result table
+		HashMap results = new HashMap<String, Integer>();
+		if (axis!=null) {
+			List<FsNode> nodes = axis.getNodes();
+			if (nodes != null) {
+				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+					FsNode node = (FsNode) iter.next();
+					results.put(node.getId(),0);
+				}
+			}
+		}
+		
+		for (int i=1;i<5;i++) { // lets walk to 20 variables (ugly hack)
+			String answer = player.getProperty("pos_"+i);
+
+			if (answer!=null && !answer.equals("") && !answer.contains("null")) {
+				//System.out.println("POS="+answer);
+				String[] parts = answer.split(",");
+				try {
+					double x = Double.parseDouble(parts[0]);
+					double y = Double.parseDouble(parts[1]);
+					if (y>0 && y<100) { // valid check
+						if (x>0 && x<50) {
+							String code = acalc.substring(0, 1);
+							int value = 0;
+							//try {
+							//	value = Integer.parseInt(acalc.substring(1));
+							//} catch(Exception e) {}
+							value = 1;
+							//System.out.println("A CODE="+code+" VALUE="+value);
+							int curvalue = (Integer)results.get(code);
+							curvalue += value;
+							results.put(code, curvalue);
+						} else if (x>50 && x<100) {
+							String code = acalc.substring(0, 1);
+							int value = 0;
+							//try {
+							//	value = Integer.parseInt(acalc.substring(1));
+							//} catch(Exception e) {}
+							value = 1;
+							//System.out.println("A CODE="+code+" VALUE="+value);
+							int curvalue = (Integer)results.get(code);
+							curvalue += value;
+							results.put(code, curvalue);
+							
+						}
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+			if (axis!=null) {
+				List<FsNode> nodes = axis.getNodes();
+				if (nodes != null) {
+					for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+						FsNode node = (FsNode) iter.next();
+						System.out.println("ID="+id+" CODE="+node.getId()+" V="+results.get(node.getId()));
+						model.setProperty("@station/player['"+id+"']/axis_"+node.getId(),""+results.get(node.getId()));
+					}
+				}
+			}
+			
 		}
 	}
 
@@ -259,15 +344,15 @@ public class WhatWeThinkController extends Html5Controller {
 			
 			String playername = message.getProperty("username");
 			FsNode player = model.getNode("@station/player['"+playername+"']");
-			System.out.println("DBPLAYER="+player);
 			
 	
 			// should we not ceheck for the old one?
 			//FsNode player  = activePlayers.get(playername);
+			System.out.println("PLAYER="+playername+" "+player+" "+model.getProperty("@stationid"));
+			//System.out.println("PL="+player.getPath());
 			if (player==null) {
 				// get tge current number of players to find the color 
 				FSList players = model.getList("@station/player");
-				System.out.println("SIZEEEEE="+players.size());
 				String newcolor = colorbucket.get(players.size());
 				player =  new FsNode("player",playername);
 				player.setProperty("playername", playername);
@@ -275,7 +360,7 @@ public class WhatWeThinkController extends Html5Controller {
 				player.setProperty("lastseen",""+new Date().getTime());
 				player.setProperty("clientScreenId", clientScreenId);
 				//player = new WhatWeThinkPlayer(model, playername, clientScreenId,newcolor);
-				
+				System.out.println("WANT A INSERT OF GUEST NODE");
 				//activePlayers.put(playername, player);
 				model.putNode("@station", player);
 			} else {
