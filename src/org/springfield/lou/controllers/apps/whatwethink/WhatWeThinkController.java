@@ -146,7 +146,7 @@ public class WhatWeThinkController extends Html5Controller {
 		*/
 		
 		screen.get("#whatwethink-timer-one").html(""+timeout+" sec");
-		screen.get("#whatwethink-timer-two").html("next statement in "+timeout+" sec");
+		screen.get("#whatwethink-timer-two").html("volgende keuze in "+timeout+" sec");
 	}
 	
 	private void loadAnswers(String questionid) {
@@ -205,24 +205,7 @@ public class WhatWeThinkController extends Html5Controller {
 	private void updateProfile(FsNode question,String id) {
 		FsNode player = model.getNode("@station/player['"+id+"']");
 		// limit to users that changed something in last 15seconds !
-		String calcline = question.getProperty("calc");
-		calcline=calcline+",";
-		String[] cparts = calcline.split(",");
-		String acalc=null;
-		String bcalc=null;
-		
-		if (cparts[0].startsWith("A")) {
-			acalc = cparts[0].split("=")[1];
-		}
-		if (cparts[1].startsWith("A")) {
-			acalc = cparts[1].split("=")[1];
-		}
-		if (cparts[0].startsWith("B")) {
-			bcalc = cparts[0].split("=")[1];
-		}
-		if (cparts[1].startsWith("B")) {
-			bcalc = cparts[1].split("=")[1];
-		}
+
 		
 		// create the result table
 		HashMap results = new HashMap<String, Integer>();
@@ -236,8 +219,32 @@ public class WhatWeThinkController extends Html5Controller {
 			}
 		}
 		
-		for (int i=1;i<5;i++) { // lets walk to 20 variables (ugly hack)
-			String answer = player.getProperty("pos_"+i);
+		FSList questions = model.getList("@itemquestions");
+		for (Iterator<FsNode> iter = questions.getNodes().iterator(); iter.hasNext();) {
+			FsNode qnode = (FsNode) iter.next();
+					
+			String calcline = qnode.getProperty("calc");
+
+			calcline=calcline+",";
+			String[] cparts = calcline.split(",");
+			String acalc=null;
+			String bcalc=null;
+			
+			if (cparts[0].startsWith("A")) {
+				acalc = cparts[0].split("=")[1];
+			}
+			if (cparts[1].startsWith("A")) {
+				acalc = cparts[1].split("=")[1];
+			}
+			if (cparts[0].startsWith("B")) {
+				bcalc = cparts[0].split("=")[1];
+			}
+			if (cparts[1].startsWith("B")) {
+				bcalc = cparts[1].split("=")[1];
+			}
+			
+			
+			String answer = player.getProperty("pos_"+qnode.getId());
 
 			if (answer!=null && !answer.equals("") && !answer.contains("null")) {
 				//System.out.println("POS="+answer);
@@ -258,7 +265,7 @@ public class WhatWeThinkController extends Html5Controller {
 							curvalue += value;
 							results.put(code, curvalue);
 						} else if (x>50 && x<100) {
-							String code = acalc.substring(0, 1);
+							String code = bcalc.substring(0, 1);
 							int value = 0;
 							//try {
 							//	value = Integer.parseInt(acalc.substring(1));
@@ -279,8 +286,8 @@ public class WhatWeThinkController extends Html5Controller {
 			if (axis!=null) {
 				List<FsNode> nodes = axis.getNodes();
 				if (nodes != null) {
-					for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
-						FsNode node = (FsNode) iter.next();
+					for (Iterator<FsNode> iter2 = nodes.iterator(); iter2.hasNext();) {
+						FsNode node = (FsNode) iter2.next();
 						System.out.println("ID="+id+" CODE="+node.getId()+" V="+results.get(node.getId()));
 						model.setProperty("@station/player['"+id+"']/axis_"+node.getId(),""+results.get(node.getId()));
 					}
@@ -296,7 +303,32 @@ public class WhatWeThinkController extends Html5Controller {
 		if (feedback) {
 			data.put("timeout-msg",""+timeout+" sec");
 			data.put("feedback", "true");
+			int size=1;
+			
+			FSList axisnodes =new FSList();
+			List<FsNode> nodes = axis.getNodes();
+			if (nodes != null) {
+				//System.out.println("HIGHMARK="+hm+" cf="+cf);
+				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+					FsNode node = (FsNode) iter.next();
+					FsNode axisnode = new FsNode("axis",node.getId());
+					axisnode.setProperty("name", node.getProperty("name"));
+					axisnode.setProperty("color", node.getProperty("color"));
+					axisnode.setProperty("size", ""+size);
+					size+=10;
+					/*
+					try {
+						String m = pnode.getProperty("axis_"+node.getId());
+						int mi = Integer.parseInt(m);
+						axisnode.setProperty("size", ""+((mi*cf)+1));
+					} catch(Exception e) {}
+					 */
+					axisnodes.addNode(axisnode);
+				}
+			}
+			data.put("axis",axisnodes.toJSONObject("en","name,color,size"));
 		}
+	
 		
 		if (question!=null) { // just to make sure
 			data.put("question",question.getProperty("question"));	

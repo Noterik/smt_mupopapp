@@ -29,8 +29,25 @@
 
 {{#feedback}}
 <div id="whatwethink-feedback-container">
-<div id="whatwethink-timer-two">
-{{timeout-msg}}
-</div>
+	<div id="whatwethink-profile-axis-container">
+		<div id="whatwethink-profile-axis-title">De politieke stijlen van alle deelnemers vandaag</div>
+			{{#axis}}
+				{{#nodes}}
+					<div id="whatwethink-profile-axis-{{id}}" class="whatwethink-profile-axis" >
+						<div id="axis_{{id}}" style="height:30%;width:{{size}}%;background-color: {{color}};box-shadow: 4px 4px 4px #333333;float:left;">&nbsp;</div>
+						<div id="axis_{{id}}_label" style="height:30%;float:left;margin-left: 10px;">{{name}}</div>
+					</div>
+				{{/nodes}}
+			{{/axis}}
+		</div>
+		<div id="whatwethink-timer-two">{{timeout-msg}}</div>
+	</div>
 </div>
 {{/feedback}}
+<div id="whatwethink-footer-row">
+<img id="whatwethink-footer-logo" src="/eddie/apps/mupop/img/ioresearch.png" />
+</div>
+<div id="whatwethink-url">www.iotest.nl</div>
+<div id="whatwethink-footertitle">Politieke Stijlentest</div>
+
+<div id="whatwethink-disclaimer">gebaseerd op test van Pieter Tops uit 1998</div>

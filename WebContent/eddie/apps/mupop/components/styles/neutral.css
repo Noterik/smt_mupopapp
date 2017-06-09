@@ -986,9 +986,10 @@ h2.zoomandaudio {
 #whatwethink-question-row {
 	position: absolute;
 	font-size: 3vh;
+	color : #434b49;
 	text-align: center;
 	vertical-align: text-center;
-	background-color: #888888;
+	background-color: #ffffff;
 	width: 100%;
 	height: 5%;
 	top: 0%;
@@ -996,10 +997,30 @@ h2.zoomandaudio {
 	z-index: 100;		
 }
 
+#whatwethink-footer-row {
+	position: absolute;
+	font-size: 3vh;
+	text-align: center;
+	vertical-align: text-center;
+	background-color: #ffffff;
+	width: 100%;
+	height: 20%;
+	bottom: 0%;
+	left:0%;
+	z-index: 100;	
+}
+
+#whatwethink-footer-logo {
+	position: absolute;
+	height: 100%;
+	left: 0px;
+}
+
 
 #whatwethink-statements-row {
 	position: absolute;
-	font-size: 4vh;
+	font-size: 5vh;
+	text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 	text-align: center;
 	vertical-align: text-center;
 	background-color: #000088;
@@ -1012,8 +1033,11 @@ h2.zoomandaudio {
 
 #whatwethink-statements-left-column {
 	position: absolute;
-	background-color: #000000;
-	border: 2px solid #777777;
+	padding-top:3%;
+	padding-left:1%;
+	padding-right:1%;
+	background-color: #434b49;
+	border: 2px solid #acbfb5;
 	width: 50%;
 	height: 100%;
 	top: 0%;
@@ -1023,8 +1047,11 @@ h2.zoomandaudio {
 
 #whatwethink-statements-right-column {
 	position: absolute;
-	background-color: #000000;
-	border: 2px solid #777777;
+	padding-top:3%;
+	padding-left:1%;
+	padding-right:1%;
+	background-color: #434b49;
+	border: 2px solid #acbfb5;
 	width: 50%;
 	height: 100%;
 	top: 0%;
@@ -1040,20 +1067,21 @@ h2.zoomandaudio {
 
 .whatwethink-statements-dot {
 			position: absolute;
-			margin-left: -15px;
-			margin-top: -15px;
+			box-shadow: 4px 4px 4px #6d7976;
+			margin-left: -30px;
+			margin-top: -30px;
 			top:-60px;
 			z-index: 1000;
-			width: 30px;
-			height: 30px;
-			border-radius: 15px;
+			width: 60px;
+			height: 60px;
+			border-radius: 30px;
 }
 
 
 #whatwethink-trackpad-row {
 	position: absolute;
-	background-color: #000000;
-	border: 2px solid #777777;
+	background-color: #acbfb5;
+	border: 2px solid #c7ded3;
 	width: 100%;
 	height: 30%;
 	top: 50%;
@@ -1064,11 +1092,13 @@ h2.zoomandaudio {
 #whatwethink-timer-one {
 	position: absolute;
 	font-size: 4vh;
+	box-shadow: 2px 2px 2px #6d7976;
+	text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 	text-align: center;
 	vertical-align: text-center;
 	border-radius: 10px;
-	background-color: #000000;
-	border: 2px solid #777777;
+	background-color: #84948e;
+	border: 2px solid #b5cac0;
 	width: 10%;
 	height: 6%;
 	top: 47%;
@@ -1079,6 +1109,7 @@ h2.zoomandaudio {
 #whatwethink-timer-two {
 	position: absolute;
 	font-size: 4vh;
+	text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 	text-align: center;
 	vertical-align: text-center;
 	width: 40%;
@@ -1090,8 +1121,8 @@ h2.zoomandaudio {
 
 #whatwethink-trackpad-left-column {
 	position: absolute;
-	background-color: #444444;
-	border: 2px solid #777777;
+	background-color: #95a7a1;
+	border: 4px solid #84948e;
 	width: 50%;
 	height: 100%;
 	top: 0%;
@@ -1101,8 +1132,8 @@ h2.zoomandaudio {
 
 #whatwethink-trackpad-right-column {
 	position: absolute;
-	background-color: #444444;
-	border: 2px solid #777777;
+	background-color: #95a7a1;
+	border: 4px solid #84948e;
 	width: 50%;
 	height: 100%;
 	top: 0%;
@@ -1113,11 +1144,73 @@ h2.zoomandaudio {
 #whatwethink-feedback-container {
 	position: absolute;
 	border-radius: 5px;
-	background-color: #888888;
-	border: 2px solid #aaaaaa;
+	box-shadow: 4px 4px 4px #434b49;
+	background-color: #6d7976;
+	border: 2px solid #84948e;
 	width: 96%;
 	height: 76%;
 	top: 2%;
 	left: 2%;
 	z-index: 1000;	
+}
+
+#whatwethink-profile-axis-container {
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	width: 90%;
+	height: 100%;	
+}
+
+#whatwethink-profile-axis-title {
+	position: relative;
+	color: white;
+	font-size: 4vh;
+	text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	left: 10%;
+	width: 80%;
+	height: 10%;
+}
+
+.whatwethink-profile-axis {
+	position: relative;
+	font-size: 4vh;
+	text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+	color: white;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	width: 100%;
+	overflow: hidden; 
+}
+
+#whatwethink-url {
+	position: absolute;
+	text-align: center;
+	font-size: 6vh;
+	font-style: bold;
+	bottom: 12%;
+	color: #6d7976;
+	width: 100%;
+	z-index: 1200;	
+}
+
+#whatwethink-footertitle {
+	position: absolute;
+	text-align: center;
+	font-size: 5vh;
+	font-style: bold;
+	bottom: 7%;
+	color: #3b3422;
+	right: 3%;
+	z-index: 1200;		
+}
+
+#whatwethink-disclaimer {
+	position: absolute;
+	font-size: 13px;
+	font-style: bold;
+	bottom: 0%;
+	right: 1%;
+	color: #b5cac0;
+	z-index: 1200;	
 }
