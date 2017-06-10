@@ -1016,6 +1016,12 @@ h2.zoomandaudio {
 	left: 0px;
 }
 
+#whatwethink-ad {
+	position: absolute;
+	height: 100%;
+	left: 0px;
+}
+
 
 #whatwethink-statements-row {
 	position: absolute;

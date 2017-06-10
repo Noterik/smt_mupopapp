@@ -42,7 +42,7 @@ public class WhatWeThinkController extends Html5Controller {
 	
 	private int timeout = 0;
 	private int itemcounter=1;
-	private int questioncounter=10;
+	private int questioncounter=0;
 	//private int realquestioncounter=1;
 	private FsNode item = null;
 	private FsNode question = null;
@@ -67,10 +67,56 @@ public class WhatWeThinkController extends Html5Controller {
 		System.out.println("ALLQCOUNT="+allquestions.size());
 		fillPage();
 		model.onNotify("/shared[timers]/1second", "on1SecondTimer", this);
+		model.onNotify("/shared[timers]/10second", "on10SecondTimer", this);
 		model.onNotify("/shared[timers]/50ms","on50MillisSecondsTimer",this); 
 		model.onNotify("@stationevents/towhatwethinkserver", "onClientMsg", this);
 	}
 	
+	public void on10SecondTimer(ModelEvent e) {
+		System.out.println("RECALC ALL WANTED");
+		// first reset the axis
+		
+		HashMap<String,Integer> results = new HashMap<String, Integer>();
+		for (Iterator<FsNode> iter = axis.getNodes().iterator(); iter.hasNext();) {
+			FsNode ax = (FsNode) iter.next();
+			results.put(ax.getId(),0);
+		}
+		
+		FSList players = model.getList("@station/player");
+		if (players!=null) {
+			int hm = 0;
+			double cf = 1;
+			List<FsNode> nodes = players.getNodes();
+			if (nodes != null) {
+				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+					FsNode node = (FsNode) iter.next();
+					//System.out.println("PLAYER="+node.asXML());
+					for (Iterator<FsNode> iter2 = axis.getNodes().iterator(); iter2.hasNext();) {
+						FsNode ax = (FsNode) iter2.next();
+						int curscore = results.get(ax.getId());
+						try {
+							String newval = node.getProperty("axis_"+ax.getId());
+							System.out.println("newval="+newval);
+							curscore += Integer.parseInt(newval);
+							results.put(ax.getId(), curscore);
+							if (curscore>hm) {
+								hm=curscore;
+								cf = 50/hm;
+							}
+						} catch(Exception e2) {}
+						System.out.println("score "+ax.getId()+" "+curscore+" hm="+hm+" cf="+cf);
+					}
+				}
+			}
+			for (Iterator<FsNode> iter = axis.getNodes().iterator(); iter.hasNext();) {
+				FsNode ax = (FsNode) iter.next();
+				int mi = results.get(ax.getId());
+				ax.setProperty("size", ""+((mi*cf)+1));
+			}
+			
+		}
+	
+	}
 
 	
 	public void on50MillisSecondsTimer(ModelEvent e) {
@@ -193,7 +239,7 @@ public class WhatWeThinkController extends Html5Controller {
 						}
 						if (now-lsl<(20*1000)) {
 							String id  = node.getId();
-							updateProfile(question,id);
+							updateProfile(id);
 							String dataline = node.getProperty("x")+","+node.getProperty("y");
 							model.setProperty("@station/player['"+id+"']/pos_"+questioncounter,dataline);
 						}
@@ -211,7 +257,7 @@ public class WhatWeThinkController extends Html5Controller {
 		}
 	}
 	
-	private void updateProfile(FsNode question,String id) {
+	private void updateProfile(String id) {
 		System.out.println("RECALC FOR USER="+id);
 		FsNode player = model.getNode("@station/player['"+id+"']");
 		// limit to users that changed something in last 15seconds !
@@ -253,7 +299,7 @@ public class WhatWeThinkController extends Html5Controller {
 			}
 			
 			
-			String answer = player.getProperty("pos_"+questioncounter);
+			String answer = player.getProperty("pos_"+qnode.getId());
 
 			if (answer!=null && !answer.equals("") && !answer.contains("null")) {
 				//System.out.println("POS="+answer);
@@ -313,29 +359,7 @@ public class WhatWeThinkController extends Html5Controller {
 			data.put("timeout-msg",""+timeout+" sec");
 			data.put("feedback", "true");
 			int size=1;
-			
-			FSList axisnodes =new FSList();
-			List<FsNode> nodes = axis.getNodes();
-			if (nodes != null) {
-				//System.out.println("HIGHMARK="+hm+" cf="+cf);
-				for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
-					FsNode node = (FsNode) iter.next();
-					FsNode axisnode = new FsNode("axis",node.getId());
-					axisnode.setProperty("name", node.getProperty("name"));
-					axisnode.setProperty("color", node.getProperty("color"));
-					axisnode.setProperty("size", ""+size);
-					size+=10;
-					/*
-					try {
-						String m = pnode.getProperty("axis_"+node.getId());
-						int mi = Integer.parseInt(m);
-						axisnode.setProperty("size", ""+((mi*cf)+1));
-					} catch(Exception e) {}
-					 */
-					axisnodes.addNode(axisnode);
-				}
-			}
-			data.put("axis",axisnodes.toJSONObject("en","name,color,size"));
+			data.put("axis",axis.toJSONObject("en","name,color,size"));
 		}
 	
 		
@@ -343,6 +367,15 @@ public class WhatWeThinkController extends Html5Controller {
 			data.put("question",question.getProperty("question"));	
 			data.put("answer1",question.getProperty("answer1"));
 			data.put("answer2",question.getProperty("answer2"));
+			String feedbackmain = question.getProperty("feedbackmain");
+			
+			if (feedbackmain!=null) {
+				if (feedbackmain.equals("overview")) {
+					data.put("overview","true");
+				} else 	if (feedbackmain.equals("ad")) {
+					data.put("ad","true");
+				}
+			}
 		}
 		screen.get(selector).render(data);
 	}
@@ -524,6 +557,7 @@ public class WhatWeThinkController extends Html5Controller {
 					nnode.setProperty("answer1",qnode.getProperty("answer1"));
 					nnode.setProperty("answer2",qnode.getProperty("answer2"));
 					nnode.setProperty("calc",qnode.getProperty("calc"));
+					nnode.setProperty("feedbackmain",qnode.getProperty("feedbackmain"));					
 					results.addNode(nnode);
 				}
 			}

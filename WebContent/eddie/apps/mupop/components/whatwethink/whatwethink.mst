@@ -29,6 +29,7 @@
 
 {{#feedback}}
 <div id="whatwethink-feedback-container">
+	{{#overview}}
 	<div id="whatwethink-profile-axis-container">
 		<div id="whatwethink-profile-axis-title">De politieke stijlen van alle deelnemers vandaag</div>
 			{{#axis}}
@@ -42,6 +43,11 @@
 		</div>
 		<div id="whatwethink-timer-two">{{timeout-msg}}</div>
 	</div>
+	{{/overview}}
+	{{#ad}}
+		<img id="whatwethink-ad" src="/eddie/apps/mupop/img/iotest_reclame_001.jpg" />
+		<div id="whatwethink-timer-two">{{timeout-msg}}</div>
+	{{/ad}}
 </div>
 {{/feedback}}
 <div id="whatwethink-footer-row">
