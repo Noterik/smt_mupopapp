@@ -1019,7 +1019,8 @@ h2.zoomandaudio {
 #whatwethink-ad {
 	position: absolute;
 	height: 100%;
-	left: 0px;
+	left: 10%;
+	right: 10%;
 }
 
 
