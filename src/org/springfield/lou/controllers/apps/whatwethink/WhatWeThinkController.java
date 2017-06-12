@@ -73,6 +73,7 @@ public class WhatWeThinkController extends Html5Controller {
 	}
 	
 	public void on10SecondTimer(ModelEvent e) {
+		long starttime = new Date().getTime();
 		System.out.println("RECALC ALL WANTED");
 		// first reset the axis
 		
@@ -96,7 +97,7 @@ public class WhatWeThinkController extends Html5Controller {
 						int curscore = results.get(ax.getId());
 						try {
 							String newval = node.getProperty("axis_"+ax.getId());
-							System.out.println("newval="+newval);
+							//System.out.println("newval="+newval);
 							curscore += Integer.parseInt(newval);
 							results.put(ax.getId(), curscore);
 							if (curscore>hm) {
@@ -104,7 +105,7 @@ public class WhatWeThinkController extends Html5Controller {
 								cf = 50/hm;
 							}
 						} catch(Exception e2) {}
-						System.out.println("score "+ax.getId()+" "+curscore+" hm="+hm+" cf="+cf);
+						//System.out.println("score "+ax.getId()+" "+curscore+" hm="+hm+" cf="+cf);
 					}
 				}
 			}
@@ -115,7 +116,8 @@ public class WhatWeThinkController extends Html5Controller {
 			}
 			
 		}
-	
+		long endtime = new Date().getTime();
+		System.out.println("all calc time="+(endtime-starttime));
 	}
 
 	
@@ -258,6 +260,7 @@ public class WhatWeThinkController extends Html5Controller {
 	}
 	
 	private void updateProfile(String id) {
+		long starttime = new Date().getTime();
 		System.out.println("RECALC FOR USER="+id);
 		FsNode player = model.getNode("@station/player['"+id+"']");
 		// limit to users that changed something in last 15seconds !
@@ -279,7 +282,7 @@ public class WhatWeThinkController extends Html5Controller {
 			FsNode qnode = (FsNode) iter.next();
 					
 			String calcline = qnode.getProperty("calc");
-			System.out.println("CALCLINE="+calcline);
+			//System.out.println("CALCLINE="+calcline);
 			calcline=calcline+",";
 			String[] cparts = calcline.split(",");
 			String acalc=null;
@@ -350,6 +353,8 @@ public class WhatWeThinkController extends Html5Controller {
 			}
 			
 		}
+		long endtime = new Date().getTime();
+		System.out.println("calc time="+(endtime-starttime));
 	}
 
 	
@@ -498,11 +503,29 @@ public class WhatWeThinkController extends Html5Controller {
 	}
 	
 	private void fillDots() {
+		int inactivecount = 0;
+		FSList dots=new FSList();
 		FSList fslist = model.getList("@whatwethinkdots");
 		if (fslist!=null) {
-			JSONObject data = fslist.toJSONObject("en","x,y,c"); // turn the lists into a json object
-			screen.get(selector).render(data,"whatwethink-statements-dots");
+			for (Iterator<FsNode> iter = fslist.getNodes().iterator(); iter.hasNext();) {
+				FsNode qnode = (FsNode) iter.next();
+				FsNode nnode = new FsNode("dot",qnode.getId());
+				String x = qnode.getProperty("x");
+				String y = qnode.getProperty("y");
+				String c = qnode.getProperty("c");
+				if (!c.equals("#666666")) {
+					nnode.setProperty("active","true");
+				} else {
+					inactivecount++;
+				}
+				nnode.setProperty("x", x);
+				nnode.setProperty("y", y);
+				nnode.setProperty("c", c);
+				if (inactivecount<50) dots.addNode(nnode);
+			}
 		}
+		JSONObject data = dots.toJSONObject("en","x,y,c,active"); // turn the lists into a json object
+		screen.get(selector).render(data,"whatwethink-statements-dots");
 	}
 	
 	private ArrayList<String> fillColorBucket() {

@@ -18,7 +18,12 @@
 	<div id="whatwethink-statements-dots">
 	{{#nodes}}
 	{{#x}}
-		<div class="whatwethink-statements-dot" style="top:{{y}}%;left:{{x}}%;background-color: {{c}};"> </div>
+		{{#active}}
+		<div class="whatwethink-statements-dot" style="z-index:2000;top:{{y}}%;left:{{x}}%;background-color: {{c}};"> </div>
+		{{/active}}
+		{{^active}}
+		<div class="whatwethink-statements-dot" style="z-index:1200;top:{{y}}%;left:{{x}}%;background-color: {{c}};"> </div>
+		{{/active}}
 	{{/x}}
 	{{/nodes}}
 	</div>
@@ -31,11 +36,11 @@
 <div id="whatwethink-feedback-container">
 	{{#overview}}
 	<div id="whatwethink-profile-axis-container">
-		<div id="whatwethink-profile-axis-title">De politieke stijlen van alle deelnemers vandaag</div>
+		<div id="whatwethink-profile-axis-title">DE BESTUURSSTIJLEN OP DIT CONGRES</div>
 			{{#axis}}
 				{{#nodes}}
 					<div id="whatwethink-profile-axis-{{id}}" class="whatwethink-profile-axis" >
-						<div id="axis_{{id}}" style="height:30%;width:{{size}}%;background-color: {{color}};box-shadow: 4px 4px 4px #333333;float:left;">&nbsp;</div>
+						<div id="axis_{{id}}" style="width:{{size}}%;background-color: {{color}};box-shadow: 4px 4px 4px #333333;float:left;">&nbsp;</div>
 						<div id="axis_{{id}}_label" style="height:30%;float:left;margin-left: 10px;">{{name}}</div>
 					</div>
 				{{/nodes}}
@@ -45,15 +50,18 @@
 	</div>
 	{{/overview}}
 	{{#ad}}
-		<img id="whatwethink-ad" src="/eddie/apps/mupop/img/iotest_reclame_001.jpg" />
-		<div id="whatwethink-timer-two">{{timeout-msg}}</div>
+		<div id="whatwethink-feedback-adcontainer">
+			<img id="whatwethink-ad" src="/eddie/apps/mupop/img/iotest_reclame_002.jpg" />
+			<div id="whatwethink-timer-two">{{timeout-msg}}</div>
+		</div>
 	{{/ad}}
 </div>
 {{/feedback}}
 <div id="whatwethink-footer-row">
-<img id="whatwethink-footer-logo" src="/eddie/apps/mupop/img/ioresearch.png" />
+<img id="whatwethink-footer-logo" src="/eddie/apps/mupop/img/ioresearch2.png" />
+<img id="whatwethink-footer-logo2" src="/eddie/apps/mupop/img/logo_noterikBW.png" />
 </div>
 <div id="whatwethink-url">www.iotest.nl</div>
-<div id="whatwethink-footertitle">Politieke Stijlentest</div>
+<div id="whatwethink-footertitle"></div>
 
-<div id="whatwethink-disclaimer">gebaseerd op test van Pieter Tops uit 1998</div>
+<div id="whatwethink-disclaimer">Gebaseerd op de Politieke Stijlen test van Pieter Tops uit 1998</div>
