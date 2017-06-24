@@ -23,7 +23,12 @@
 		<div class="vertical-center">
 			<div id="coverflow-mobile-phone"></div>
 			<div id="join-text">
-				<h2 class="coverflow">{{domain}}/{{jumper}} {{#code}}- {{code}}{{/code}}</h2>
+				{{#code}}
+					<h2 class="coverflow">{{domain}} - {{code}}</h2>
+				{{/code}}
+				{{^code}}
+					<h2 class="coverflow">{{domain}}/{{jumper}}</h2>
+				{{/code}}
 			</div>
 		</div>
 	</div>

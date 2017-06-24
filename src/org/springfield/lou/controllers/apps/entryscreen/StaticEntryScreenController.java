@@ -19,6 +19,7 @@
 */
 package org.springfield.lou.controllers.apps.entryscreen;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -96,13 +97,25 @@ public class StaticEntryScreenController extends Html5Controller {
     	    if (stationselect!=null && stationselect.equals("codeselect")) {
     	    	String fullcode =CodeSelector.getFreeRandomCode();
     	    	Boolean codeok =  checkCodeInUse(fullcode);
+    	    	System.out.println("CODE ASSIGN1");
     	    	while (!codeok) {
         	    	fullcode =CodeSelector.getFreeRandomCode();
     	    		codeok = checkCodeInUse(fullcode);
+        	    	System.out.println("CODE ASSIGN2");
     	    	}
+    	    	String stationid = model.getProperty("@stationid");
+    	    	String exhibitionid = model.getProperty("@exhibitionid");
+    	    	System.out.println("CODE ASSIGN3 = "+stationid+" "+exhibitionid);
     	    	
+    	    	
+    	    	FsNode joincode = model.getNode("@joincodes/code/"+stationid); // auto create because of bug !
+    	    	joincode.setProperty("codeselect", fullcode);
+    	    	joincode.setProperty("userid",model.getProperty("@username"));
+    	    	joincode.setProperty("stationid",stationid);
+    	    	joincode.setProperty("exhibitionid",exhibitionid);
+    	    	joincode.setProperty("createtime",""+new Date().getTime());
     	    	model.setProperty("@station/codeselect",fullcode);
-    	    	
+    	    	System.out.println("JOINNODE="+joincode.asXML());
     	    	data.put("codeselect",fullcode);
     	    }
     	    screen.get(selector).render(data);
@@ -114,6 +127,24 @@ public class StaticEntryScreenController extends Html5Controller {
     	}
     }
     
+    
+    
+    private boolean checkCodeInUse(String newcode) {
+    	FSList joincodes = model.getList("@joincodes"); // check all the active stations
+    	if (joincodes != null) {
+        	List<FsNode> nodes = joincodes.getNodes();
+    	    for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+    		FsNode node = (FsNode) iter.next();
+    		String correctcode = node.getProperty("codeselect");
+    		if (correctcode!=null && correctcode.equals(newcode)) {
+    		    return false;
+    		}
+    	    }
+    	}
+    	return true;
+    }
+    
+    /*
     private boolean checkCodeInUse(String newcode) {
     	FSList stations = model.getList("@stations"); // check all the active stations
     	List<FsNode> nodes = stations.getNodes();
@@ -128,4 +159,5 @@ public class StaticEntryScreenController extends Html5Controller {
     	}
     	return true;
     }
+    */
 }

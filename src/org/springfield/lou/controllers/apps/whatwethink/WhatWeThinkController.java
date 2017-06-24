@@ -102,9 +102,12 @@ public class WhatWeThinkController extends Html5Controller {
 							results.put(ax.getId(), curscore);
 							if (curscore>hm) {
 								hm=curscore;
-								cf = 50/hm;
+								cf = 50.0/hm;
 							}
-						} catch(Exception e2) {}
+						} catch(Exception e2) {
+						//	e2.printStackTrace();
+						}
+						if (cf==0) cf=1;
 						//System.out.println("score "+ax.getId()+" "+curscore+" hm="+hm+" cf="+cf);
 					}
 				}
@@ -513,10 +516,13 @@ public class WhatWeThinkController extends Html5Controller {
 				String x = qnode.getProperty("x");
 				String y = qnode.getProperty("y");
 				String c = qnode.getProperty("c");
-				if (!c.equals("#666666")) {
-					nnode.setProperty("active","true");
-				} else {
-					inactivecount++;
+				
+				if (c!=null) {
+					if (!c.equals("#666666")) {
+						nnode.setProperty("active","true");
+					} else {
+						inactivecount++;
+					}
 				}
 				nnode.setProperty("x", x);
 				nnode.setProperty("y", y);

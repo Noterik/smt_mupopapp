@@ -49,6 +49,8 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	int maxtimeoutcount = 30*60; //(check every 1sec)
 	int maxtnoactiontimeoutcount = 60; //(check every 1sec)
 	String userincontrol;
+	FsNode itemnode = null;
+	
 		
 	public PhotoInfoSpotsController() {}
 
@@ -57,7 +59,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		
 		model.setProperty("@contentrole","mainapp");
 		String selecteditem = model.getProperty("@selecteditem");
-		FsNode itemnode = null;
+		itemnode = null;
 		if (selecteditem!=null) {
 			model.setProperty("@itemid",selecteditem);
 			itemnode = model.getNode("@item");
@@ -85,6 +87,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			model.setProperty("@contentrole","mainapp");
 			model.setProperty("@itemid",selecteditem);
 			
+			
 			data.put("url",model.getProperty("@item/url"));
 			
 			if (model.getProperty("@station/codeselect") != null) {
@@ -109,7 +112,8 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			}
 		}
 		
-		model.onPropertiesUpdate("@photoinfospots/spot/move", "onPositionChange", this);		
+		model.onPropertiesUpdate("@photoinfospots/spot/move", "onPositionChange", this);	
+		model.onPropertiesUpdate("@photoinfospots/state", "onStateChange", this);	
 		model.onNotify("@photoinfospots/spotting/player", "onAudioLoaded", this);
 		model.onNotify("/shared[timers]/1second","onTimeoutChecks",this); 
 	}
@@ -192,6 +196,13 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			}
 		}
 	}
+	
+	public void onStateChange(ModelEvent e) {
+		System.out.println("JOINED FOUND");
+    	FsPropertySet set = (FsPropertySet)e.target;
+		String action = set.getProperty("action");
+		System.out.println("COMMAND="+action);
+	}
 
 	public void onPositionChange(ModelEvent e) {
 	    	timeoutnoactioncount = 0;
@@ -245,6 +256,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 				if (selecteditems.get(deviceid) != null) {
 					FsNode message = new FsNode("message","1");
 					message.setProperty("action", "startaudio");
+					System.out.println("SENDING AUDIO="+language+" "+selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
 					message.setProperty("url", selecteditems.get(deviceid).getSmartProperty(language, "audiourl"));
 					
 					String transcript = selecteditems.get(deviceid).getSmartProperty(language, "transcript") == null ? "" : selecteditems.get(deviceid).getSmartProperty(language, "transcript");
@@ -266,10 +278,21 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			System.out.println(error.getStackTrace());
 		}	
 	}
+	
+	private void sendVoiceOverAudio() {
+		FsNode message = new FsNode("message","1");
+		message.setProperty("action", "startaudiovoiceover");
+
+		String itempath = itemnode.getPath();
+		itempath = itempath.substring(0, itempath.length()-11);
+		System.out.println("SENDING VOICEOVER AUDIO="+itempath);
+		message.setProperty("exhibitionpath", itempath);
+		message.setProperty("deviceid", "all");
+		model.notify("@photoinfospots/spot/audio", message);
+	}
 
 
 	public void onAudioLoaded(ModelEvent e) {
-			System.out.println("AUDIO PLAYING");
 	    	timeoutnoactioncount = 0;
 	    	FsNode target = e.getTargetFsNode();
 
@@ -280,6 +303,9 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	}
 	
 	public void onTimeoutChecks(ModelEvent e) {
+		sendVoiceOverAudio(); // update signal, used for things like voice over check
+		
+		
 		if (timeoutcount!=-1) {
 		    timeoutcount++;
 		    timeoutnoactioncount++;
@@ -323,6 +349,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 			//else we don't need to do anything (not even a refresh!)
 			//just keep this app forever
+			
 		}
 	}
 }

@@ -51,7 +51,7 @@
 	{{/overview}}
 	{{#ad}}
 		<div id="whatwethink-feedback-adcontainer">
-			<img id="whatwethink-ad" src="/eddie/apps/mupop/img/iotest_reclame_002.jpg" />
+			<img id="whatwethink-ad" src="/eddie/apps/mupop/img/iotest_reclame_002v2.jpg" />
 			<div id="whatwethink-timer-two">{{timeout-msg}}</div>
 		</div>
 	{{/ad}}
