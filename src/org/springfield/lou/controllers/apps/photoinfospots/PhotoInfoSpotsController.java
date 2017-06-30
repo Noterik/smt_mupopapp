@@ -285,7 +285,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 		String itempath = itemnode.getPath();
 		itempath = itempath.substring(0, itempath.length()-11);
-		System.out.println("SENDING VOICEOVER AUDIO="+itempath);
+		//System.out.println("SENDING VOICEOVER AUDIO="+itempath);
 		message.setProperty("exhibitionpath", itempath);
 		message.setProperty("deviceid", "all");
 		model.notify("@photoinfospots/spot/audio", message);

@@ -212,7 +212,7 @@ public class ExhibitionController extends Html5Controller {
     	//We need to inform all screens on this station connected
     	FsNode message = new FsNode("message",screen.getId());
     	message.setProperty("request","init");
-	model.notify("@stationevents/fromclient",message);
+    	model.notify("@stationevents/fromclient",message);
     }
     
     private void mainAppStep() {
