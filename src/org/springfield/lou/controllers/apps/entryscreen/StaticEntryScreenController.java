@@ -89,8 +89,10 @@ public class StaticEntryScreenController extends Html5Controller {
     	    if (showurl!=null && showurl.equals("true")) {
     		data.put("showurl","true");
     	    }
+
   
     	    String stationselect = model.getProperty("@exhibition/stationselect");
+    	    stationselect="codeselect"; // now hardcoded
     	    if (stationselect!=null && !stationselect.equals("")&& !stationselect.equals("none")) {
     	    	data.put("stationselect","true");
     	    }
