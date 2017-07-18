@@ -78,6 +78,8 @@ public class InteractiveVideoController extends Html5Controller {
 			JSONObject data = new JSONObject();
 			data.put("url",itemnode.getProperty("videourl"));
 			audiourl = itemnode.getProperty("audiourl");
+			System.out.println("VIDEO URL="+itemnode.getProperty("videourl"));
+			System.out.println("AUDIO URL="+audiourl);
 			data.put("title", stationnode.getSmartProperty("en", "title"));
 			data = addMetaData(data);
 			screen.get(selector).render(data);
@@ -213,7 +215,12 @@ public class InteractiveVideoController extends Html5Controller {
 
 
 	private JSONObject addMetaData(JSONObject data) {
+		// language_interactivevideo_main_screen
+		
+		
 		String language = model.getProperty("@exhibition/language");
+		// fixed for now ?
+		language = "nl";
 		data.put("language", language);
 		FsNode language_content = model.getNode("@language_static_entry_screen");
 		System.out.println("LANGSEL="+language);

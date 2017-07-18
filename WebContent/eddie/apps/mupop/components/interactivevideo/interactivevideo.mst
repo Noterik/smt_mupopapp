@@ -6,6 +6,6 @@
 	<img id="videologo" src="http://images1.noterik.com/mupop/in_sv_nl.png"/>
 </div>
 <div id="interactivevideo_lowerthird">
-{{goto}} <font color=black><b>{{domain}}/{{jumper}}</b></font> {{andenter}} <font color=black><b>{{codeselect}}</b></font> om ook mee te spelen
+{{goto}} <font color=black><b>{{domain}}</b></font> {{andenter}} <font color=black><b>{{codeselect}}</b></font> om ook mee te spelen
 </div>
 </div>
