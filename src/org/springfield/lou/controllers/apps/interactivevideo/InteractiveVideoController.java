@@ -20,6 +20,19 @@
 package org.springfield.lou.controllers.apps.interactivevideo;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Random;
+import java.util.Scanner;
+
+import javax.net.ssl.HttpsURLConnection;
+
 import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
@@ -44,11 +57,14 @@ public class InteractiveVideoController extends Html5Controller {
 	MasterClockThread c;
 	Boolean feedback = false;
 	int feedbackcounter = 8;
+	
+	static Random generator;
 
 	public InteractiveVideoController() {
 	}
 
 	public void attach(String sel) {
+    	generator = new Random(System.currentTimeMillis());
 		selector = sel;
 		sharedspace = model.getProperty("/screen/sharedspace");
 		screen.get(selector).loadScript(this);	
@@ -72,11 +88,21 @@ public class InteractiveVideoController extends Html5Controller {
 			}
 
 		}
+		
+		//getTicket("test");
+		String videourl="/stream4/domain/euscreen/user/eu_memoriav_rts/video/156";
+		String ticket  = sendTicket(videourl);
 
 		FsNode stationnode = model.getNode("@station");
 		if (stationnode!=null) {
 			JSONObject data = new JSONObject();
-			data.put("url",itemnode.getProperty("videourl"));
+			//data.put("url",itemnode.getProperty("videourl"));
+			if (ticket!=null) {
+				data.put("url","http://stream.noterik.com/progressive"+videourl+"/rawvideo/1/raw.mp4");
+				data.put("ticket",ticket);
+			} else {
+				data.put("url",videourl);
+			}
 			audiourl = itemnode.getProperty("audiourl");
 			System.out.println("VIDEO URL="+itemnode.getProperty("videourl"));
 			System.out.println("AUDIO URL="+audiourl);
@@ -244,4 +270,49 @@ public class InteractiveVideoController extends Html5Controller {
 		data.put("codeselect",fullcode);
 		return data;
 	}
+	
+	private static String sendTicket(String videoFile) {
+		String ipAddress = LazyHomer.getExternalIpNumber();
+		String random = ""+generator.nextInt(999999999);
+		String ticket = "mst_"+LazyHomer.getExternalIpNumber()+"_"+random;
+		try {
+		URL serverUrl = new URL("http://82.94.187.227:8001/acl/ticket");
+		HttpURLConnection urlConnection = (HttpURLConnection)serverUrl.openConnection();
+	
+		Long Sytime = System.currentTimeMillis();
+		Sytime = Sytime / 1000;
+		String expiry = Long.toString(Sytime+(15*60));
+		
+		// Indicate that we want to write to the HTTP request body
+		
+		urlConnection.setDoOutput(true);
+		urlConnection.setRequestMethod("POST");
+		videoFile=videoFile.substring(1);
+	
+		System.out.println("I send this video address to the ticket server:"+videoFile);
+		System.out.println("And this ticket:"+ticket);
+		System.out.println("And this EXPIRY:"+expiry);
+		
+		// Writing the post data to the HTTP request body
+		BufferedWriter httpRequestBodyWriter = 
+		new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
+			String content = "<fsxml><properties><ticket>"+ticket+"</ticket>"
+			+ "<uri>/"+videoFile+"</uri><ip>"+ipAddress+"</ip> "
+			+ "<role>user</role>"
+			+ "<expiry>"+expiry+"</expiry><maxRequests>10</maxRequests></properties></fsxml>";
+		httpRequestBodyWriter.write(content);
+		httpRequestBodyWriter.close();
+	
+		// Reading from the HTTP response body
+		Scanner httpResponseScanner = new Scanner(urlConnection.getInputStream());
+		while(httpResponseScanner.hasNextLine()) {
+			System.out.println(httpResponseScanner.nextLine());
+		}
+		httpResponseScanner.close();			
+		} catch(Exception e) {
+			e.printStackTrace();	
+		}
+		return ticket;
+	}
+
 }

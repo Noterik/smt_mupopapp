@@ -3,7 +3,7 @@ html, body, #screen, .fill-height {
 }
 
 body {
-	background-color: #F7F0DC;
+	background-color: #F4F4F4;
 	color: #ffffff;
 	font-family: 'Montserrat', sans-serif;
 	margin: 0;
@@ -19,16 +19,100 @@ body {
 	width: 100%;
 }
 
+#pairing_title {
+	position: absolute;
+	color: #505050;
+	font-size: 6vh;
+	top: 7%;
+	width:100%;
+	margin: auto;	
+	text-align: center;
+}
+
+#pairing_intro {
+	position: absolute;
+	top: 15%;
+	width:100%;
+	font-size: 3vh;
+	margin: auto;	
+	text-align: center;
+}
+
+#pairing_outro {
+	position: absolute;
+	bottom: 15%;
+	width:100%;
+	font-size: 3vh;
+	margin: auto;	
+	text-align: center;
+}
+
+#pairing_statuspic {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	width: 30%;
+}
+
+#pairing_telline1 {
+	position: absolute;
+	color: #505050;
+	top: 55%;
+	width:100%;
+	font-size: 3vh;
+	margin: auto;	
+	text-align: center;
+}
+
+#pairing_telline2 {
+	position: absolute;
+	color: #798ACB;
+	top: 60%;
+	width:100%;
+	font-size: 3vh;
+	margin: auto;	
+	text-align: center;
+}
+
+
+
+#pairing_stepinfo {
+	position: absolute;
+	right: 5%;
+	right: 2%;
+	font-size: 3vh;
+}
+
 #pairing_code {
 	position: absolute;
-	padding: 6px 10px 6px 10px;
-	border: solid 1px silver;
-  	background-color: #336;
-	display: block;
-	margin-left: auto;
-    margin-right: auto;
-	top: 50%;
-	left: 40%;
+	top: 35%;
+	width: 100%;
+	font-size: 7vh;
+	margin: auto;	
+	text-align: center;
+}
+
+#pairing_hidname {
+	position: absolute;
+	top: 32%;
+	width: 100%;
+	font-size: 5vh;
+	margin: auto;	
+	text-align: center;
+}
+
+
+
+#pairing_box {
+	position: absolute;
+  	background-color: #ffffff;
+	color: #505050;
+	top: 20%;
+	left: 30%;
+	width: 40%;
+	height: 30%;
+	text-align: center;
+	border-radius: 10px;
 }
 
 #pairing_hid {

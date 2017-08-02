@@ -1,5 +1,10 @@
 <video id="interactivevideo_video_c" muted>
+	{{#ticket}}
+	<source id="interactivevideo_video" src="{{url}}?ticket={{ticket}}" type="video/mp4">
+	{{/ticket}}
+	{{^ticket}}
 	<source id="interactivevideo_video" src="{{url}}" type="video/mp4">
+	{{/ticket}}
 </video>
 <div class="videotitlerow" id="videotitle">
 	<h1 class="videotitle"><span class="videotitle-span">{{title}}</span></h1>

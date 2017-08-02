@@ -69,6 +69,7 @@
 		
 		<triviaplayerslist>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']</triviaplayerslist>
 		<triviaplayer>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/players['list']/player['@triviaplayerid']</triviaplayer>
+		<hidsalive>/shared['hidsalive']</hidsalive>
 	</model>
 
 	<view id="#screen">

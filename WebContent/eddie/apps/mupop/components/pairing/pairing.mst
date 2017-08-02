@@ -1,9 +1,26 @@
+<div id="pairing_title">Welcome to the MuPoP system</div>
 {{#pairingmode}}
-	<div id="pairing_code">CODE = {{pairingcode}}</div>
+	<div id="pairing_box">
+		<div id="pairing_stepinfo">1/2</div>
+		<div id="pairing_intro">This screen is not <font color="red">paired</font> yet</div>
+		<div id="pairing_code">{{pairingcode}}</div>
+		<div id="pairing_outro">Please give us the code above</div>
+	</div>
+	<div id="pairing_telline1">Phone number</div>
+	<div id="pairing_telline2">(0031) 20 240 1145</div>
+	<img id="pairing_statuspic" src="/eddie/apps/mupop/img/unpaired_pic.png" />
 {{/pairingmode}}
 
 {{#unassignedmode}}
-	<div id="pairing_hid">HARDWARE ID '{{hid}}' not in use</div>
+	<div id="pairing_box">
+		<div id="pairing_stepinfo">2/2</div>
+		<div id="pairing_intro">This screen is <font color="green">paired</font> under the name</div>
+		<div id="pairing_hidname">{{hid}}</div>
+		<div id="pairing_outro">But currently <font color="red">no app</font> installed<br />Call us to install an app</div>
+	</div>
+	<div id="pairing_telline1">Phone number</div>
+	<div id="pairing_telline2">(0031) 20 240 1145</div>
+	<img id="pairing_statuspic" src="/eddie/apps/mupop/img/paired_pic.png" />
 {{/unassignedmode}}
 
 {{#nohidnode}}

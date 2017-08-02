@@ -19,6 +19,7 @@
 */
 package org.springfield.lou.controllers.apps.pairing;
 
+import java.util.Date;
 import java.util.Random;
 
 import javax.jws.WebParam.Mode;
@@ -122,7 +123,15 @@ public class PairingController extends Html5Controller {
 			if (un!=null) messagenode.setProperty("username", un);
 			if (si!=null) messagenode.setProperty("stationid", si);
 			if (ei!=null) messagenode.setProperty("exhibitionid", ei);
-			model.notify("/shared['mupop']/hids[alive]",messagenode);	
+			//model.notify("/shared['mupop']/hids[alive]",messagenode);	
+	    	FsNode hidalive = model.getNode("@hidsalive/hid/"+hid); // auto create because of bug !
+	    	hidalive.setProperty("lastseen",""+new Date().getTime());
+	    	hidalive.setProperty("stationid",si);
+	    	hidalive.setProperty("exhibitionid",ei);
+	    	hidalive.setProperty("username",un);
+			//System.out.println("ALIVE="+hidalive.asXML());
+	    	
+			model.notify("/shared['mupop']/hids[alive]",messagenode);
 		}
 	}
 }
