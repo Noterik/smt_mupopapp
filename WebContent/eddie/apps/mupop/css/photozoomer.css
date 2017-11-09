@@ -1,0 +1,26 @@
+.ntk--magnify-overlay {
+  position: fixed;
+  z-index: 200;
+}
+
+.ntk--magnify-glass {
+ position: absolute;
+ display: none;
+ border-radius: 50%;
+ background-color: black;
+ z-index: 100;
+ overflow: hidden;
+}
+
+.ntk--magnify-glass .ntk--glass-image{
+	object-fit: contain;
+}
+
+.ntk--magnify-glass img{
+  position: relative;
+  transform-origin: left top;
+}
+
+.ntk--magnify-glass.__visible{
+  display: block;
+}

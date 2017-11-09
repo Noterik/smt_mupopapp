@@ -1,0 +1,43 @@
+<div id="zoomandaudio-image-container">
+	<div id="image-wrapper" class="center-block">
+		<div id="image-scale-wrapper">
+		<img id="zoomandaudio_image" src="{{url}}" class="zoomandaudio_image"/>
+		{{#nodes}}
+		<div class="zoomandaudio_layer">
+			<img id="zoomandaudio_layer{{id}}" class="zoomandaudio_spotmask zoomandaudio_image" src="{{maskurl}}" />
+		</div>
+		{{/nodes}}
+		<div id="zoomandaudio_spots_holder">
+		
+		</div>
+		</div>
+
+	</div>
+</div>
+
+<div id="url_row" class="row">
+	<div class="col-md-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			<img src="http://images1.noterik.com/mupop/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
+			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height espace-logo"/>
+		</div>
+	</div>
+	<div class="col-md-6 col-md-offset-1">
+		<div class="vertical-center">
+			<div id="zoomandaudio-mobile-phone"></div>
+			<div id="join-text">
+				{{#code}}
+				<h2 class="zoomandaudio">{{domain}} - {{code}}</h2>
+				{{/code}}
+				{{^code}}
+				<h2 class="zoomandaudio">{{domain}}/{{jumper}}</h2>
+				{{/code}}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background">
+		<div class="fill-height poweredbywrapper">
+			<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
+		</div>
+	</div>
+</div>

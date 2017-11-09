@@ -35,6 +35,8 @@ import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
 import org.springfield.lou.controllers.apps.trivia.TriviaController;
 import org.springfield.lou.controllers.apps.whatwethink.WhatWeThinkController;
+import org.springfield.lou.controllers.apps.photozoom.PhotoZoomController;
+
 //import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController_old;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
@@ -257,7 +259,12 @@ public class ExhibitionController extends Html5Controller {
 	        		screen.get("#whatwethink_app").remove(); // extra checks daniel
 	        		screen.get("#whatwethink_app").remove(); // extra checks daniel
 					screen.get("#exhibition").append("div","whatwethink_app", new WhatWeThinkController());
-
+		    	} else if (app.equals("photozoom")) {
+		    		//TODO: We have to do this twice? (David)
+		    		screen.get("#photozoom_app").remove(); 
+	        		screen.get("#photozoom_app").remove(); 
+	        		
+					screen.get("#exhibition").append("div","photozoom_app", new PhotoZoomController());
 		    	} else {
 		    		// should display error that no app was selected and curator should set it
 		    	}
@@ -273,5 +280,6 @@ public class ExhibitionController extends Html5Controller {
     	screen.get("#coverflow").remove();
     	screen.get("#photoexplore_app").remove();
     	screen.get("#photoinfospots_app").remove();
+    	screen.get("#photozoom_app").remove();
     }
 }

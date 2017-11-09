@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MuPoP framework .  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.springfield.lou.controllers.apps.photoinfospots;
+package org.springfield.lou.controllers.apps.photozoom;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -38,7 +38,7 @@ import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 
-public class PhotoInfoSpotsController extends Html5Controller {
+public class PhotoZoomController extends Html5Controller {
 	private Map<String, HashMap<String, Double>> spots = new HashMap<String, HashMap<String, Double>>();
 	private Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	List<FsNode> nodes;
@@ -51,7 +51,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	String userincontrol;
 	FsNode itemnode = null;
 
-	public PhotoInfoSpotsController() {
+	public PhotoZoomController() {
 	}
 
 	public void attach(String sel) {
@@ -61,7 +61,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		String selecteditem = model.getProperty("@selecteditem");
 		itemnode = null;
 		if (selecteditem != null) {
-			System.out.println("ITEMSET1" + selecteditem);
 			model.setProperty("@itemid", selecteditem);
 			itemnode = model.getNode("@item");
 		} else {
@@ -116,10 +115,10 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			}
 		}
 
-		model.onPropertiesUpdate("@photoinfospots/spot/move",
+		model.onPropertiesUpdate("@photozoom/spot/move",
 				"onPositionChange", this);
-		model.onPropertiesUpdate("@photoinfospots/state", "onStateChange", this);
-		model.onNotify("@photoinfospots/spotting/player", "onAudioLoaded", this);
+		model.onPropertiesUpdate("@photozoom/state", "onStateChange", this);
+		model.onNotify("@photozoom/spotting/player", "onAudioLoaded", this);
 		model.onNotify("/shared[timers]/1second", "onTimeoutChecks", this);
 	}
 
@@ -193,13 +192,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 						}
 					}
 
-					if (selected) {
-						screen.get("#zoomandaudio_layer" + node.getId()).css(
-								"opacity", "0.3");
-					} else {
-						screen.get("#zoomandaudio_layer" + node.getId()).css(
-								"opacity", "0");
-					}
 				} catch (Exception e) {
 					// e.printStackTrace();
 				}
@@ -229,17 +221,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 			long currentTime = new Date().getTime();
 
-			// check for a new spot
-			if (!spots.containsKey(deviceid)) {
-				screen.get("#zoomandaudio_spots_holder")
-						.append("<div class='zoomandaudio_spot' id='zoomandaudio_spot_"
-								+ deviceid
-								+ "'><div class='zoomandaudio_spot_outer' id='zoomandaudio_spot_outer_"
-								+ deviceid
-								+ "'><div class='zoomandaudio_spot_inner' style='background-color:"
-								+ color + "'></div></div></div>");
-			}
-
 			// update last seen
 			HashMap<String, Double> spot = new HashMap<String, Double>();
 			spot.put("lastseen", (double) new Date().getTime());
@@ -253,7 +234,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 				Map.Entry<String, HashMap<String, Double>> pair = (Map.Entry<String, HashMap<String, Double>>) it
 						.next();
 				if (pair.getValue().get("lastseen") + 60000 < currentTime) {
-					screen.get("#zoomandaudio_spot_" + pair.getKey()).remove();
 					it.remove();
 					selecteditems.remove(deviceid);
 				}
@@ -292,7 +272,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 					message.setProperty("text", transcript);
 
 					message.setProperty("deviceid", deviceid);
-					model.notify("@photoinfospots/spot/audio", message);
+					model.notify("@photozoom/spot/audio", message);
 
 					String[] animation = new String[] {
 							"border-top: 6px solid grey",
@@ -330,7 +310,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		// System.out.println("SENDING VOICEOVER AUDIO="+itempath);
 		message.setProperty("exhibitionpath", itempath);
 		message.setProperty("deviceid", "all");
-		model.notify("@photoinfospots/spot/audio", message);
+		model.notify("@photozoom/spot/audio", message);
 	}
 
 	public void onAudioLoaded(ModelEvent e) {

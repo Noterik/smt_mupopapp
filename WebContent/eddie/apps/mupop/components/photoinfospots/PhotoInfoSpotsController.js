@@ -4,6 +4,7 @@ var width;
 var height;
 
 PhotoInfoSpotsController.update = function(vars, data){
+	console.log('PhotoInfoSpotsController.update(', vars , ', ', data , ')');
 	//init - this is also handled when returning on a page
 	if (!vars["loaded"]) {	
 		vars["loaded"] = true;
