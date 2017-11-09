@@ -227,6 +227,7 @@
 	      visible: true,
 	      img: el.src,
 	      imgRect: boundingBox,
+	      radius: props.glassRadius || 160,
 	      rate: zoomRate || props.defaultZoomRate,
 	    });
 	  }.bind(this);

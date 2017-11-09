@@ -18,7 +18,8 @@ PhotoZoomController.instance = (function(window, $) {
 	
 	//SECTION: Generic instance variables
 	var zoomedImage = new window.ntk.Zoomable(image, {
-		defaultZoomRate: 2
+		defaultZoomRate: 3,
+		glassRadius: 250
 	}, imageContainer);
 
 	//SECTION: Private functions

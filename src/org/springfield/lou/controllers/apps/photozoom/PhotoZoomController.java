@@ -34,15 +34,19 @@ import org.springfield.fs.FSList;
 import org.springfield.fs.FSListManager;
 import org.springfield.fs.FsNode;
 import org.springfield.fs.FsPropertySet;
+import org.springfield.lou.application.types.util.Mask;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 
 public class PhotoZoomController extends Html5Controller {
 	private Map<String, HashMap<String, Double>> spots = new HashMap<String, HashMap<String, Double>>();
+	private Map<String, Mask> masks = new HashMap<String, Mask>();
 	private Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	List<FsNode> nodes;
 	private Map<String, FsNode> selecteditems = new HashMap<String, FsNode>();
+	
+	private Map<String, String> playingItems = new HashMap<String, String>();
 
 	int timeoutcount = 0;
 	int timeoutnoactioncount = 0;
@@ -140,10 +144,27 @@ public class PhotoZoomController extends Html5Controller {
 		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
 			FsNode node = (FsNode) iter.next();
 			String mask = node.getProperty("maskurl");
+			
 			try {
 				URL url = new URL(mask);
 				BufferedImage nimg = ImageIO.read(url);
-				images.put(node.getId(), nimg);
+				
+				Mask imageMask = new Mask(nimg.getWidth(), nimg.getHeight());
+				
+				for (int x = 0; x < nimg.getWidth(); x++) {
+		            for (int y = 0; y < nimg.getHeight(); y++) {
+		                final int clr = nimg.getRGB(x, y);
+		                int a = (clr >> 24) & 0xff;
+		                int g = (clr >> 8) & 0xff;
+		                
+		                // Color Red get cordinates
+		                if (a > 200 && g > 100) {
+							imageMask.addPoint(x, y);
+							break;
+						}
+		            }
+		        }
+				masks.put(node.getId(), imageMask);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -151,17 +172,19 @@ public class PhotoZoomController extends Html5Controller {
 	}
 
 	public void checkOverlays() {
+		
 		// new check, so clear old cache
 		selecteditems.clear();
 
 		// loop over every layer
 		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
 			FsNode node = (FsNode) iter.next();
-			BufferedImage cimg = images.get(node.getId());
-			if (cimg != null) {
+			Mask mask = masks.get(node.getId());
+			
+			if (mask != null) {
 				try {
-					int width = cimg.getWidth();
-					int height = cimg.getHeight();
+					int width = mask.getWidth();
+					int height = mask.getHeight();
 
 					boolean selected = false;
 					Iterator it = spots.entrySet().iterator();
@@ -176,20 +199,23 @@ public class PhotoZoomController extends Html5Controller {
 						// make sure to divide by a double, otherwise you will
 						// get a
 						// int value when dividing two ints
-						double x = (width / 100.0) * xp;
-						double y = (height / 100.0) * yp;
+						int x = (int)((width / 100.0) * xp);
+						int y = (int)((height / 100.0) * yp);
 
-						int p = cimg.getRGB((int) x, (int) y);
-						int a = (p >> 24) & 0xff;
-						int r = (p >> 16) & 0xff;
-						int g = (p >> 8) & 0xff;
-						int b = p & 0xff;
-
-						if (a > 200 && g > 100) {
+						if (mask.checkHit(x, y)) {
 							selecteditems.put(pair.getKey(), node);
 							selected = true;
 							break;
 						}
+					}
+					
+					if (selected) {
+						String layerId = "#zoomandaudio_layer" + node.getId(); 
+						screen.get(layerId).css(
+								"opacity", "0.3");
+					} else {
+						screen.get("#zoomandaudio_layer" + node.getId()).css(
+								"opacity", "0");
 					}
 
 				} catch (Exception e) {
@@ -243,56 +269,53 @@ public class PhotoZoomController extends Html5Controller {
 			checkOverlays();
 
 			if (action.equals("move")) { // its a move event so lets just move
-											// the dot
 				JSONObject d = new JSONObject();
 				d.put("command", "spot_move");
 				d.put("spotid", "#zoomandaudio_spot_" + deviceid);
 				d.put("x", x);
 				d.put("y", y);
 				screen.get(selector).update(d);
-			} else if (action.equals("up")) {
-				if (selecteditems.get(deviceid) != null) {
-					FsNode message = new FsNode("message", "1");
-					message.setProperty("action", "startaudio");
+				
+				if(selecteditems.get(deviceid) != null){
+					FsNode node = selecteditems.get(deviceid);
+					String id = node.getId();
 					
-					System.out.println("SENDING AUDIO="
-							+ language
-							+ " "
-							+ selecteditems.get(deviceid).getSmartProperty(
-									language, "audiourl"));
-					
-					message.setProperty("url", selecteditems.get(deviceid)
-							.getSmartProperty(language, "audiourl"));
+					if(!playingItems.containsKey(screen.getId()) || !playingItems.get(screen.getId()).equals(id)){
+						playingItems.put(screen.getId(), id);
+						
+						FsNode message = new FsNode("message", "1");
+						message.setProperty("action", "startaudio");
+						
+						System.out.println("SENDING AUDIO="
+								+ language
+								+ " "
+								+ selecteditems.get(deviceid).getSmartProperty(
+										language, "audiourl"));
+						
+						message.setProperty("url", selecteditems.get(deviceid)
+								.getSmartProperty(language, "audiourl"));
 
-					String transcript = selecteditems.get(deviceid)
-							.getSmartProperty(language, "transcript") == null ? ""
-							: selecteditems.get(deviceid).getSmartProperty(
-									language, "transcript");
-					
-					message.setProperty("text", transcript);
+						String transcript = selecteditems.get(deviceid)
+								.getSmartProperty(language, "transcript") == null ? ""
+								: selecteditems.get(deviceid).getSmartProperty(
+										language, "transcript");
+						
+						message.setProperty("text", transcript);
 
-					message.setProperty("deviceid", deviceid);
-					model.notify("@photozoom/spot/audio", message);
+						message.setProperty("deviceid", deviceid);
+						model.notify("@photozoom/spot/audio", message);
 
-					String[] animation = new String[] {
-							"border-top: 6px solid grey",
-							"-webkit-animation: rotation .6s infinite linear",
-							"-moz-animation: rotation .6s infinite linear",
-							"-o-animation: rotation .6s infinite linear",
-							"animation: rotation .6s infinite linear" };
-					screen.get("#zoomandaudio_spot_outer_" + deviceid).css(
-							animation);
-				} else {
-					String[] animation = new String[] {
-							"border-top: 6px solid white",
-							"-webkit-animation: none !important",
-							"-moz-animation: none !important",
-							"-o-animation: none !important",
-							"animation: none !important" };
-					screen.get("#zoomandaudio_spot_outer_" + deviceid).css(
-							animation);
+						String[] animation = new String[] {
+								"border-top: 6px solid grey",
+								"-webkit-animation: rotation .6s infinite linear",
+								"-moz-animation: rotation .6s infinite linear",
+								"-o-animation: rotation .6s infinite linear",
+								"animation: rotation .6s infinite linear" };
+						screen.get("#zoomandaudio_spot_outer_" + deviceid).css(
+								animation);
+					}
 				}
-			}
+			} 
 		} catch (Exception error) {
 			System.out
 					.println("PhotoInfoSpots - count not move stop of play sound");
