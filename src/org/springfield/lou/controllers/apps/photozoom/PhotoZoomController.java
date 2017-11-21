@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MuPoP framework .  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.springfield.lou.controllers.apps.photoinfospots;
+package org.springfield.lou.controllers.apps.photozoom;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -34,15 +34,18 @@ import org.springfield.fs.FSList;
 import org.springfield.fs.FSListManager;
 import org.springfield.fs.FsNode;
 import org.springfield.fs.FsPropertySet;
+import org.springfield.lou.application.types.util.Mask;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 
-public class PhotoInfoSpotsController extends Html5Controller {
+public class PhotoZoomController extends Html5Controller {
 	private Map<String, HashMap<String, Double>> spots = new HashMap<String, HashMap<String, Double>>();
 	private Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	List<FsNode> nodes;
 	private Map<String, FsNode> selecteditems = new HashMap<String, FsNode>();
+	
+	private Map<String, String> playingItems = new HashMap<String, String>();
 
 	int timeoutcount = 0;
 	int timeoutnoactioncount = 0;
@@ -51,7 +54,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	String userincontrol;
 	FsNode itemnode = null;
 
-	public PhotoInfoSpotsController() {
+	public PhotoZoomController() {
 	}
 
 	public void attach(String sel) {
@@ -61,7 +64,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		String selecteditem = model.getProperty("@selecteditem");
 		itemnode = null;
 		if (selecteditem != null) {
-			System.out.println("ITEMSET1" + selecteditem);
 			model.setProperty("@itemid", selecteditem);
 			itemnode = model.getNode("@item");
 		} else {
@@ -116,10 +118,10 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			}
 		}
 
-		model.onPropertiesUpdate("@photoinfospots/spot/move",
+		model.onPropertiesUpdate("@photozoom/spot/move",
 				"onPositionChange", this);
-		model.onPropertiesUpdate("@photoinfospots/state", "onStateChange", this);
-		model.onNotify("@photoinfospots/spotting/player", "onAudioLoaded", this);
+		model.onPropertiesUpdate("@photozoom/state", "onStateChange", this);
+		model.onNotify("@photozoom/spotting/player", "onAudioLoaded", this);
 		model.onNotify("/shared[timers]/1second", "onTimeoutChecks", this);
 	}
 
@@ -136,7 +138,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			}
 		}
 	}
-
+	
 	public void loadMasks() {
 		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
 			FsNode node = (FsNode) iter.next();
@@ -152,6 +154,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 	}
 
 	public void checkOverlays() {
+		
 		// new check, so clear old cache
 		selecteditems.clear();
 
@@ -182,9 +185,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 						int p = cimg.getRGB((int) x, (int) y);
 						int a = (p >> 24) & 0xff;
-						int r = (p >> 16) & 0xff;
 						int g = (p >> 8) & 0xff;
-						int b = p & 0xff;
 
 						if (a > 200 && g > 100) {
 							selecteditems.put(pair.getKey(), node);
@@ -192,14 +193,17 @@ public class PhotoInfoSpotsController extends Html5Controller {
 							break;
 						}
 					}
-
+					
 					if (selected) {
-						screen.get("#zoomandaudio_layer" + node.getId()).css(
+						String layerId = "#zoomandaudio_layer" + node.getId(); 
+						screen.get(layerId).css(
 								"opacity", "0.3");
+						break;
 					} else {
 						screen.get("#zoomandaudio_layer" + node.getId()).css(
 								"opacity", "0");
 					}
+
 				} catch (Exception e) {
 					// e.printStackTrace();
 				}
@@ -229,17 +233,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 
 			long currentTime = new Date().getTime();
 
-			// check for a new spot
-			if (!spots.containsKey(deviceid)) {
-				screen.get("#zoomandaudio_spots_holder")
-						.append("<div class='zoomandaudio_spot' id='zoomandaudio_spot_"
-								+ deviceid
-								+ "'><div class='zoomandaudio_spot_outer' id='zoomandaudio_spot_outer_"
-								+ deviceid
-								+ "'><div class='zoomandaudio_spot_inner' style='background-color:"
-								+ color + "'></div></div></div>");
-			}
-
 			// update last seen
 			HashMap<String, Double> spot = new HashMap<String, Double>();
 			spot.put("lastseen", (double) new Date().getTime());
@@ -253,7 +246,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 				Map.Entry<String, HashMap<String, Double>> pair = (Map.Entry<String, HashMap<String, Double>>) it
 						.next();
 				if (pair.getValue().get("lastseen") + 60000 < currentTime) {
-					screen.get("#zoomandaudio_spot_" + pair.getKey()).remove();
 					it.remove();
 					selecteditems.remove(deviceid);
 				}
@@ -263,56 +255,50 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			checkOverlays();
 
 			if (action.equals("move")) { // its a move event so lets just move
-											// the dot
 				JSONObject d = new JSONObject();
 				d.put("command", "spot_move");
-				d.put("spotid", "#zoomandaudio_spot_" + deviceid);
+				d.put("spotid", "glass_" + deviceid);
 				d.put("x", x);
 				d.put("y", y);
 				screen.get(selector).update(d);
-			} else if (action.equals("up")) {
-				if (selecteditems.get(deviceid) != null) {
-					FsNode message = new FsNode("message", "1");
-					message.setProperty("action", "startaudio");
+				
+				if(selecteditems.get(deviceid) != null){
+					FsNode node = selecteditems.get(deviceid);
+					String id = node.getId();
 					
-					System.out.println("SENDING AUDIO="
-							+ language
-							+ " "
-							+ selecteditems.get(deviceid).getSmartProperty(
-									language, "audiourl"));
-					
-					message.setProperty("url", selecteditems.get(deviceid)
-							.getSmartProperty(language, "audiourl"));
+					if(!playingItems.containsKey(screen.getId()) || !playingItems.get(screen.getId()).equals(id)){
+						playingItems.put(screen.getId(), id);
+						
+						FsNode message = new FsNode("message", "1");
+						message.setProperty("action", "startaudio");
+						
+						System.out.println("SENDING AUDIO="
+								+ language
+								+ " "
+								+ selecteditems.get(deviceid).getSmartProperty(
+										language, "audiourl"));
+						
+						message.setProperty("url", selecteditems.get(deviceid)
+								.getSmartProperty(language, "audiourl"));
 
-					String transcript = selecteditems.get(deviceid)
-							.getSmartProperty(language, "transcript") == null ? ""
-							: selecteditems.get(deviceid).getSmartProperty(
-									language, "transcript");
-					
-					message.setProperty("text", transcript);
+						String transcript = selecteditems.get(deviceid)
+								.getSmartProperty(language, "transcript") == null ? ""
+								: selecteditems.get(deviceid).getSmartProperty(
+										language, "transcript");
+						
+						message.setProperty("text", transcript);
 
-					message.setProperty("deviceid", deviceid);
-					model.notify("@photoinfospots/spot/audio", message);
-
-					String[] animation = new String[] {
-							"border-top: 6px solid grey",
-							"-webkit-animation: rotation .6s infinite linear",
-							"-moz-animation: rotation .6s infinite linear",
-							"-o-animation: rotation .6s infinite linear",
-							"animation: rotation .6s infinite linear" };
-					screen.get("#zoomandaudio_spot_outer_" + deviceid).css(
-							animation);
-				} else {
-					String[] animation = new String[] {
-							"border-top: 6px solid white",
-							"-webkit-animation: none !important",
-							"-moz-animation: none !important",
-							"-o-animation: none !important",
-							"animation: none !important" };
-					screen.get("#zoomandaudio_spot_outer_" + deviceid).css(
-							animation);
+						message.setProperty("deviceid", deviceid);
+						model.notify("@photozoom/spot/audio", message);
+						
+						JSONObject m = new JSONObject();
+						m.put("command", "spot_enter");
+						m.put("spotid", "glass_" + deviceid);
+						screen.get(selector).update(m);
+						//screen.get("#glass_" + deviceid).css(animation);
+					}
 				}
-			}
+			} 
 		} catch (Exception error) {
 			System.out
 					.println("PhotoInfoSpots - count not move stop of play sound");
@@ -330,7 +316,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		// System.out.println("SENDING VOICEOVER AUDIO="+itempath);
 		message.setProperty("exhibitionpath", itempath);
 		message.setProperty("deviceid", "all");
-		model.notify("@photoinfospots/spot/audio", message);
+		model.notify("@photozoom/spot/audio", message);
 	}
 
 	public void onAudioLoaded(ModelEvent e) {
@@ -338,12 +324,10 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		FsNode target = e.getTargetFsNode();
 
 		String deviceid = target.getProperty("deviceid");
-		String[] animation = new String[] { "border-top: 6px solid white",
-				"-webkit-animation: none !important",
-				"-moz-animation: none !important",
-				"-o-animation: none !important", "animation: none !important" };
-
-		screen.get("#zoomandaudio_spot_outer_" + deviceid).css(animation);
+		JSONObject m = new JSONObject();
+		m.put("command", "spot_leave");
+		m.put("spotid", "glass_" + deviceid);
+		screen.get(selector).update(m);
 	}
 
 	public void onTimeoutChecks(ModelEvent e) {
