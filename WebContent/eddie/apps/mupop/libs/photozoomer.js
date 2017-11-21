@@ -89,13 +89,25 @@
 	//The Glass that is visible over the Zoomable image. Has an update function that takes new properties and calls render(). 
 	function Glass(parent, props) {
 	  var el = document.createElement('div');
-	  el.className = 'ntk--magnify-glass';  
+	  
+	  addClass(el, 'ntk--magnify-glass');
+	  addClass(el, props.className);
+	  el.id = props.id;
+	  
+	  var border = document.createElement('div');
+	  addClass(border, 'ntk--glass-border');
+
+	  var backgroundContainer = document.createElement('div');
+	  addClass(backgroundContainer, 'ntk--glass-image-container');
 	  
 	  var background = document.createElement('img');
 	  background.className = 'ntk--glass-image'
 	  background.src = props.img;
 	  
-	  el.appendChild(background);
+	  backgroundContainer.appendChild(background);
+	  
+	  el.appendChild(backgroundContainer);
+	  el.append(border);
 	  parent.appendChild(el);
 	  
 	  var createCSSTransform = function(){
@@ -224,6 +236,8 @@
 	  this.create = function(glassId, zoomRate) {
 	    if(glasses[glassId]) glasses[glassId].destroy();
 	    glasses[glassId] = new Glass(parent, {
+	      id: glassId,
+	      className: props.glassClass,
 	      visible: true,
 	      img: el.src,
 	      imgRect: boundingBox,

@@ -1,0 +1,11 @@
+.ntk--magnify-glass .ntk--glass-border{
+	border: 5px solid white;
+}
+
+.ntk--magnify-glass.__enter .ntk--glass-border{
+	border-top: 5px solid grey;
+	webkit-animation: rotation .6s infinite linear;
+	-moz-animation: rotation .6s infinite linear;
+	-o-animation: rotation .6s infinite linear;
+	animation: rotation .6s infinite linear;
+}

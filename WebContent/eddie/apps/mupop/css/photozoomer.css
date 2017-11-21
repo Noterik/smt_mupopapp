@@ -4,13 +4,28 @@
 }
 
 .ntk--magnify-glass {
- position: absolute;
- display: none;
- border-radius: 50%;
- background-color: black;
- border: 2px solid white;
- z-index: 100;
- overflow: hidden;
+	 position: absolute;
+	 display: none;
+	 border-radius: 50%;
+	 background-color: black;
+	 z-index: 100;
+	 overflow: hidden;
+	 padding: 2px;
+}
+
+.ntk--magnify-glass .ntk--glass-border{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
+.ntk--magnify-glass .ntk--glass-image-container{
+	position: relative;
+	width: 100%;
+	height: 100%;
 }
 
 .ntk--magnify-glass .ntk--glass-image{

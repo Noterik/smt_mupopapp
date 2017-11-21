@@ -6,22 +6,36 @@ var PhotoZoomController = function(options) {}; // needed for detection
  */
 PhotoZoomController.instance = (function(window, $) {
 	//SECTION: Cached jQuery objects. Caching jQuery objects instead of calling $() everytime you need an element improves performance. 
-	var $imageContainer = $("#zoomandaudio-image-container"),
-		$image = $("#zoomandaudio_image"),
-		$imageWrapper = $('#image-wrapper'),
-		$layer = $(".zoomandaudio_layer"),
-		$spotsHolder = $("#zoomandaudio_spots_holder");
+	var $imageContainer,
+		$image,
+		$imageWrapper,
+		$layer,
+		$spotsHolder;
 
 	//SECTION: Raw HTML elements, not usage of cached $image jQuery object.
-	var imageContainer = $imageContainer[0],
-		image = $image[0];
+	var imageContainer, image;
 	
 	//SECTION: Generic instance variables
-	var zoomedImage = new window.ntk.Zoomable(image, {
-		defaultZoomRate: 3,
-		glassRadius: 250
-	}, imageContainer);
-
+	var zoomedImage;
+	
+	function init() {
+		$imageContainer = $("#zoomandaudio-image-container");
+		$image = $("#zoomandaudio_image");
+		$imageWrapper = $('#image-wrapper');
+		$layer = $(".zoomandaudio_layer");
+		$spotsHolder = $("#zoomandaudio_spots_holder");
+		imageContainer = $imageContainer[0];
+		image = $image[0];
+		
+		zoomedImage = new window.ntk.Zoomable(image, {
+			defaultZoomRate: 3,
+			glassRadius: 250,
+			glassClass: 'glass',
+		}, imageContainer);
+		
+		$image.on('load', resize);
+	}
+	
 	//SECTION: Private functions
 	function resize(){
 		var wrapperWidth = $imageContainer.width();
@@ -41,6 +55,8 @@ PhotoZoomController.instance = (function(window, $) {
 			height = wrapperHeight;
 		}
 		
+		console.log('resize(', width, ', ', height , ')');
+		
 		$imageWrapper.css({"width": width, "height" : height});
 		$layer.css({"width": width, "height" : height});
 		$spotsHolder.css({"width": width, "height" : height});
@@ -54,27 +70,24 @@ PhotoZoomController.instance = (function(window, $) {
 	return {
 		update: function(vars, data){
 			//init - this is also handled when returning on a page
-			if (!vars["loaded"]) {	
-				vars["loaded"] = true;
-				
-				//resize once the image is loaded
-				$image.on('load', resize).each(function() {
-					console.log('resized!');
-					if (this.complete) {
-						$image.trigger('load');
-					}
-				});
-			}
 			
 			var command = data['command'];
 			
-			if (command == "spot_move") {		
+			if(command === 'init') {
+				console.log('init!');
+				init();
+			} else if (command === "spot_move") {		
 				var x = ((data['x'] / 100) * width);
 				var y = ((data['y'] / 100) * height);
 				
 				zoomedImage.setPosition(data['spotid'], x, y);
-
 				//$(data['spotid']).css('transform','translate('+x+'px,'+y+'px)');
+			} else if (command === "spot_enter") {
+				var id = data['spotid'];
+				jQuery('#' + id).addClass('__enter');
+			} else if (command === "spot_leave") {
+				var id = data['spotid'];
+				jQuery('#' + id).removeClass('__enter');
 			}
 		}
 	}

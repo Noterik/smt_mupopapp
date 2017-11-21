@@ -41,7 +41,6 @@ import org.springfield.lou.model.ModelEvent;
 
 public class PhotoZoomController extends Html5Controller {
 	private Map<String, HashMap<String, Double>> spots = new HashMap<String, HashMap<String, Double>>();
-	private Map<String, Mask> masks = new HashMap<String, Mask>();
 	private Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	List<FsNode> nodes;
 	private Map<String, FsNode> selecteditems = new HashMap<String, FsNode>();
@@ -139,32 +138,15 @@ public class PhotoZoomController extends Html5Controller {
 			}
 		}
 	}
-
+	
 	public void loadMasks() {
 		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
 			FsNode node = (FsNode) iter.next();
 			String mask = node.getProperty("maskurl");
-			
 			try {
 				URL url = new URL(mask);
 				BufferedImage nimg = ImageIO.read(url);
-				
-				Mask imageMask = new Mask(nimg.getWidth(), nimg.getHeight());
-				
-				for (int x = 0; x < nimg.getWidth(); x++) {
-		            for (int y = 0; y < nimg.getHeight(); y++) {
-		                final int clr = nimg.getRGB(x, y);
-		                int a = (clr >> 24) & 0xff;
-		                int g = (clr >> 8) & 0xff;
-		                
-		                // Color Red get cordinates
-		                if (a > 200 && g > 100) {
-							imageMask.addPoint(x, y);
-							break;
-						}
-		            }
-		        }
-				masks.put(node.getId(), imageMask);
+				images.put(node.getId(), nimg);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -179,12 +161,11 @@ public class PhotoZoomController extends Html5Controller {
 		// loop over every layer
 		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
 			FsNode node = (FsNode) iter.next();
-			Mask mask = masks.get(node.getId());
-			
-			if (mask != null) {
+			BufferedImage cimg = images.get(node.getId());
+			if (cimg != null) {
 				try {
-					int width = mask.getWidth();
-					int height = mask.getHeight();
+					int width = cimg.getWidth();
+					int height = cimg.getHeight();
 
 					boolean selected = false;
 					Iterator it = spots.entrySet().iterator();
@@ -199,10 +180,14 @@ public class PhotoZoomController extends Html5Controller {
 						// make sure to divide by a double, otherwise you will
 						// get a
 						// int value when dividing two ints
-						int x = (int)((width / 100.0) * xp);
-						int y = (int)((height / 100.0) * yp);
+						double x = (width / 100.0) * xp;
+						double y = (height / 100.0) * yp;
 
-						if (mask.checkHit(x, y)) {
+						int p = cimg.getRGB((int) x, (int) y);
+						int a = (p >> 24) & 0xff;
+						int g = (p >> 8) & 0xff;
+
+						if (a > 200 && g > 100) {
 							selecteditems.put(pair.getKey(), node);
 							selected = true;
 							break;
@@ -213,6 +198,7 @@ public class PhotoZoomController extends Html5Controller {
 						String layerId = "#zoomandaudio_layer" + node.getId(); 
 						screen.get(layerId).css(
 								"opacity", "0.3");
+						break;
 					} else {
 						screen.get("#zoomandaudio_layer" + node.getId()).css(
 								"opacity", "0");
@@ -271,7 +257,7 @@ public class PhotoZoomController extends Html5Controller {
 			if (action.equals("move")) { // its a move event so lets just move
 				JSONObject d = new JSONObject();
 				d.put("command", "spot_move");
-				d.put("spotid", "#zoomandaudio_spot_" + deviceid);
+				d.put("spotid", "glass_" + deviceid);
 				d.put("x", x);
 				d.put("y", y);
 				screen.get(selector).update(d);
@@ -304,15 +290,12 @@ public class PhotoZoomController extends Html5Controller {
 
 						message.setProperty("deviceid", deviceid);
 						model.notify("@photozoom/spot/audio", message);
-
-						String[] animation = new String[] {
-								"border-top: 6px solid grey",
-								"-webkit-animation: rotation .6s infinite linear",
-								"-moz-animation: rotation .6s infinite linear",
-								"-o-animation: rotation .6s infinite linear",
-								"animation: rotation .6s infinite linear" };
-						screen.get("#zoomandaudio_spot_outer_" + deviceid).css(
-								animation);
+						
+						JSONObject m = new JSONObject();
+						m.put("command", "spot_enter");
+						m.put("spotid", "glass_" + deviceid);
+						screen.get(selector).update(m);
+						//screen.get("#glass_" + deviceid).css(animation);
 					}
 				}
 			} 
@@ -341,12 +324,10 @@ public class PhotoZoomController extends Html5Controller {
 		FsNode target = e.getTargetFsNode();
 
 		String deviceid = target.getProperty("deviceid");
-		String[] animation = new String[] { "border-top: 6px solid white",
-				"-webkit-animation: none !important",
-				"-moz-animation: none !important",
-				"-o-animation: none !important", "animation: none !important" };
-
-		screen.get("#zoomandaudio_spot_outer_" + deviceid).css(animation);
+		JSONObject m = new JSONObject();
+		m.put("command", "spot_leave");
+		m.put("spotid", "glass_" + deviceid);
+		screen.get(selector).update(m);
 	}
 
 	public void onTimeoutChecks(ModelEvent e) {
