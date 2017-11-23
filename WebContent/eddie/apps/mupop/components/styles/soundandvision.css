@@ -731,6 +731,10 @@ h1.videotitle {
 		display: none;
 	}
 	
+	.footer-logo {
+		display: none;
+	}
+	
 	.nopadding {
 		padding: 0;
 	}

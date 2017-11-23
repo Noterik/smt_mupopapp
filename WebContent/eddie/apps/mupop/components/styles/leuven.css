@@ -462,6 +462,10 @@ h2.mupop {
 	display: none;
 }
 
+.footer-logo {
+	display: none;
+}
+
 .nopadding {
 	padding: 0;
 }

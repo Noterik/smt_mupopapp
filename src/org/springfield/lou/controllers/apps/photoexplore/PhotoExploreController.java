@@ -66,7 +66,8 @@ public class PhotoExploreController extends Html5Controller {
 			JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
 			data.put("domain", LazyHomer.getExternalIpNumber());
 			data.put("jumper", exhibitionnode.getProperty("jumper"));
-
+			data.put("footer_logo", stationnode.getProperty("footer_logo"));
+			
 			FsNode language_content = model.getNode("@language_photoexplore_coverflow_screen");
 			data.put("logincode", language_content.getSmartProperty("en", "login_code"));
 			data.put("code", model.getProperty("@station/codeselect"));

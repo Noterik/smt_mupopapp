@@ -77,6 +77,7 @@ public class PhotoZoomController extends Html5Controller {
 		}
 
 		FsNode exhibitionnode = model.getNode("@exhibition");
+		FsNode stationnode = model.getNode("@station");
 		FsNode imagenode = model.getNode("@image");
 
 		if (itemnode != null) {
@@ -88,7 +89,8 @@ public class PhotoZoomController extends Html5Controller {
 
 			data.put("domain", LazyHomer.getExternalIpNumber());
 			data.put("jumper", exhibitionnode.getProperty("jumper"));
-
+			data.put("footer_logo", stationnode.getProperty("footer_logo"));
+			
 			model.setProperty("@contentrole", "mainapp");
 			System.out.println("ITEMSET3" + selecteditem);
 			model.setProperty("@itemid", selecteditem);

@@ -461,6 +461,7 @@ h2.mupop {
 	font-size: 3vh;
 	margin: 0;
 	padding: 0;
+	color: #000;
 }
 
 #coverflow-mobile {
@@ -489,7 +490,7 @@ h2.mupop {
 
 .poweredby {
 	font-size: 2vh;
-	color: #cccccc;
+	color: #000;
 	padding: 0;
 	padding-right: 0.2vw;
 }
@@ -503,7 +504,7 @@ h2.mupop {
 }
 
 .url_row_background {
-	background-color: #358ed6;
+	background-color: #fff;
 }
 
 /*! CoverflowJS - v3.0.2 - 2015-12-31
@@ -699,7 +700,7 @@ h2.zoomandaudio {
 
 .poweredby {
 	font-size: 2vh;
-	color: #cccccc;
+	color: #000;
 	padding: 0;
 	padding-right: 0.2vw;
 }
@@ -713,7 +714,7 @@ h2.zoomandaudio {
 }
 
 .url_row_background {
-	background-color: #358ed6;
+	background-color: #fff;
 }
 
 /** Photo explore **/
@@ -817,6 +818,10 @@ h2.zoomandaudio {
 }
 
 .bg-logo {
+	display: none;
+}
+
+.espace-logo {
 	display: none;
 }
 

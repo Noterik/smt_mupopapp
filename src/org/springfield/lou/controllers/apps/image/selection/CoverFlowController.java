@@ -66,7 +66,8 @@ public class CoverFlowController extends Html5Controller {
 
 			data.put("title", stationnode.getSmartProperty("en", "title"));
 			data.put("domain", LazyHomer.getExternalIpNumber());
-			data.put("jumper", exhibitionnode.getProperty("jumper"));	
+			data.put("jumper", exhibitionnode.getProperty("jumper"));
+			data.put("footer_logo", stationnode.getProperty("footer_logo"));
 
 			FsNode language_content = model.getNode("@language_photoexplore_coverflow_screen");
 			data.put("logincode", language_content.getSmartProperty("en", "login_code"));
