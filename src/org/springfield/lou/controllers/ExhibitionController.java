@@ -166,13 +166,11 @@ public class ExhibitionController extends Html5Controller {
     }
   
     public void onClientStationEvent(ModelEvent e) {
-    	System.out.println("GETTING EVENT!");
     	FsNode message = e.getTargetFsNode();
     	String from = message.getId();
     	String request = message.getProperty("request");
     	if (request!=null) { // so its a request for something !
     		if (request.equals("station")) {
-    			System.out.println("GETTING REQUEST1");
     			// ok lets see what we need todo and reply back to client
     			Screen client = ApplicationManager.getScreenByFullid(from);
     			String contentselect = model.getProperty("@station/contentselect");

@@ -85,10 +85,11 @@ public class StaticEntryScreenController extends Html5Controller {
     	    data.put("domain", LazyHomer.getExternalIpNumber());
     	    data.put("name", model.getProperty("@station/name"));
     	    data.put("labelid", model.getProperty("@station/labelid"));
-    	    String showurl = model.getProperty("@exhibition/showurl");
-    	    if (showurl!=null && showurl.equals("true")) {
-    		data.put("showurl","true");
-    	    }
+    	    //String showurl = model.getProperty("@exhibition/showurl");
+    	    
+    	    //if (showurl!=null && showurl.equals("true")) {
+    	    		data.put("showurl","true");
+    	    //}
 
   
     	    String stationselect = model.getProperty("@exhibition/stationselect");
