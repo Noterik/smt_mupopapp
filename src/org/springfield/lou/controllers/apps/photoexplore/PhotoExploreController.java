@@ -53,8 +53,12 @@ public class PhotoExploreController extends Html5Controller {
 
 		if (stationnode!=null) {
 			model.setProperty("@contentrole","mainapp");
-			model.setProperty("@itemid", model.getProperty("/screen/selecteditem"));
-
+			String itemname=model.getProperty("/screen/selecteditem");
+			if (itemname==null || itemname.equals("")) {
+				itemname="one";
+			}
+			model.setProperty("@itemid",itemname);
+			System.out.println("SELECTED ITEM="+itemname);
 			FSList imagesList = model.getList("@itemimages");
 			System.out.println("Found "+imagesList.size()+" images");
 			String renderoption = model.getProperty("@item/renderoption");
