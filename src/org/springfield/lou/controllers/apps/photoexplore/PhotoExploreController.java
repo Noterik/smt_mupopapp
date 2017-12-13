@@ -113,7 +113,7 @@ public class PhotoExploreController extends Html5Controller {
 		FsNode message = e.getTargetFsNode();
 		String from = message.getId();
 		String command = message.getProperty("action");
-
+		if (command==null) return;
 		timeoutnoactioncount = 0;
 		if (command.equals("leftonzoom")) {
 			JSONObject d = new JSONObject();
@@ -160,7 +160,13 @@ public class PhotoExploreController extends Html5Controller {
 			screen.get(selector).remove();
 			timeoutcount=-1; // how do the remove not remove the notify ?
 			timeoutnoactioncount=-1; // how do the remove not remove the notify ?
-			model.setProperty("/screen/state","contentselectforce");
+			
+			String type = model.getProperty("@station/contentselect");
+	    		if (type==null || type.equals("") || type.equals("none")) {
+				model.setProperty("/screen/state","apptimeout");
+			} else {
+				model.setProperty("/screen/state","contentselectforce");
+			}
 
 			FsNode message = new FsNode("message",screen.getId());
 			message.setProperty("request","contentselect");

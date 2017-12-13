@@ -91,7 +91,6 @@ public class PairingController extends Html5Controller {
 	}
 	
 	public void onDashboardMessage(ModelEvent e) {
-		System.out.println("DASHBOARDMESSAGE="+e.getTargetFsNode().asXML());
 		screen.get("#screen").location("");
 	}
 	
