@@ -164,6 +164,11 @@ public class PhotoExploreController extends Html5Controller {
 			String type = model.getProperty("@station/contentselect");
 	    		if (type==null || type.equals("") || type.equals("none")) {
 				model.setProperty("/screen/state","apptimeout");
+				//Inform clients to switch to main app view
+				FsNode m = new FsNode("message",screen.getId());
+				m.setProperty("request","mainapp");
+			//	m.setProperty("itemid", item.getProperty("wantedselect"));
+				model.notify("@stationevents/fromclient",m);
 			} else {
 				model.setProperty("/screen/state","contentselectforce");
 			}

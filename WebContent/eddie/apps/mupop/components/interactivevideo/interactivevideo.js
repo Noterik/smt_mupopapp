@@ -89,7 +89,7 @@ InteractiveVideoController.update = function(vars, data){
 		$("#"+targetid)[0].volume  = data['volume'] / 100;
 		break;
 	case "newvideo":
-		$("#videosrc").attr("src","http://images1.noterik.com/videoremote/"+data['mp4']+".mp4");
+		$("#videosrc").attr("src","http://ixxxxxx.noterik.com/videoremote/"+data['mp4']+".mp4");
 		$("#"+targetid)[0].load();
 		//console.log('mp4='+data['mp4']);
 		break;

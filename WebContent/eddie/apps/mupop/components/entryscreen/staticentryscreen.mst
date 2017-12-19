@@ -3,13 +3,15 @@
 		<img id="entryimage" src="{{entryimageurl}}" class="img-responsive"/>
 	</div>
 </div>
+{{#title}}
 <div class="row" id="title"><h1 class="title"><span class="title-span">{{{title}}}</span></h1>
-<div class="subrow_{{language}}"><img src="http://images1.noterik.com/mupop/in_sv_{{language}}.png"/></div>
+<div class="subrow_{{language}}"></div>
 </div>
+{{/title}}
 <div id="connect-row" class="row">
 	<div id="mobile-phone" class="inbl">
 		<span class="centerer inbl">
-			<img src="http://images1.noterik.com/mupop/play-espace-animation.gif" id="play-logo"/>
+			<img src="/eddie/apps/mupop/img/play-espace-animation.gif" id="play-logo"/>
 		</span>
 	</div>
 	<div id="connect-info" class="inbl">

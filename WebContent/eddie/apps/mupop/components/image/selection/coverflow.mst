@@ -15,8 +15,8 @@
 	<div id="url_row" class="row">
 	<div class="col-md-2 fill-height nopadding url_row_background">
 		<div class="vertical-center fill-height">
-			<img src="http://images1.noterik.com/mupop/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
-			<img src="http://images1.noterik.com/mupop/espace_logo_small.png" class="max-height espace-logo"/>
+			<img src="/eddie/apps/mupop/img/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
+			<img src="/eddie/apps/mupop/img/espace_logo_small.png" class="max-height espace-logo"/>
 			{{#footer_logo}}
 				<img src="{{footer_logo}}" class="max-height footer_logo"/>
 			{{/footer_logo}}

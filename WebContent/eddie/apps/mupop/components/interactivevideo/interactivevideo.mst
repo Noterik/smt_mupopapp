@@ -8,7 +8,7 @@
 </video>
 <div class="videotitlerow" id="videotitle">
 	<h1 class="videotitle"><span class="videotitle-span">{{title}}</span></h1>
-	<img id="videologo" src="http://images1.noterik.com/mupop/in_sv_nl.png"/>
+	<img id="videologo" src="/eddie/apps/mupop/img/in_sv_nl.png"/>
 </div>
 <div id="interactivevideo_lowerthird">
 {{goto}} <font color=black><b>{{domain}}</b></font> {{andenter}} <font color=black><b>{{codeselect}}</b></font> om ook mee te spelen

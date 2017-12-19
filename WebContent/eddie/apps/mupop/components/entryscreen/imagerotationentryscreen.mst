@@ -7,7 +7,7 @@
 <div id="connect-row" class="row">
 	<div id="mobile-phone" class="inbl">
 		<span class="centerer inbl">
-			<img src="http://images1.noterik.com/mupop/play-espace-animation.gif" id="play-logo"/>
+			<img src="/eddie/apps/mupop/img/play-espace-animation.gif" id="play-logo"/>
 		</span>
 	</div>
 	<div id="connect-info" class="inbl">
