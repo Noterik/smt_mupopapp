@@ -11,7 +11,13 @@
 <div id="connect-row" class="row">
 	<div id="mobile-phone" class="inbl">
 		<span class="centerer inbl">
+			{{#waitscreenlogo}}
+			<img src="{{waitscreenlogo}}" id="play-logo"/>
+			{{/waitscreenlogo}}
+			{{^waitscreenlogo}}
 			<img src="/eddie/apps/mupop/img/play-espace-animation.gif" id="play-logo"/>
+			{{/waitscreenlogo}}
+
 		</span>
 	</div>
 	<div id="connect-info" class="inbl">

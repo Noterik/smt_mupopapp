@@ -45,7 +45,9 @@
 	    
 		<stations>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station</stations>
 		<station>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']</station>
-		
+	
+		<content>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']</content>
+	
 		<images>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/image</images>
 		<image>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/image['@imageid']</image>
 		

@@ -90,6 +90,11 @@ public class StaticEntryScreenController extends Html5Controller {
     	    //if (showurl!=null && showurl.equals("true")) {
     	    		data.put("showurl","true");
     	    //}
+    	    		
+    		String waitscreenlogo = model.getProperty("@content/waitscreenlogo");
+    		if (waitscreenlogo!=null && !waitscreenlogo.equals("")) {
+    			data.put("waitscreenlogo",waitscreenlogo);
+    		}
 
   
     	    String stationselect = model.getProperty("@exhibition/stationselect");
