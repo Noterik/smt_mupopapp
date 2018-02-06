@@ -9,11 +9,16 @@
 <div id="url_row" class="row">
 	<div class="col-md-2 fill-height nopadding url_row_background">
 		<div class="vertical-center fill-height">
-			<img src="/eddie/apps/mupop/img/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
-			<img src="/eddie/apps/mupop/img/espace_logo_small.png" class="max-height espace-logo"/>
-			{{#footer_logo}}
-				<img src="{{footer_logo}}" class="max-height footer_logo"/>
-			{{/footer_logo}}
+			{{#applogoleft}}
+				<img src="{{applogoleft}}" />
+			{{/applogoleft}}
+			{{^applogoleft}}
+				<img src="/eddie/apps/mupop/img/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
+				<img src="/eddie/apps/mupop/img/espace_logo_small.png" class="max-height espace-logo"/>
+				{{#footer_logo}}
+					<img src="{{footer_logo}}" class="max-height footer_logo"/>
+				{{/footer_logo}}
+			{{/applogoleft}}
 		</div>
 	</div>
 	<div class="col-md-6 col-md-offset-1">
@@ -26,7 +31,12 @@
 	</div>
 	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background">
 		<div class="fill-height poweredbywrapper">
-			<span class="poweredby">Powered by </span><div><h2 class="mupop">MUPOP</h2>
+			{{#applogoright}}
+				<img src="{{applogoright}}" />
+			{{/applogoright}}
+			{{^applogoright}}
+				<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
+			{{/applogoright}}
 		</div>
 	</div>
 </div>

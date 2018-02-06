@@ -76,7 +76,14 @@ public class PhotoExploreController extends Html5Controller {
 			data.put("logincode", language_content.getSmartProperty("en", "login_code"));
 			data.put("code", model.getProperty("@station/codeselect"));
 
-			System.out.println("RENDER OPTION="+renderoption);
+			String applogoleft = model.getProperty("@station/content['contentselect']/applogoright");
+			if (applogoleft!=null && !applogoleft.equals("")) {
+				data.put("applogoleft",applogoleft);
+			}
+			String applogoright = model.getProperty("@station/content['contentselect']/applogoright");
+			if (applogoright!=null && !applogoright.equals("")) {
+				data.put("applogoright",applogoright);
+			}
 
 			screen.get(selector).parsehtml(data);
 			screen.get(selector).loadScript(this);

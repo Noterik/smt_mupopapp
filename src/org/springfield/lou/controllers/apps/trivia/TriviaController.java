@@ -155,6 +155,16 @@ public class TriviaController extends Html5Controller {
 			data.put("logo",logo);
 		}
 		data.put("timer",timeout);
+		
+		String applogoleft = model.getProperty("@station/content['contentselect']/applogoright");
+		if (applogoleft!=null && !applogoleft.equals("")) {
+			data.put("applogoleft",applogoleft);
+		}
+		String applogoright = model.getProperty("@station/content['contentselect']/applogoright");
+		if (applogoright!=null && !applogoright.equals("")) {
+			data.put("applogoright",applogoright);
+		}
+		
 		screen.get(selector).render(data);
 		screen.get(selector).loadScript(this);
 

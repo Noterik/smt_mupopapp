@@ -98,6 +98,15 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			if (model.getProperty("@station/codeselect") != null) {
 				data.put("code", model.getProperty("@station/codeselect"));
 			}
+			
+			String applogoleft = model.getProperty("@station/content['contentselect']/applogoright");
+			if (applogoleft!=null && !applogoleft.equals("")) {
+				data.put("applogoleft",applogoleft);
+			}
+			String applogoright = model.getProperty("@station/content['contentselect']/applogoright");
+			if (applogoright!=null && !applogoright.equals("")) {
+				data.put("applogoright",applogoright);
+			}
 
 			screen.get(selector).render(data);
 			screen.get(selector).loadScript(this);

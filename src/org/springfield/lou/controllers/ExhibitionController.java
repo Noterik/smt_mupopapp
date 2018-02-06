@@ -20,13 +20,17 @@
 package org.springfield.lou.controllers;
 
 
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import org.json.simple.JSONObject;
+import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.application.ApplicationManager;
 import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.Html5ApplicationInterface;
+import org.springfield.lou.controllers.apps.entryscreen.CodeSelector;
 import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
@@ -147,6 +151,31 @@ public class ExhibitionController extends Html5Controller {
     		//model.onNotify("/shared/exhibition/"+exhibitionid+"/station/"+ stationid +"/vars/userJoined", "startExhibition", this);
     	} else {
     		// move to the next logical state
+    		
+    		// need to generate a code
+			String fullcode =CodeSelector.getFreeRandomCode();
+			Boolean codeok =  checkCodeInUse(fullcode);
+			System.out.println("CODE ASSIGN1");
+			while (!codeok) {
+				fullcode =CodeSelector.getFreeRandomCode();
+				codeok = checkCodeInUse(fullcode);
+				System.out.println("CODE ASSIGN2");
+			}
+			String stationid = model.getProperty("@stationid");
+			String exhibitionid = model.getProperty("@exhibitionid");
+			System.out.println("CODE ASSIGN3 = "+stationid+" "+exhibitionid);
+
+
+			FsNode joincode = model.getNode("@joincodes/code/"+stationid); // auto create because of bug !
+			joincode.setProperty("codeselect", fullcode);
+			joincode.setProperty("userid",model.getProperty("@username"));
+			joincode.setProperty("stationid",stationid);
+			joincode.setProperty("exhibitionid",exhibitionid);
+			joincode.setProperty("createtime",""+new Date().getTime());
+			model.setProperty("@station/codeselect",fullcode);
+			System.out.println("JOINNODE="+joincode.asXML());
+
+    		
     		model.setProperty("/screen/state","contentselect");
     	}
     }
@@ -280,4 +309,19 @@ public class ExhibitionController extends Html5Controller {
     	screen.get("#photoinfospots_app").remove();
     	screen.get("#photozoom_app").remove();
     }
+    
+	private boolean checkCodeInUse(String newcode) {
+		FSList joincodes = model.getList("@joincodes"); // check all the active stations
+		if (joincodes != null) {
+			List<FsNode> nodes = joincodes.getNodes();
+			for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+				FsNode node = (FsNode) iter.next();
+				String correctcode = node.getProperty("codeselect");
+				if (correctcode!=null && correctcode.equals(newcode)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

@@ -385,6 +385,16 @@ public class WhatWeThinkController extends Html5Controller {
 				}
 			}
 		}
+		
+		String applogoleft = model.getProperty("@station/content['contentselect']/applogoright");
+		if (applogoleft!=null && !applogoleft.equals("")) {
+			data.put("applogoleft",applogoleft);
+		}
+		String applogoright = model.getProperty("@station/content['contentselect']/applogoright");
+		if (applogoright!=null && !applogoright.equals("")) {
+			data.put("applogoright",applogoright);
+		}
+		
 		screen.get(selector).render(data);
 	}
 	
