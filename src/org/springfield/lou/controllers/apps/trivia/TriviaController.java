@@ -294,6 +294,7 @@ public class TriviaController extends Html5Controller {
 			// loop over all items and group them per level
 			for (Iterator<FsNode> iter = items.getNodes().iterator(); iter.hasNext();) {
 				FsNode triviaItem = (FsNode) iter.next();
+				try {
 				int itemId = Integer.parseInt(triviaItem.getId());
 				int itemLevel = Integer.parseInt(triviaItem.getProperty("level"));
 
@@ -307,6 +308,7 @@ public class TriviaController extends Html5Controller {
 
 				levelItems.add(itemId);
 				triviaItems.put(itemLevel, levelItems);
+				} catch(Exception e) {};
 			}
 		}
 	}

@@ -34,13 +34,14 @@ import org.springfield.lou.controllers.apps.entryscreen.CodeSelector;
 import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
+import org.springfield.lou.controllers.apps.image.selection.SelectionMapController;
 import org.springfield.lou.controllers.apps.interactivevideo.InteractiveVideoController;
 import org.springfield.lou.controllers.apps.photoexplore.PhotoExploreController;
 import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController;
 import org.springfield.lou.controllers.apps.trivia.TriviaController;
 import org.springfield.lou.controllers.apps.whatwethink.WhatWeThinkController;
 import org.springfield.lou.controllers.apps.photozoom.PhotoZoomController;
-
+import org.springfield.lou.controllers.apps.quiz.QuizController;
 //import org.springfield.lou.controllers.apps.photoinfospots.PhotoInfoSpotsController_old;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
@@ -155,15 +156,12 @@ public class ExhibitionController extends Html5Controller {
     		// need to generate a code
 			String fullcode =CodeSelector.getFreeRandomCode();
 			Boolean codeok =  checkCodeInUse(fullcode);
-			System.out.println("CODE ASSIGN1");
 			while (!codeok) {
 				fullcode =CodeSelector.getFreeRandomCode();
 				codeok = checkCodeInUse(fullcode);
-				System.out.println("CODE ASSIGN2");
 			}
 			String stationid = model.getProperty("@stationid");
 			String exhibitionid = model.getProperty("@exhibitionid");
-			System.out.println("CODE ASSIGN3 = "+stationid+" "+exhibitionid);
 
 
 			FsNode joincode = model.getNode("@joincodes/code/"+stationid); // auto create because of bug !
@@ -173,8 +171,6 @@ public class ExhibitionController extends Html5Controller {
 			joincode.setProperty("exhibitionid",exhibitionid);
 			joincode.setProperty("createtime",""+new Date().getTime());
 			model.setProperty("@station/codeselect",fullcode);
-			System.out.println("JOINNODE="+joincode.asXML());
-
     		
     		model.setProperty("/screen/state","contentselect");
     	}
@@ -233,6 +229,10 @@ public class ExhibitionController extends Html5Controller {
         		screen.get("#coverflow").remove(); // extra checks daniel
     			screen.get("#exhibition").append("div", "coverflow", new CoverFlowController());
     			return;
+    		} else if (type.equals("selectionmap")) {
+        		screen.get("#selectionmap").remove();
+    			screen.get("#exhibition").append("div", "selectionmap", new SelectionMapController());
+    			return;
     		}
     	}
 		model.setProperty("/screen/state","mainapp"); 
@@ -282,6 +282,10 @@ public class ExhibitionController extends Html5Controller {
 	        		screen.get("#trivia_app").remove(); // extra checks daniel
 	        		screen.get("#trivia_app").remove(); // extra checks daniel
 					screen.get("#exhibition").append("div","trivia_app", new TriviaController());
+		    	} else if (app.equals("quiz")) {
+	        		screen.get("#quiz_app").remove(); // extra checks daniel
+	        		screen.get("#quiz_app").remove(); // extra checks daniel
+					screen.get("#exhibition").append("div","quiz_app", new QuizController());
 		    	} else if (app.equals("whatwethink")) {
 	        		screen.get("#whatwethink_app").remove(); // extra checks daniel
 	        		screen.get("#whatwethink_app").remove(); // extra checks daniel

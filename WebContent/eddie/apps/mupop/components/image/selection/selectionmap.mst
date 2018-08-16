@@ -1,0 +1,57 @@
+<div class="container-fluid fill-height">
+	<div id="selectionmap-title" class="row">
+		<h1 class="selectionmap">MAP MAP{{title}}</h1>
+	</div>
+	<div class="row vertical-center" id="selectionmap-container">
+		<div id="selectionmaptrackarea">
+		<img id="selectionmapimage" src="{{url}}" />
+		{{#nodes}}
+			<img id="selectionmapmask_{{id}}" class="selectionmap_mask" src="{{maskurl}}" />
+		{{/nodes}}
+		<div id="selectionmapspot" style="top:{{y}}%;left:{{x}}%;background-color: {{color}};"> </div>
+		</div>
+		
+	</div>
+</div>
+	
+	<div id="url_row" class="row">
+	<div class="col-md-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			{{#applogoleft}}
+				<img src="{{applogoleft}}" />
+			{{/applogoleft}}
+			{{^applogoleft}}
+				<img src="/eddie/apps/mupop/img/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
+				<img src="/eddie/apps/mupop/img/espace_logo_small.png" class="max-height espace-logo"/>
+				{{#footer_logo}}
+					<img src="{{footer_logo}}" class="max-height footer_logo"/>
+				{{/footer_logo}}
+			{{/applogoleft}}
+			
+		</div>
+	</div>
+	<div class="col-md-6 col-md-offset-1">
+		<div class="vertical-center">
+			<div id="selectionmap-mobile-phone"></div>
+			<div id="join-text">
+				{{#code}}
+					<h2 class="selectionmap">{{domain}} - {{code}}</h2>
+				{{/code}}
+				{{^code}}
+					<h2 class="selectionmap">{{domain}}/{{jumper}}</h2>
+				{{/code}}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background">
+		<div class="fill-height poweredbywrapper">
+			{{#applogoright}}
+				<img src="{{applogoright}}" />
+			{{/applogoright}}
+			{{^applogoright}}
+				<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
+			{{/applogoright}}
+		</div>
+	</div>
+</div>
+</div>

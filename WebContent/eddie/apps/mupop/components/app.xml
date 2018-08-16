@@ -140,6 +140,13 @@
 		</controller>
 	</view>
 	
+	<view id="#quiz_app">
+		<template>quiz/quiz.mst</template>
+		<style>quiz/quiz.css</style>
+		<controller id="QuizController">
+		</controller>
+	</view>
+	
 	<view id="#trivia_app">
 		<template>trivia/trivia.mst</template>
 		<style>trivia/trivia.css</style>
@@ -191,6 +198,14 @@
 		<style>image/selection/coverflow.css</style>
 		<controller id="CoverFlowController">
 			<javascript>image/selection/CoverFlowController.js</javascript>
+		</controller>
+	</view>
+	
+	
+	<view id="#selectionmap">
+		<template>image/selection/selectionmap.mst</template>
+		<style>image/selection/selectionmap.css</style>
+		<controller id="SelectionMapController">
 		</controller>
 	</view>
 </app>

@@ -105,16 +105,12 @@ public class StaticEntryScreenController extends Html5Controller {
 			if (stationselect!=null && stationselect.equals("codeselect")) {
 				String fullcode =CodeSelector.getFreeRandomCode();
 				Boolean codeok =  checkCodeInUse(fullcode);
-				System.out.println("CODE ASSIGN1");
 				while (!codeok) {
 					fullcode =CodeSelector.getFreeRandomCode();
 					codeok = checkCodeInUse(fullcode);
-					System.out.println("CODE ASSIGN2");
 				}
 				String stationid = model.getProperty("@stationid");
 				String exhibitionid = model.getProperty("@exhibitionid");
-				System.out.println("CODE ASSIGN3 = "+stationid+" "+exhibitionid);
-
 
 				FsNode joincode = model.getNode("@joincodes/code/"+stationid); // auto create because of bug !
 				joincode.setProperty("codeselect", fullcode);
@@ -123,7 +119,6 @@ public class StaticEntryScreenController extends Html5Controller {
 				joincode.setProperty("exhibitionid",exhibitionid);
 				joincode.setProperty("createtime",""+new Date().getTime());
 				model.setProperty("@station/codeselect",fullcode);
-				System.out.println("JOINNODE="+joincode.asXML());
 				data.put("codeselect",fullcode);
 			}
 			screen.get(selector).render(data);
