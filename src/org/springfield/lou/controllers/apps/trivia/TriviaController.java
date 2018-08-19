@@ -68,6 +68,8 @@ public class TriviaController extends Html5Controller {
 
 	private void fillPage() {
 		JSONObject data = new JSONObject();
+		
+
 
 		FsNode exhibitionnode = model.getNode("@exhibition");
 		FsNode item = model.getNode("@item");
@@ -144,7 +146,6 @@ public class TriviaController extends Html5Controller {
 		}
 		String logo = "http://betadash.mupop.net/eddie/img/phc_logo_square_purple.png";
 		FsNode ex = model.getNode("@exhibition");
-		System.out.println("LOGO EXI="+ex);
 		if (ex!=null) {
 			System.out.println("LOGO EXI="+ex.asXML());
 			if (ex.getId().equals("1494918612906")) {

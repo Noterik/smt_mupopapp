@@ -28,6 +28,8 @@ import java.util.NavigableMap;
 import java.util.Random;
 import java.util.TreeMap;
 
+import javax.jws.WebParam.Mode;
+
 import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
@@ -43,8 +45,10 @@ public class QuizController extends Html5Controller {
 	private int gotovalue=0;
 	private String slidetype;
 	private int slidetimeout=-1;
+	private int showtimer=0;
 	private List<FsNode> randomset;
 	private Random rnd;
+	private String showanswer = "false";
 	
 	public QuizController() { 
     	rnd = new Random(System.currentTimeMillis());
@@ -53,15 +57,20 @@ public class QuizController extends Html5Controller {
 	public void attach(String sel) {	
 		selector = sel;
 		model.setProperty("@contentrole", "mainapp");
-		System.out.println("ITEM ID WANTED ="+model.getProperty("/screen/selecteditem"));
 		FsNode item = model.getNode("@content/item/"+model.getProperty("/screen/selecteditem"));
 		if (item!=null) {
-			//System.out.println("QUIZ ITEM="+item.asXML());
 			slidenode = getFirstSlideNode(item);
 		}
 		fillPage();
-		//model.onNotify("@stationevents/totriviaserver", "onClientMsg", this);
 		model.onNotify("/shared[timers]/1second", "on1SecondTimer", this);
+	}
+	
+	private int calcTimer(int t) {
+		if (t>showtimer) {
+			return t-showtimer;
+		} else {
+			return t;
+		}
 	}
 
 	private void fillPage() {
@@ -74,54 +83,64 @@ public class QuizController extends Html5Controller {
 			data.put("imageurl",slidenode.getProperty("imageurl"));
 		} else if (slidetype.equals("imagequestion")) {
 			data.put("imageurl",slidenode.getProperty("imageurl"));
+			data.put("slidequestion",slidenode.getProperty("question"));
+			data.put("slideanswer1",slidenode.getProperty("answer1"));
+			data.put("slideanswer2",slidenode.getProperty("answer2"));
+			data.put("slideanswer3",slidenode.getProperty("answer3"));
+			data.put("slideanswer4",slidenode.getProperty("answer4"));
 		} else if (slidetype.equals("videoquestion")) {
-			System.out.println("VIDEO URL="+slidenode.getProperty("videourl"));
 			data.put("videourl",slidenode.getProperty("videourl"));
+			data.put("slidequestion",slidenode.getProperty("question"));
+			data.put("slideanswer1",slidenode.getProperty("answer1"));
+			data.put("slideanswer2",slidenode.getProperty("answer2"));
+			data.put("slideanswer3",slidenode.getProperty("answer3"));
+			data.put("slideanswer4",slidenode.getProperty("answer4"));
 		}
+		data.put("timeout", ""+calcTimer(slidetimeout));
 		data.put("domain", LazyHomer.getExternalIpNumber());
-		data.put("jumper", exhibitionnode.getProperty("jumper"));	
+		if (model.getProperty("@station/codeselect") != null) {
+		    data.put("code", model.getProperty("@station/codeselect"));
+		}
 		screen.get(selector).render(data);
 	}
 
 	private void getNextSlideNode() {
-		System.out.println("CURRENT SLIDE="+slidenode.asXML());
+		showanswer = "false";
 		String next = slidenode.getProperty("next");
-		System.out.println("NEXT="+next);
 		if (next.equals("next")) {
 			// ok we just need the next slide number
 			try {
 				int currentid = Integer.parseInt(slidenode.getId());
 				currentid++;
-				System.out.println("NEW ID="+currentid);
 				FsNode node = model.getNode("@content/item/"+model.getProperty("/screen/selecteditem")+"/slide/"+currentid);
 				if (node!=null) {
-					System.out.println("SLIDENODE="+node.asXML());
 					slidetype = node.getProperty("type");
 					if (slidetype==null) slidetype="image";
-					System.out.println("SLIDETYPE="+slidetype);
 					slidetimeout =  Integer.parseInt(node.getProperty("timeout"));
+					if (slidetype.equals("imagequestion") || slidetype.equals("videoquestion")) {
+						showtimer = 3;
+					}
 					slidenode = node;
 					fillPage();
 				}
 			} catch(Exception e) {				
 			}
 		} else if (next.equals("end")) {
-			System.out.println("ITS A END POINT SO WHAT IS THE RANDOM VALUE NOW ? "+random);
 			if (random>0) {
 				// lets find our random set
 				if (randomset==null) getRandomSet();
 	    		int picked = rnd.nextInt(randomset.size());
 	    		slidenode = randomset.get(picked);
 	    		randomset.remove(picked);
-	    		System.out.println("PICKED NODE="+slidenode.getId());
 				slidetype = slidenode.getProperty("type");
 				if (slidetype==null) slidetype="image";
-				System.out.println("SLIDETYPE="+slidetype);
 				slidetimeout =  Integer.parseInt(slidenode.getProperty("timeout"));
+				if (slidetype.equals("imagequestion") || slidetype.equals("videoquestion")) {
+					showtimer = 3;
+				}
 				random = random - 1;
 				fillPage();
 			} else {
-				System.out.println("WE ARE DONE WE SHOULD JUMP BACK");
 				screen.get(selector).remove();
 				model.setProperty("/screen/state","contentselectforce");
 			}
@@ -135,7 +154,6 @@ public class QuizController extends Html5Controller {
 		if (slides!=null && slides.size()>0) { // if we have stations already lets find the highest number
 			for(Iterator<FsNode> iter = slides.getNodes().iterator() ; iter.hasNext(); ) {
 				FsNode node = (FsNode)iter.next();	
-				System.out.println("NODE="+node.asXML());
 				String set = node.getProperty("set");
 				if (set!=null && set.equals("randomstart")) {
 					randomset.add(node);	
@@ -149,16 +167,15 @@ public class QuizController extends Html5Controller {
 		try {
 			random = Integer.parseInt(item.getProperty("random"));
 			gotovalue = Integer.parseInt(item.getProperty("goto"));
-			System.out.println("random="+random+" goto="+gotovalue);			
 			if (gotovalue!=0) {
 				// ok lets get the first slidenode  
 				FsNode node = model.getNode("@content/item/"+model.getProperty("/screen/selecteditem")+"/slide/"+gotovalue);
 				if (node!=null) {
-					System.out.println("SLIDENODE="+node.asXML());
 					slidetype = node.getProperty("type");
 					if (slidetype==null) slidetype="image";
-					System.out.println("SLIDETYPE="+slidetype);
 					slidetimeout =  Integer.parseInt(node.getProperty("timeout"));
+					showtimer = 0;
+					showanswer = "false";
 					return node;
 				}
 			}
@@ -171,12 +188,50 @@ public class QuizController extends Html5Controller {
 	public void on1SecondTimer(ModelEvent e) {
 		if (slidetimeout>0) {
 			slidetimeout = slidetimeout - 1;
-			System.out.println("SLIDE TIMEOUT="+slidetimeout);
+			screen.get("#quiz-game-timer").html(""+calcTimer(slidetimeout));
+			if (showtimer!=0 && (slidetype.equals("imagequestion") || slidetype.equals("videoquestion"))) {
+				if (slidetimeout==showtimer) {
+					showanswer = "true";
+					System.out.println("MAKE SHOWANSWER TRUE");
+					// lets set the anser (little hack until later)
+					String correctanswer = slidenode.getProperty("correctanswer");
+					if (correctanswer.equals("1")) {
+						screen.get("#quiz-game-answer2_container").css("background-color","white");
+						screen.get("#quiz-game-answer3_container").css("background-color","white");
+						screen.get("#quiz-game-answer4_container").css("background-color","white");
+						screen.get("#quiz-game-answer2_container").css("color","grey");
+						screen.get("#quiz-game-answer3_container").css("color","grey");
+						screen.get("#quiz-game-answer4_container").css("color","grey");
+					} else if (correctanswer.equals("2")) {
+						screen.get("#quiz-game-answer1_container").css("background-color","white");
+						screen.get("#quiz-game-answer3_container").css("background-color","white");
+						screen.get("#quiz-game-answer4_container").css("background-color","white");	
+						screen.get("#quiz-game-answer1_container").css("color","grey");
+						screen.get("#quiz-game-answer3_container").css("color","grey");
+						screen.get("#quiz-game-answer4_container").css("color","grey");
+					} else if (correctanswer.equals("3")) {
+						screen.get("#quiz-game-answer1_container").css("background-color","white");
+						screen.get("#quiz-game-answer2_container").css("background-color","white");
+						screen.get("#quiz-game-answer4_container").css("background-color","white");	
+						screen.get("#quiz-game-answer1_container").css("color","grey");
+						screen.get("#quiz-game-answer2_container").css("color","grey");
+						screen.get("#quiz-game-answer4_container").css("color","grey");
+					} else if (correctanswer.equals("4")) {
+						screen.get("#quiz-game-answer1_container").css("background-color","white");
+						screen.get("#quiz-game-answer2_container").css("background-color","white");
+						screen.get("#quiz-game-answer3_container").css("background-color","white");	
+						screen.get("#quiz-game-answer1_container").css("color","grey");
+						screen.get("#quiz-game-answer2_container").css("color","grey");
+						screen.get("#quiz-game-answer3_container").css("color","grey");
+					}
+				}
+			}
 			if (slidetimeout==0) {
 				getNextSlideNode();
 			}
 		}
-	//	System.out.println("SEC CALLED ON MUPOP");
-	}
+		slidenode.setProperty("showanswer",showanswer);
+		model.notify("@quizslide", slidenode);
+ 	}
 
 }

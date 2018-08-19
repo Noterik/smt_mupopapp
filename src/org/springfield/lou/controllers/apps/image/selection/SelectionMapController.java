@@ -167,6 +167,7 @@ public class SelectionMapController extends Html5Controller {
 				m.setProperty("request","mainapp");
 				m.setProperty("itemid", selectedItem.getId());
 				model.notify("@stationevents/fromclient",m);
+				
 				screen.get(selector).remove();
 			}
 		}
@@ -185,7 +186,6 @@ public class SelectionMapController extends Html5Controller {
 	}
 
 	private void resetScreen() {
-		System.out.println("COVERFLOW RESET CALLED");
 		screen.get("#staticentryscreen").remove();	
 		screen.get("#imagerotationentryscreen").remove();
 		screen.get("#coverflow").remove();

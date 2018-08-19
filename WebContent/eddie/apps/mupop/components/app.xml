@@ -63,6 +63,7 @@
 		<itemanwser>/domain['mupop']/user['@username']/exhibition['@exhibitionid']/station['@stationid']/content['@contentrole']/item['@itemid']/answer['1']</itemanwser>
 		<stationevents>/shared['exhibitionevents']/exhibition['@exhibitionid']/station['@stationid']</stationevents>
 		<exhibitionevents>/shared['exhibitionevents']/exhibition['@exhibitionid']</exhibitionevents>
+		<quizslide>/shared['exhibitionevents']/exhibition['@exhibitionid']/station['@stationid']/quiz</quizslide>
 		
 		<joincodes>/shared['joincodes']</joincodes>
 		<photoinfospots>/shared['photoinfospots']/exhibition['@exhibitionid']/station['@stationid']</photoinfospots>

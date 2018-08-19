@@ -170,7 +170,6 @@ public class CoverFlowController extends Html5Controller {
 	}
 
 	private void resetScreen() {
-		System.out.println("COVERFLOW RESET CALLED");
 		screen.get("#staticentryscreen").remove();	
 		screen.get("#imagerotationentryscreen").remove();
 		screen.get("#coverflow").remove();

@@ -104,8 +104,6 @@ public class InteractiveVideoController extends Html5Controller {
 				data.put("url",videourl);
 			}
 			audiourl = itemnode.getProperty("audiourl");
-			System.out.println("VIDEO URL="+itemnode.getProperty("videourl"));
-			System.out.println("AUDIO URL="+audiourl);
 			data.put("title", stationnode.getSmartProperty("en", "title"));
 			data = addMetaData(data);
 			screen.get(selector).render(data);
