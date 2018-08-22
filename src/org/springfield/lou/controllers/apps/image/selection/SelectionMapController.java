@@ -107,7 +107,12 @@ public class SelectionMapController extends Html5Controller {
     		data.put("y","50");
     		data.put("color","red");
     			
-			screen.get(selector).render(data);
+			screen.get(selector).render(data);			
+			screen.get(selector).loadScript(this);
+
+			JSONObject d = new JSONObject();
+			d.put("command", "init");
+			screen.get(selector).update(d);
 		}
 
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);

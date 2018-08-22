@@ -1,14 +1,18 @@
 <div class="container-fluid fill-height">
 	<div id="selectionmap-title" class="row">
-		<h1 class="selectionmap">MAP MAP{{title}}</h1>
+		<h1 class="selectionmap">WALL OF FAME QUIZ{{title}}</h1>
 	</div>
 	<div class="row vertical-center" id="selectionmap-container">
 		<div id="selectionmaptrackarea">
-		<img id="selectionmapimage" src="{{url}}" />
-		{{#nodes}}
-			<img id="selectionmapmask_{{id}}" class="selectionmap_mask" src="{{maskurl}}" />
-		{{/nodes}}
-		<div id="selectionmapspot" style="top:{{y}}%;left:{{x}}%;background-color: {{color}};"> </div>
+			<img id="selectionmapimage" src="{{url}}" />
+			{{#nodes}}
+				<div class="selectionmapmask">
+					<img id="selectionmapmask_{{id}}" class="selectionmap_mask" src="{{maskurl}}" />
+				</div>
+			{{/nodes}}
+			<div id="selectionmapspot_holder">
+				<div id="selectionmapspot" style="top:{{y}}%;left:{{x}}%;background-color: {{color}};"> </div>
+			</div>
 		</div>
 		
 	</div>
