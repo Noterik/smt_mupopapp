@@ -213,6 +213,9 @@ public class ExhibitionController extends Html5Controller {
     				model.setProperty("@fromid", from);
     				model.setProperty("/screen/state","mainapp");
     			}
+    		} else if (request.equals("globalnameselect")) {
+    			Screen client = ApplicationManager.getScreenByFullid(from);
+    			client.getModel().setProperty("/screen/state","globalnameselect");
     		} else if (request.equals("contentselectforce")) {
     		    model.setProperty("/screen/state", request);
     		}
