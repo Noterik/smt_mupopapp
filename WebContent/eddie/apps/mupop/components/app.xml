@@ -207,6 +207,7 @@
 		<template>image/selection/selectionmap.mst</template>
 		<style>image/selection/selectionmap.css</style>
 		<controller id="SelectionMapController">
+			<javascript>image/selection/SelectionMapController.js</javascript>
 		</controller>
 	</view>
 </app>
