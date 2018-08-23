@@ -82,6 +82,8 @@ public class QuizController extends Html5Controller {
 		if (slidetype.equals("image")) {
 			data.put("imageurl",slidenode.getProperty("imageurl"));
 		} else if (slidetype.equals("imagequestion")) {
+			data.put("image", "true");
+			data.put("questions", "true");
 			data.put("imageurl",slidenode.getProperty("imageurl"));
 			data.put("slidequestion",slidenode.getProperty("question"));
 			data.put("slideanswer1",slidenode.getProperty("answer1"));
@@ -89,6 +91,8 @@ public class QuizController extends Html5Controller {
 			data.put("slideanswer3",slidenode.getProperty("answer3"));
 			data.put("slideanswer4",slidenode.getProperty("answer4"));
 		} else if (slidetype.equals("videoquestion")) {
+			data.put("video", "true");
+			data.put("questions", "true");
 			data.put("videourl",slidenode.getProperty("videourl"));
 			data.put("slidequestion",slidenode.getProperty("question"));
 			data.put("slideanswer1",slidenode.getProperty("answer1"));
