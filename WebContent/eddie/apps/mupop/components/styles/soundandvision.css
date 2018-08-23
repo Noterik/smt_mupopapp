@@ -1236,13 +1236,13 @@ h1.videotitle {
 	display: flex;
   	justify-content: center;
   	align-items: center;
-  	width: 100%;
 }
 
 #quiz-game-image_container {
 	display: flex;
   	justify-content: center;
   	flex-wrap: wrap;
+  	align-items: center;
 }
 
 #quiz-game-image_questions_container {
@@ -1250,9 +1250,11 @@ h1.videotitle {
 	top: 12%;
 	height: 72%;
 	bottom: 16%;
+	width: 100%;
 	display: flex;
   	justify-content: center;
   	flex-wrap: wrap;
+  	align-items: center;
 }
 
 #quiz-game-answer_container {
@@ -1334,7 +1336,8 @@ h1.videotitle {
 	right: 0%;
 	bottom: 25%;
 	width: 11vh;
-	height: 8vh;	
+	height: 8vh;
+	padding: 0.5vh;	
 }
 
 #quiz-game-players_container {
@@ -1348,6 +1351,17 @@ h1.videotitle {
 }
 
 /** countdown timer for the quiz app **/
+
+@keyframes timer-slide-lt {
+  0%   { transform: rotate(135deg); }
+  50%  { transform: rotate(135deg); }
+  100%  { transform: rotate(315deg); }
+}
+@keyframes timer-slide-rt {
+  0%   { transform: rotate(-45deg); }
+  50%  { transform: rotate(135deg); }
+  100%  { transform: rotate(135deg); }
+}
 
 .timer{
   width: 100%;
