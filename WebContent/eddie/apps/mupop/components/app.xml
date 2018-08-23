@@ -145,6 +145,7 @@
 		<template>quiz/quiz.mst</template>
 		<style>quiz/quiz.css</style>
 		<controller id="QuizController">
+			<javascript>quiz/QuizController.js</javascript>
 		</controller>
 	</view>
 	

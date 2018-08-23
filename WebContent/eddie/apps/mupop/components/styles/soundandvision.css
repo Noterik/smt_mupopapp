@@ -1298,16 +1298,79 @@ h1.videotitle {
     align-items: center;	
 }
 
-#quiz-game-timer {
+#quiz-game-timer_container {
 	position: absolute;
 	background-color: #398ed3;
 	border-radius: 5%;
-	right: -2%;
+	right: 0%;
 	bottom: 25%;
-	width: 7%;
-	height: 7%;
-	font-size: 3vh;	
-	padding: 10px;	
+	width: 11vh;
+	height: 8vh;	
+}
+
+#quiz-game-players_container {
+	position: absolute;
+	background-color: #398ed3;
+	border-radius: 5%;
+	left: 0%;
+	bottom: 25%;
+	width: 11vh;
+	height: 8vh;	
+}
+
+/** countdown timer for the quiz app **/
+
+.timer{
+  width: 100%;
+  height: 100%;
+}
+
+.circle-timer{
+    width: 8vh;
+    height: 8vh;
+    margin: 0 auto;
+    position: relative;
+    cursor: pointer;
+}
+
+.timer-slot {
+      position: relative;
+      width: 4vh;
+      height: 8vh;  
+      display: inline-block;
+      overflow: hidden;
+      float: left;
+}
+
+.timer-lt, .timer-rt {
+        border-radius: 50%;
+        position: relative;
+        top: 50%;
+        left: 0;
+        z-index: 15;
+        border: 4px solid white;
+        width: calc(8vh - 8px);
+        height: calc(8vh - 8px);
+        margin-left: -4vh;
+        margin-top: -4vh;
+        border-left-color: transparent;
+        border-top-color: transparent;
+        z-index: 5;   
+}
+
+.timer-lt{
+        left: 100%;
+}
+
+.count{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      font-size: 3vh;
+      color: white;
+      text-align: center;
+      line-height: 8vh;
+      font-family: sans-serif;
 }
 
 
@@ -1326,17 +1389,6 @@ h1.videotitle {
     display: flex;
     flex-direction: column;
 }
-
-#quiz-game-container-with-questions {
-	position: absolute;
-	width: 100%;
-	height: 67%;
-	top: 0;
-	display: flex;
-    justify-content: center;
-    background-color: #33475a;
-}
-
 
 .image-wrapper {
 	top: 0;

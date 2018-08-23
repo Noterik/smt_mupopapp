@@ -100,12 +100,20 @@ public class QuizController extends Html5Controller {
 			data.put("slideanswer3",slidenode.getProperty("answer3"));
 			data.put("slideanswer4",slidenode.getProperty("answer4"));
 		}
+		data.put("command", "timer");
 		data.put("timeout", ""+calcTimer(slidetimeout));
 		data.put("domain", LazyHomer.getExternalIpNumber());
 		if (model.getProperty("@station/codeselect") != null) {
 		    data.put("code", model.getProperty("@station/codeselect"));
 		}
 		screen.get(selector).render(data);
+		screen.get(selector).loadScript(this);
+		
+		//send timer time to javascript so we can dynamically create the css countdown spinner
+		JSONObject d = new JSONObject();
+		d.put("command", "timer");
+		d.put("timeout", ""+calcTimer(slidetimeout));
+		screen.get(selector).update(d);
 	}
 
 	private void getNextSlideNode() {

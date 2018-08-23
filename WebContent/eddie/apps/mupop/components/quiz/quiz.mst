@@ -40,7 +40,23 @@
 		</div>	
 		{{/questions}}
 		
-		<div id="quiz-game-timer">{{timer}}</div> 
+		<div id="quiz-game-players_container">
+		{{timer}} Players
+		</div>
+		
+		<div id="quiz-game-timer_container">
+			<div class="timer">
+    			<div class="circle-timer">
+			      <div class="timer-slot">
+			        <div class="timer-lt"></div> 
+			      </div>
+			      <div class="timer-slot">
+			        <div class="timer-rt"></div>
+			      </div>
+     			<div id="quiz-game-timer" class="count">{{timer}}</div>
+    			</div>
+  			</div> 
+		</div>
 </div>
 
 <div id="url_row" class="row">
