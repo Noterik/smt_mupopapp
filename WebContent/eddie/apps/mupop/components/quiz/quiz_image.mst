@@ -32,7 +32,7 @@
 		
 		
 		<div id="quiz-game-players_container">
-		{{timer}} Players
+		{{membercount}} Players 
 		</div>
 		
 		<div id="quiz-game-timer_container">

@@ -34,8 +34,10 @@ import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.ExhibitionMemberManager;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
+import org.springfield.lou.screen.Screen;
 
 public class QuizController extends Html5Controller {
 
@@ -83,9 +85,11 @@ public class QuizController extends Html5Controller {
 		data.put("slideid",slidenode.getId());
 		if (slidetype.equals("image")) {
 			data.put("imageurl",slidenode.getProperty("imageurl"));
+			data.put("membercount",""+ExhibitionMemberManager.getMemberCount(screen));
 			mstfile = "quiz/quiz_image.mst";
 		} else if (slidetype.equals("video")) {
 			data.put("videourl",slidenode.getProperty("videourl"));
+			data.put("membercount",""+ExhibitionMemberManager.getMemberCount(screen));
 			mstfile = "quiz/quiz_video.mst";
 		} else if (slidetype.equals("imagequestion")) {
 			data.put("image", "true");
@@ -96,6 +100,7 @@ public class QuizController extends Html5Controller {
 			data.put("slideanswer2",slidenode.getProperty("answer2"));
 			data.put("slideanswer3",slidenode.getProperty("answer3"));
 			data.put("slideanswer4",slidenode.getProperty("answer4"));
+			data.put("membercount",""+ExhibitionMemberManager.getMemberCount(screen));
 			mstfile = "quiz/quiz_image.mst";
 		} else if (slidetype.equals("videoquestion")) {
 			data.put("video", "true");
@@ -106,9 +111,12 @@ public class QuizController extends Html5Controller {
 			data.put("slideanswer2",slidenode.getProperty("answer2"));
 			data.put("slideanswer3",slidenode.getProperty("answer3"));
 			data.put("slideanswer4",slidenode.getProperty("answer4"));
+			data.put("membercount",""+ExhibitionMemberManager.getMemberCount(screen));
 			mstfile = "quiz/quiz_video.mst";
 		} else if (slidetype.equals("highscore")) {
 			data.put("highscore", "true");
+			System.out.println("SIZESSSSS="+ExhibitionMemberManager.getMemberCount(screen));
+			data.put("membercount",""+ExhibitionMemberManager.getMemberCount(screen));
 			mstfile = "quiz/quiz_highscore.mst";
 		}
 		data.put("command", "timer");
