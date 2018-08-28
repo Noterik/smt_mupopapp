@@ -1,0 +1,86 @@
+<div id="quiz-game-container">
+		{{#questions}}
+		<div id="quiz-game-question_container">
+			{{slidequestion}}
+		</div>
+		{{/questions}}
+		
+		<div id="quiz-game-image{{#questions}}_questions{{/questions}}_container">
+			<img id="quiz-game-image" src="{{imageurl}}" />
+		</div>
+				
+		{{#questions}}
+		<div id="quiz-game-answer_container">
+			<div id="quiz-game-answer1_container">
+				<div class="quiz-game-answer_header">A</div>
+				<div class="quiz-game-answer_text">{{slideanswer1}}</div>
+			</div>	
+			<div id="quiz-game-answer2_container">
+				<div class="quiz-game-answer_header">B</div>
+				<div class="quiz-game-answer_text">{{slideanswer2}}</div>
+			</div>	
+			<div id="quiz-game-answer3_container">
+				<div class="quiz-game-answer_header">C</div>
+				<div class="quiz-game-answer_text">{{slideanswer3}}</div>
+			</div>	
+			<div id="quiz-game-answer4_container">
+				<div class="quiz-game-answer_header">D</div>
+				<div class="quiz-game-answer_text">{{slideanswer4}}</div>
+			</div>
+		</div>	
+		{{/questions}}
+		
+		
+		<div id="quiz-game-players_container">
+		{{timer}} Players
+		</div>
+		
+		<div id="quiz-game-timer_container">
+			<div class="timer">
+    			<div class="circle-timer">
+			      <div class="timer-slot">
+			        <div class="timer-lt"></div> 
+			      </div>
+			      <div class="timer-slot">
+			        <div class="timer-rt"></div>
+			      </div>
+     			<div id="quiz-game-timer" class="count">{{timer}}</div>
+    			</div>
+  			</div> 
+		</div>
+</div>
+
+<div id="url_row" class="row">
+	<div class="col-md-2 fill-height nopadding url_row_background">
+		<div class="vertical-center fill-height">
+			{{#applogoleft}}
+				<img src="{{applogoleft}}" />
+			{{/applogoleft}}
+			{{^applogoleft}}
+				<img src="/eddie/apps/mupop/img/beeld_en_geluid_logo.png" class="max-height-bg-logo bg-logo"/>
+				<img src="/eddie/apps/mupop/img/espace_logo_small.png" class="max-height espace-logo"/>
+				{{#footer_logo}}
+					<img src="{{footer_logo}}" class="max-height footer_logo"/>
+				{{/footer_logo}}
+			{{/applogoleft}}
+		</div>
+	</div>
+	<div class="col-md-6 col-md-offset-1">
+		<div class="vertical-center">
+			<div id="zoomandaudio-mobile-phone"></div>
+			<div id="join-text">
+				<h2 class="zoomandaudio">{{domain}} - {{code}}</h2>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background">
+		<div class="fill-height poweredbywrapper">
+			{{#applogoright}}
+				<img src="{{applogoright}}" />
+			{{/applogoright}}
+			{{^applogoright}}
+				<span class="poweredby">Powered by </span><h2 class="mupop">MUPOP</h2>
+			{{/applogoright}}
+		</div>
+	</div>
+</div>

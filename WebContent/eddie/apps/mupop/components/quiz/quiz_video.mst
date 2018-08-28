@@ -5,19 +5,11 @@
 		</div>
 		{{/questions}}
 		
-		{{#image}}
-		<div id="quiz-game-image{{#questions}}_questions{{/questions}}_container">
-			<img id="quiz-game-image" src="{{imageurl}}" />
-		</div>
-		{{/image}}
-		
-		{{#video}}
 		<div id="quiz-game-image{{#questions}}_questions{{/questions}}_container">
 			<video id="quiz-game-image" controls autoplay>
  				<source src="{{videourl}}" type="video/mp4">
 			</video>
 		</div>
-		{{/video}}	
 		
 		{{#questions}}
 		<div id="quiz-game-answer_container">

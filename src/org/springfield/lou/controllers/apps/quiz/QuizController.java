@@ -43,6 +43,7 @@ public class QuizController extends Html5Controller {
 	private FsNode slidenode;
 	private int random=0;
 	private int gotovalue=0;
+	private int endgotovalue=0;
 	private String slidetype;
 	private int slidetimeout=-1;
 	private int showtimer=0;
@@ -76,11 +77,16 @@ public class QuizController extends Html5Controller {
 	private void fillPage() {
 		JSONObject data = new JSONObject();
 		FsNode exhibitionnode = model.getNode("@exhibition");
+		String mstfile = "quiz/quiz.mst";
 		data.put("slidetype",slidetype);
 		data.put(slidetype,"true");
 		data.put("slideid",slidenode.getId());
 		if (slidetype.equals("image")) {
 			data.put("imageurl",slidenode.getProperty("imageurl"));
+			mstfile = "quiz/quiz_image.mst";
+		} else if (slidetype.equals("video")) {
+			data.put("videourl",slidenode.getProperty("videourl"));
+			mstfile = "quiz/quiz_video.mst";
 		} else if (slidetype.equals("imagequestion")) {
 			data.put("image", "true");
 			data.put("questions", "true");
@@ -90,6 +96,7 @@ public class QuizController extends Html5Controller {
 			data.put("slideanswer2",slidenode.getProperty("answer2"));
 			data.put("slideanswer3",slidenode.getProperty("answer3"));
 			data.put("slideanswer4",slidenode.getProperty("answer4"));
+			mstfile = "quiz/quiz_image.mst";
 		} else if (slidetype.equals("videoquestion")) {
 			data.put("video", "true");
 			data.put("questions", "true");
@@ -99,6 +106,10 @@ public class QuizController extends Html5Controller {
 			data.put("slideanswer2",slidenode.getProperty("answer2"));
 			data.put("slideanswer3",slidenode.getProperty("answer3"));
 			data.put("slideanswer4",slidenode.getProperty("answer4"));
+			mstfile = "quiz/quiz_video.mst";
+		} else if (slidetype.equals("highscore")) {
+			data.put("highscore", "true");
+			mstfile = "quiz/quiz_highscore.mst";
 		}
 		data.put("command", "timer");
 		data.put("timeout", ""+calcTimer(slidetimeout));
@@ -106,6 +117,8 @@ public class QuizController extends Html5Controller {
 		if (model.getProperty("@station/codeselect") != null) {
 		    data.put("code", model.getProperty("@station/codeselect"));
 		}
+		
+		screen.get(selector).setViewProperty("template",mstfile);
 		screen.get(selector).render(data);
 		screen.get(selector).loadScript(this);
 		
@@ -153,8 +166,17 @@ public class QuizController extends Html5Controller {
 				random = random - 1;
 				fillPage();
 			} else {
-				screen.get(selector).remove();
-				model.setProperty("/screen/state","contentselectforce");
+				// do we have a endgoto ?
+				System.out.println("ENDGOTO="+endgotovalue);
+				if (endgotovalue!=0) {
+					slidenode = getLastSlideNode();
+					System.out.println("ENDNODE2="+slidenode);
+					endgotovalue = 0;
+					fillPage();
+				} else {		
+					screen.get(selector).remove();
+					model.setProperty("/screen/state","contentselectforce");
+				}
 			}
 		}
 	}
@@ -173,11 +195,23 @@ public class QuizController extends Html5Controller {
 			}
 		}
 	}
-	
 
+	private FsNode getLastSlideNode() {
+		FsNode node = model.getNode("@content/item/"+model.getProperty("/screen/selecteditem")+"/slide/"+endgotovalue);
+		if (node!=null) {
+			slidetype = node.getProperty("type");
+			slidetimeout =  Integer.parseInt(node.getProperty("timeout"));
+			System.out.println("SL="+slidetimeout);
+			showtimer = 0;
+			return node;
+		}
+		return null;
+	}
+	
 	private FsNode getFirstSlideNode(FsNode item) {
 		try {
 			random = Integer.parseInt(item.getProperty("random"));
+			endgotovalue = Integer.parseInt(item.getProperty("endgoto"));
 			gotovalue = Integer.parseInt(item.getProperty("goto"));
 			if (gotovalue!=0) {
 				// ok lets get the first slidenode  
@@ -204,7 +238,6 @@ public class QuizController extends Html5Controller {
 			if (showtimer!=0 && (slidetype.equals("imagequestion") || slidetype.equals("videoquestion"))) {
 				if (slidetimeout==showtimer) {
 					showanswer = "true";
-					System.out.println("MAKE SHOWANSWER TRUE");
 					// lets set the anser (little hack until later)
 					String correctanswer = slidenode.getProperty("correctanswer");
 					if (correctanswer.equals("1")) {
