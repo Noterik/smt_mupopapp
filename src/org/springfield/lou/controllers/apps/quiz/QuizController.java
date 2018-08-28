@@ -115,7 +115,6 @@ public class QuizController extends Html5Controller {
 			mstfile = "quiz/quiz_video.mst";
 		} else if (slidetype.equals("highscore")) {
 			data.put("highscore", "true");
-			System.out.println("SIZESSSSS="+ExhibitionMemberManager.getMemberCount(screen));
 			data.put("membercount",""+ExhibitionMemberManager.getMemberCount(screen));
 			mstfile = "quiz/quiz_highscore.mst";
 		}
@@ -184,6 +183,10 @@ public class QuizController extends Html5Controller {
 				} else {		
 					screen.get(selector).remove();
 					model.setProperty("/screen/state","contentselectforce");
+					// Inform clients to switch
+					FsNode message = new FsNode("message", screen.getId());
+					message.setProperty("request", "contentselect");
+					model.notify("@stationevents/fromclient", message);
 				}
 			}
 		}
