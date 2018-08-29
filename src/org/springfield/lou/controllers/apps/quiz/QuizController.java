@@ -174,10 +174,8 @@ public class QuizController extends Html5Controller {
 				fillPage();
 			} else {
 				// do we have a endgoto ?
-				System.out.println("ENDGOTO="+endgotovalue);
 				if (endgotovalue!=0) {
 					slidenode = getLastSlideNode();
-					System.out.println("ENDNODE2="+slidenode);
 					endgotovalue = 0;
 					fillPage();
 				} else {		
@@ -212,7 +210,6 @@ public class QuizController extends Html5Controller {
 		if (node!=null) {
 			slidetype = node.getProperty("type");
 			slidetimeout =  Integer.parseInt(node.getProperty("timeout"));
-			System.out.println("SL="+slidetimeout);
 			showtimer = 0;
 			return node;
 		}
