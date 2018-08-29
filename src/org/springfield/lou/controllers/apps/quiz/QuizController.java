@@ -69,8 +69,12 @@ public class QuizController extends Html5Controller {
 	}
 	
 	private int calcTimer(int t) {
-		if (t>showtimer) {
-			return t-showtimer;
+		if (slidetype.equals("imagequestion") || slidetype.equals("videoquestion")) {
+			if (t>showtimer) {
+				return t-showtimer;
+			} else {
+				return t;
+			}
 		} else {
 			return t;
 		}
@@ -246,6 +250,13 @@ public class QuizController extends Html5Controller {
 			if (showtimer!=0 && (slidetype.equals("imagequestion") || slidetype.equals("videoquestion"))) {
 				if (slidetimeout==showtimer) {
 					showanswer = "true";
+					//update timer spinner to reflect correct answer time
+					//send timer time to javascript so we can dynamically create the css countdown spinner
+					JSONObject d = new JSONObject();
+					d.put("command", "timer");
+					d.put("timeout", ""+calcTimer(slidetimeout));
+					screen.get(selector).update(d);
+					
 					// lets set the anser (little hack until later)
 					String correctanswer = slidenode.getProperty("correctanswer");
 					if (correctanswer.equals("1")) {

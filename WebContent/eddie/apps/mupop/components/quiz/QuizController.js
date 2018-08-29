@@ -16,8 +16,8 @@ QuizController.update = function(vars, data){
 		
 	switch (command) {
 	case "timer": 
-		$(".timer-lt").css({"animation": data['timeout']+"s linear infinite forwards timer-slide-lt"});
-		$(".timer-rt").css({"animation": data['timeout']+"s linear infinite forwards timer-slide-rt"});
+		$(".timer-lt").css({"animation": data['timeout']+"s linear 1 forwards timer-slide-lt"});
+		$(".timer-rt").css({"animation": data['timeout']+"s linear 1 forwards timer-slide-rt"});
 	
 		var el = $(".circle-timer");
         el.before( el.clone(true) ).remove();

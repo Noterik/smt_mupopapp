@@ -81,8 +81,9 @@ public class ExhibitionMemberManager {
 	}
 	
     public static int getMemberCount(Screen s) {
-    	FSList members = s.getModel().getList("/shared/exhibition/member/"+s.getModel().getProperty("@exhibitionid"));
-    	return members.size();
+    	return 1;
+    	//FSList members = s.getModel().getList("/shared/exhibition/member/"+s.getModel().getProperty("@exhibitionid"));
+    	//return members.size();
     }
     
 }

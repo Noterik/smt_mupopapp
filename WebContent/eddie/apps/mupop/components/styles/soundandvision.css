@@ -538,10 +538,6 @@ h1.videotitle {
 		padding: 0;
 	}
 	
-	.url_row_background {
-		background-color: #009fda;
-	}
-	
 	h2.mupop {
 		font-size: 1vh;
 		margin: 0;
@@ -739,10 +735,6 @@ h1.videotitle {
 		padding: 0;
 	}
 	
-	.url_row_background {
-		background-color: #009fda;
-	}
-	
 	h2.mupop {
 		font-size: 3vh;
 		margin: 0;
@@ -861,10 +853,6 @@ h1.videotitle {
 	.nopadding {
 		padding: 0;
 	}
-	
-	.url_row_background {
-		background-color: #358ed6;
-	}	
 	
 	#coverflow-bar img {
 	    width: 600px;
@@ -1008,10 +996,6 @@ h1.videotitle {
 		padding: 0;
 	}
 	
-	.url_row_background {
-		background-color: #358ed6;
-	}
-	
 	#selectionmap-bar img {
 	    width: 600px;
 	    height: 600px;
@@ -1152,10 +1136,6 @@ h1.videotitle {
 	
 	.nopadding {
 		padding: 0;
-	}
-	
-	.url_row_background {
-		background-color: #358ed6;
 	}
 	
 	#coverflow-bar img {
@@ -1336,7 +1316,7 @@ h1.videotitle {
 	right: 0%;
 	bottom: 25%;
 	width: 11vh;
-	height: 8vh;
+	height: 9vh;
 	padding: 0.5vh;	
 }
 
@@ -1346,8 +1326,11 @@ h1.videotitle {
 	border-radius: 5%;
 	left: 0%;
 	bottom: 25%;
-	width: 11vh;
-	height: 8vh;	
+	font-size: 3vh;
+	width: 14vh;
+	height: 8vh;
+	line-height: 8vh;	
+	text-align: center;
 }
 
 /** countdown timer for the quiz app **/
@@ -1383,7 +1366,8 @@ h1.videotitle {
       display: inline-block;
       overflow: hidden;
       float: left;
-}
+}|
+
 
 .timer-lt, .timer-rt {
         border-radius: 50%;
@@ -1394,8 +1378,8 @@ h1.videotitle {
         border: 4px solid white;
         width: calc(8vh - 8px);
         height: calc(8vh - 8px);
-        margin-left: -4vh;
-        margin-top: -4vh;
+        margin-left: calc(4px - 4vh);
+        margin-top: calc(4px - 4vh);
         border-left-color: transparent;
         border-top-color: transparent;
         z-index: 5;   
