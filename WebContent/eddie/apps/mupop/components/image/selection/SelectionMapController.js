@@ -1,43 +1,97 @@
 var SelectionMapController = function(options) {}; // needed for detection
 
-var width;
-var height;
+/*
+ * TODO: This is a workaround to the problem of poluting the window namespace. 
+ * This should not be used in the future. Frontend in MuPop should be refactored. 
+ */
+SelectionMapController.instance = (function(window, $) {
+	//SECTION: Cached jQuery objects. Caching jQuery objects instead of calling $() everytime you need an element improves performance. 
+	var $imageContainer,
+		$image,
+		$imageWrapper,
+		$layer,
+		$spotsHolder;
 
-SelectionMapController.update = function(vars, data){
-	//init - this is also handled when returning on a page
-	if (!vars["loaded"]) {	
-		vars["loaded"] = true;
+	//SECTION: Raw HTML elements, not usage of cached $image jQuery object.
+	var imageContainer, image;
+	
+	//SECTION: Generic instance variables
+	var zoomedImage;
+	
+	function init() {
+		$imageContainer = $("#selectionmap-container");
+		$image = $("#selectionmapimage");
+		$imageWrapper = $('#selectionmaptrackarea');
+		$layer = $(".selectionmapmask");
+		$spotsHolder = $("#selectionmapspot_holder");
+		imageContainer = $imageContainer[0];
+		image = $image[0];
 		
-		//resize once the image is loaded
-		$("#selectionmapimage").on('load', resize).each(function() {
-			if (this.complete) {
-				$(this).trigger('load');
+		zoomedImage = new window.ntk.Zoomable(image, {
+			defaultZoomRate: 3,
+			glassRadius: 250,
+			glassClass: 'glass',
+		}, imageContainer);
+		
+		$image.on('load', resize);
+	}
+	
+	//SECTION: Private functions
+	function resize(){
+		var wrapperWidth = $imageContainer.width();
+		var wrapperHeight = $imageContainer.height();
+		
+		var imgWidth = $image.get(0).naturalWidth;
+		var imgHeight = $image.get(0).naturalHeight;
+		
+		var widthFactor = wrapperWidth / imgWidth;
+		var heightFactor = wrapperHeight / imgHeight;
+		
+		if (widthFactor < heightFactor) {
+			width = wrapperWidth;
+			height = widthFactor * imgHeight;
+		} else {
+			width = heightFactor * imgWidth;
+			height = wrapperHeight;
+		}
+		
+		console.log('resize(', width, ', ', height , ')');
+		
+		$imageWrapper.css({"width": width, "height" : height});
+		$layer.css({"width": width, "height" : height});
+		$spotsHolder.css({"width": width, "height" : height});
+		zoomedImage.refresh();
+	}
+	
+	//SECTION constructor
+	$(window).on('resize', resize);
+	
+	//SECTION: Public functions
+	return {
+		update: function(vars, data){
+			//init - this is also handled when returning on a page
+			
+			var command = data['command'];
+			
+			if(command === 'init') {
+				console.log('init!');
+				init();
+			} else if (command === "spot_move") {		
+				var x = ((data['x'] / 100) * width);
+				var y = ((data['y'] / 100) * height);
+				
+				zoomedImage.setPosition(data['spotid'], x, y);
+				//$(data['spotid']).css('transform','translate('+x+'px,'+y+'px)');
+			} else if (command === "spot_enter") {
+				var id = data['spotid'];
+				jQuery('#' + id).addClass('__enter');
+			} else if (command === "spot_leave") {
+				var id = data['spotid'];
+				jQuery('#' + id).removeClass('__enter');
 			}
-		});
+		}
 	}
-}
+})(window, jQuery); // needed for detection
 
-function resize(){
-	var wrapperWidth = $("#selectionmap-container").width();
-	var wrapperHeight = $("#selectionmap-container").height();
-	
-	var imgWidth = $("#selectionmapimage").get(0).naturalWidth;
-	var imgHeight = $("#selectionmapimage").get(0).naturalHeight;
-	
-	var widthFactor = wrapperWidth / imgWidth;
-	var heightFactor = wrapperHeight / imgHeight;
-	
-	if (widthFactor < heightFactor) {
-		width = wrapperWidth;
-		height = widthFactor * imgHeight;
-	} else {
-		width = heightFactor * imgWidth;
-		height = wrapperHeight;
-	}
-	
-	$("#selectionmaptrackarea").css({"width": width, "height" : height});
-	$(".selectionmapmask").css({"width": width, "height" : height});
-	$("#selectionmapspot_holder").css({"width": width, "height" : height});
-}
+SelectionMapController.update = SelectionMapController.instance.update;
 
-jQuery(window).on('resize', resize);

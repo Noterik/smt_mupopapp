@@ -84,9 +84,15 @@ public class ExhibitionMemberManager {
 	}
 	
     public static int getMemberCount(Screen s) {
+<<<<<<< HEAD
     	FSList members = getActiveMembers(s,600);
     	if (members==null) return 0;
     	return members.size();
+=======
+    	return 1;
+    	//FSList members = s.getModel().getList("/shared/exhibition/member/"+s.getModel().getProperty("@exhibitionid"));
+    	//return members.size();
+>>>>>>> 7e9f0245f303b18af4194291abcffd592f1ad850
     }
     
     public static FSList getActiveMembers(Screen s,int expiretime) {

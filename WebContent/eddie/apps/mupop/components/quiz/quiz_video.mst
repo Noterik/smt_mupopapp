@@ -1,12 +1,12 @@
 <div id="quiz-game-container">
 		{{#questions}}
 		<div id="quiz-game-question_container">
-			{{slidequestion}}
+			<b>Vraag:&nbsp;</b> {{slidequestion}}
 		</div>
 		{{/questions}}
 		
 		<div id="quiz-game-image{{#questions}}_questions{{/questions}}_container">
-			<video id="quiz-game-image" controls autoplay>
+			<video id="quiz-game-image" autoplay>
  				<source src="{{videourl}}" type="video/mp4">
 			</video>
 		</div>
