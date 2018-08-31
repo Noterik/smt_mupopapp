@@ -120,6 +120,7 @@ public class QuizController extends Html5Controller {
 		} else if (slidetype.equals("highscore")) {
 			data.put("highscore", "true");
 			data.put("membercount",""+ExhibitionMemberManager.getMemberCount(screen));
+			addHighScoreNodes(data);
 			mstfile = "quiz/quiz_highscore.mst";
 		}
 		data.put("command", "timer");
@@ -297,5 +298,29 @@ public class QuizController extends Html5Controller {
 		slidenode.setProperty("showanswer",showanswer);
 		model.notify("@quizslide", slidenode);
  	}
+	
+	private void addHighScoreNodes(JSONObject data) {
+		FSList list = ExhibitionMemberManager.getActiveMembers(screen,600);
+		List<FsNode> nodes = list.getNodes();
+		FSList results = new FSList();
+		if (nodes != null) {
+			for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+				FsNode node = (FsNode) iter.next();
+				FsNode nnode = new FsNode("member",node.getId());
+				String name = node.getProperty("name");
+				String score = node.getProperty("score");
+				
+				if (name!=null && !name.equals("")) {
+					nnode.setProperty("name",name);
+					if (score!=null && !score.equals("")) {
+						nnode.setProperty("score",score);
+					}
+				}
+				results.addNode(nnode);
+			}
+			data.put("members",results.toJSONObject("en","name,score"));
+		}
+	}
+
 
 }

@@ -1,47 +1,15 @@
 <div id="quiz-game-container">
-		{{#questions}}
 		<div id="quiz-game-question_container">
-			highscore
+		{{#members}}
+		highscores<br />
+			{{#nodes}}
+				{{name}} {{score}}<br />
+			{{/nodes}}
+		{{/members}}
 		</div>
-		{{/questions}}
-		
-		{{#image}}
-		<div id="quiz-game-image{{#questions}}_questions{{/questions}}_container">
-			<img id="quiz-game-image" src="{{imageurl}}" />
-		</div>
-		{{/image}}
-		
-		{{#video}}
-		<div id="quiz-game-image{{#questions}}_questions{{/questions}}_container">
-			<video id="quiz-game-image" controls autoplay>
- 				<source src="{{videourl}}" type="video/mp4">
-			</video>
-		</div>
-		{{/video}}	
-		
-		{{#questions}}
-		<div id="quiz-game-answer_container">
-			<div id="quiz-game-answer1_container">
-				<div class="quiz-game-answer_header">A</div>
-				<div class="quiz-game-answer_text">{{slideanswer1}}</div>
-			</div>	
-			<div id="quiz-game-answer2_container">
-				<div class="quiz-game-answer_header">B</div>
-				<div class="quiz-game-answer_text">{{slideanswer2}}</div>
-			</div>	
-			<div id="quiz-game-answer3_container">
-				<div class="quiz-game-answer_header">C</div>
-				<div class="quiz-game-answer_text">{{slideanswer3}}</div>
-			</div>	
-			<div id="quiz-game-answer4_container">
-				<div class="quiz-game-answer_header">D</div>
-				<div class="quiz-game-answer_text">{{slideanswer4}}</div>
-			</div>
-		</div>	
-		{{/questions}}
-		
+				
 		<div id="quiz-game-players_container">
-		{{timer}} Players
+		{{membercount}} Players
 		</div>
 		
 		<div id="quiz-game-timer_container">
