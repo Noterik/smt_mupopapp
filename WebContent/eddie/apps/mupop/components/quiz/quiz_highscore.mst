@@ -1,7 +1,12 @@
 <div id="quiz-game-container">
 		<div id="quiz-game-highscore_container">
 		{{#members}}
+		{{#nl}}
+		punten lijst<br />
+		{{/nl}}
+		{{#en}}
 		highscores<br />
+		{{/en}}
 			{{#nodes}}
 				{{name}} {{score}}<br />
 			{{/nodes}}

@@ -33,7 +33,12 @@
 		{{/questions}}
 		
 		<div id="quiz-game-players_container">
-		{{membercount}} Players 
+		{{#nl}}
+			{{membercount}} Spelers 
+		{{/nl}}
+		{{#en}}
+			{{membercount}} Players 
+		{{/en}}
 		</div>
 		
 		<div id="quiz-game-timer_container">

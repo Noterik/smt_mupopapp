@@ -268,6 +268,8 @@ public class QuizController extends Html5Controller {
 					screen.get(selector).update(d);
 					
 					// lets set the anser (little hack until later)
+					System.out.println("SLIDENODE="+slidenode);
+					if (slidenode!=null) {
 					String correctanswer = slidenode.getProperty("correctanswer");
 					if (correctanswer.equals("1")) {
 						screen.get("#quiz-game-answer2_container").css("background-color","white");
@@ -297,6 +299,7 @@ public class QuizController extends Html5Controller {
 						screen.get("#quiz-game-answer1_container").css("color","grey");
 						screen.get("#quiz-game-answer2_container").css("color","grey");
 						screen.get("#quiz-game-answer3_container").css("color","grey");
+					}
 					}
 				}
 			}

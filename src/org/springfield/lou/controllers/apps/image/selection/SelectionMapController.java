@@ -57,6 +57,7 @@ public class SelectionMapController extends Html5Controller {
 	int timeout_toselect = 0;
 	int timeout_tomove = 8;
 	String master = null;
+	String mastername = null;
 
 	
 	int maxtimeoutcount = Integer.MAX_VALUE; //(check every 1sec)
@@ -322,6 +323,7 @@ public class SelectionMapController extends Html5Controller {
     	FsNode message = new FsNode("message",screen.getId());
     	if (master!=null) {
 			message.setProperty("master",master);
+			message.setProperty("mastername",mastername);
     		model.notify("@selectionmapevent",message);
     	} else {
     		FSList list = ExhibitionMemberManager.getActiveMembers(screen,300);
@@ -330,7 +332,9 @@ public class SelectionMapController extends Html5Controller {
     			int rp = rnd.nextInt(list.size());
     			FsNode node = nodes.get(rp);
     			message.setProperty("master",node.getId());
+    			message.setProperty("mastername",node.getProperty("name"));
     			master = node.getId();
+    			mastername = node.getProperty("name");
         		model.notify("@selectionmapevent",message);
     		}
 
