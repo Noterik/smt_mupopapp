@@ -64,7 +64,8 @@
 		<stationevents>/shared['exhibitionevents']/exhibition['@exhibitionid']/station['@stationid']</stationevents>
 		<exhibitionevents>/shared['exhibitionevents']/exhibition['@exhibitionid']</exhibitionevents>
 		<quizslide>/shared['exhibitionevents']/exhibition['@exhibitionid']/station['@stationid']/quiz</quizslide>
-		
+		<selectionmapevent>/shared['exhibitionevents']/exhibition['@exhibitionid']/selectionmapevent</selectionmapevent>
+			
 		<joincodes>/shared['joincodes']</joincodes>
 		<photoinfospots>/shared['photoinfospots']/exhibition['@exhibitionid']/station['@stationid']</photoinfospots>
 		<photozoom>/shared['photozoom']/exhibition['@exhibitionid']/station['@stationid']</photozoom>	

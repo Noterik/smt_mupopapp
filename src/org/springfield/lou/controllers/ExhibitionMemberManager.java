@@ -17,20 +17,25 @@ public class ExhibitionMemberManager {
     	
     	FsNode member = s.getModel().getNode("/shared/exhibition/member/"+s.getModel().getProperty("@exhibitionid")+"/name/"+s.getBrowserId());
     	String name = member.getProperty("name");
-    	if (name==null || name.equals("")) {
-    		return null;
-    	}
+    	if (name==null || name.equals("")) return null;
     	return member;
     }
     
     public static void freeAllNames(Screen s) {
        	List<FsNode> nodes = s.getModel().getList("/shared/exhibition/availablenames/"+s.getModel().getProperty("@exhibitionid")+"/").getNodes();
-    		if (nodes != null) {
-    			for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
-    				FsNode namenode = iter.next();
-    				namenode.setProperty("used","false");
-    			}
+    	if (nodes != null) {
+    		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+    			FsNode namenode = iter.next();
+    			namenode.setProperty("used","false");
     		}
+    	}
+    	FSList list = s.getModel().getList("/shared/exhibition/member/"+s.getModel().getProperty("@exhibitionid"));
+    	if (list.getNodes() != null) {
+    		for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+    			FsNode namenode = iter.next();
+    			namenode.setProperty("name","");
+    		}
+    	}
     }
     
     public static String getNextFreeName(Screen s) {

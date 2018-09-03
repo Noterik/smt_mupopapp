@@ -1218,6 +1218,21 @@ h1.videotitle {
   	align-items: center;
 }
 
+#quiz-game-highscore_container {
+	background-color: #374f64;
+	text-align: center;
+	left: 0%;
+	top: 10%;
+	height: 100%;
+	width:100%;
+	font-size: 4vh;
+	padding: 0;
+	position: absolute;
+	display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+
 #quiz-game-image_container {
 	display: flex;
   	justify-content: center;

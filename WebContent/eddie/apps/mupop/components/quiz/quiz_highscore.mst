@@ -1,5 +1,5 @@
 <div id="quiz-game-container">
-		<div id="quiz-game-question_container">
+		<div id="quiz-game-highscore_container">
 		{{#members}}
 		highscores<br />
 			{{#nodes}}
@@ -9,7 +9,12 @@
 		</div>
 				
 		<div id="quiz-game-players_container">
+		{{#nl}}
+		{{membercount}} Spelers
+		{{/nl}}
+		{{#en}}
 		{{membercount}} Players
+		{{/en}}
 		</div>
 		
 		<div id="quiz-game-timer_container">

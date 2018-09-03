@@ -130,6 +130,8 @@ public class QuizController extends Html5Controller {
 		    data.put("code", model.getProperty("@station/codeselect"));
 		}
 		
+		data.put("nl","true");
+		
 		screen.get(selector).setViewProperty("template",mstfile);
 		screen.get(selector).render(data);
 		screen.get(selector).loadScript(this);
@@ -139,6 +141,13 @@ public class QuizController extends Html5Controller {
 		d.put("command", "timer");
 		d.put("timeout", ""+calcTimer(slidetimeout));
 		screen.get(selector).update(d);
+		screen.get("#quiz-game-players_container").on("mouseup", "onMembersReset", this);
+		
+	}
+	
+	public void onMembersReset(Screen s, JSONObject data) {
+		System.out.println("DELETE ALL MEMBER INFO");
+		ExhibitionMemberManager.freeAllNames(screen);
 	}
 
 	private void getNextSlideNode() {

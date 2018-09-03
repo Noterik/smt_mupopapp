@@ -39,6 +39,7 @@ import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.lou.screen.Screen;
+import org.springfield.lou.controllers.ExhibitionMemberManager;
 
 /**
  * CoverFlowController.java
@@ -55,6 +56,7 @@ public class SelectionMapController extends Html5Controller {
 	
 	int timeout_toselect = 0;
 	int timeout_tomove = 8;
+	String master = null;
 
 	
 	int maxtimeoutcount = Integer.MAX_VALUE; //(check every 1sec)
@@ -114,7 +116,7 @@ public class SelectionMapController extends Html5Controller {
 			d.put("command", "init");
 			screen.get(selector).update(d);
 		}
-
+		pickMaster();
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
 		//model.onNotify("/app['timers']", "onTimeoutChecks", this);
 		model.onNotify("/shared[timers]/1second","onTimeoutChecks",this); 
@@ -150,6 +152,7 @@ public class SelectionMapController extends Html5Controller {
 	}
 
 	public void onTimeoutChecks(ModelEvent e) {
+		pickMaster();
 		// time to move we give the user, 5 seconds to start picking if not we pick
 		if (timeout_toselect!=0) {
 			timeout_toselect=timeout_toselect-1;
@@ -313,6 +316,25 @@ public class SelectionMapController extends Html5Controller {
 			spoty = ry;
 		}
 		return null;
+	}
+	
+	private void pickMaster() {
+    	FsNode message = new FsNode("message",screen.getId());
+    	if (master!=null) {
+			message.setProperty("master",master);
+    		model.notify("@selectionmapevent",message);
+    	} else {
+    		FSList list = ExhibitionMemberManager.getActiveMembers(screen,300);
+    		if (list!=null && list.size()>0) {
+    			List<FsNode> nodes = list.getNodes();
+    			int rp = rnd.nextInt(list.size());
+    			FsNode node = nodes.get(rp);
+    			message.setProperty("master",node.getId());
+    			master = node.getId();
+        		model.notify("@selectionmapevent",message);
+    		}
+
+    	}
 	}
 	
 
