@@ -58,8 +58,8 @@ public class SelectionMapController extends Html5Controller {
 	int timeout_tomove = 8;
 	String master = null;
 	String mastername = null;
+	boolean glassselection = false;
 
-	
 	int maxtimeoutcount = Integer.MAX_VALUE; //(check every 1sec)
 	int maxtnoactiontimeoutcount = 1045; //(check every 1sec)
 	FsNode selectedItem = null;
@@ -79,6 +79,9 @@ public class SelectionMapController extends Html5Controller {
 		if (stationnode!=null) {
 			model.setProperty("@contentrole",model.getProperty("@station/contentselect_content"));
 			
+			//TODO: make this configurable in the editor
+			glassselection = true;
+			
 			nodes = model.getList("@station/content/mainapp/item/one/mask").getNodes();
 			JSONObject data = FSList.ArrayToJSONObject(nodes,screen.getLanguageCode(), "maskurl,audiourl");
 			loadMasks();
@@ -97,18 +100,30 @@ public class SelectionMapController extends Html5Controller {
 			    data.put("code", model.getProperty("@station/codeselect"));
 			}
 			
-    			String applogoleft = model.getProperty("@station/content['contentselect']/applogoright");
-    			if (applogoleft!=null && !applogoleft.equals("")) {
-    				data.put("applogoleft",applogoleft);
-    			}
-    			String applogoright = model.getProperty("@station/content['contentselect']/applogoright");
-    			if (applogoright!=null && !applogoright.equals("")) {
-    				data.put("applogoright",applogoright);
-    			}
+    		String applogoleft = model.getProperty("@station/content['contentselect']/applogoright");
+    		if (applogoleft!=null && !applogoleft.equals("")) {
+    			data.put("applogoleft",applogoleft);
+    		}
+    		String applogoright = model.getProperty("@station/content['contentselect']/applogoright");
+    		if (applogoright!=null && !applogoright.equals("")) {
+    			data.put("applogoright",applogoright);
+    		}
 			
-    		data.put("x", "50");
-    		data.put("y","50");
-    		data.put("color","red");
+    		//glass selection
+    		if (glassselection) {
+    			JSONObject d = new JSONObject();
+				d.put("command", "spot_move");
+				d.put("spotid", "glass");
+				d.put("x", spotx);
+				d.put("y", spoty);
+				screen.get(selector).update(d);
+    		}
+    		//default selection
+    		if (!glassselection) {
+    			data.put("x", "50");
+    			data.put("y","50");
+    			data.put("color","red");
+    		}
     			
 			screen.get(selector).render(data);			
 			screen.get(selector).loadScript(this);
@@ -136,14 +151,31 @@ public class SelectionMapController extends Html5Controller {
 			return;
 		}
 
-	//	timeoutnoactioncount = 0;
-
 		if (command.equals("spotmove")) {
 			//System.out.println("MOVE "+e.getTargetFsNode().asXML());
 			onPositionChange(e.getTargetFsNode());
-			
-			
 		} else if (command.equals("enter")) {
+			FsNode msg = e.getTargetFsNode();
+			spotx = Double.parseDouble(msg.getProperty("x"));
+			spoty = Double.parseDouble(msg.getProperty("y"));
+			
+			selectedItem = checkOverlays();
+			
+			if (selectedItem!=null) {
+				resetScreen();
+
+				//Inform app to switch to main app
+				model.setProperty("/screen/selecteditem", selectedItem.getId()); 
+				model.setProperty("/screen/state","mainapp");
+				
+				//Inform clients to switch to main app view
+				FsNode m = new FsNode("message",screen.getId());
+				m.setProperty("request","mainapp");
+				m.setProperty("itemid", selectedItem.getId());
+				model.notify("@stationevents/fromclient",m);
+				
+				screen.get(selector).remove();
+			}
 		}
 	}
 
@@ -158,8 +190,9 @@ public class SelectionMapController extends Html5Controller {
 		if (timeout_toselect!=0) {
 			timeout_toselect=timeout_toselect-1;
 			if (selectedItem!=null && timeout_toselect==0) {
-	    		screen.get("#selectionmapspot").css("background-color","blue");	
-	    		
+				if (!glassselection) {
+					screen.get("#selectionmapspot").css("background-color","blue");	
+				}
 				//Screen client = ApplicationManager.getScreenByFullid(from);
 				//client.getModel().setProperty("/screen/state","mainapp");
 				//model.setProperty("@fromid", from);
@@ -185,9 +218,22 @@ public class SelectionMapController extends Html5Controller {
 			if (timeout_tomove==0) {
 				selectedItem = moveToRandom();
 				// move the pointer to it
-	    		screen.get("#selectionmapspot").css("left",""+(spotx)+"%");
-	    		screen.get("#selectionmapspot").css("top",""+(spoty)+"%");
-		    	screen.get("#selectionmapmask_"+selectedItem.getId()).css("opacity","0.3");
+	    		
+				//glass selection
+				if (!glassselection) {
+					JSONObject d = new JSONObject();
+					d.put("command", "spot_move");
+					d.put("spotid", "glass");
+					d.put("x", spotx);
+					d.put("y", spoty);
+					screen.get(selector).update(d);
+				}
+				//default selection
+				if (!glassselection) {
+					screen.get("#selectionmapspot").css("left",""+(spotx)+"%");
+					screen.get("#selectionmapspot").css("top",""+(spoty)+"%");
+					screen.get("#selectionmapmask_"+selectedItem.getId()).css("opacity","0.3");
+				}
 				timeout_toselect = 5;
 			}
 
@@ -221,10 +267,22 @@ public class SelectionMapController extends Html5Controller {
 			spoty = Double.parseDouble(msg.getProperty("y"));
 			String color = msg.getProperty("color");
 			
-    		screen.get("#selectionmapspot").css("left",""+(spotx)+"%");
-    		screen.get("#selectionmapspot").css("top",""+(spoty)+"%");
-    		screen.get("#selectionmapspot").css("background-color","red");	
+			//glass selection
+			if (glassselection) {
+				JSONObject d = new JSONObject();
+				d.put("command", "spot_move");
+				d.put("spotid", "glass");
+				d.put("x", spotx);
+				d.put("y", spoty);
+				screen.get(selector).update(d);
+			}
 			
+			//default selection
+			if (!glassselection) {
+				screen.get("#selectionmapspot").css("left",""+(spotx)+"%");
+				screen.get("#selectionmapspot").css("top",""+(spoty)+"%");
+				screen.get("#selectionmapspot").css("background-color","red");
+			}
 			
 			String action = msg.getProperty("action");
 			String deviceid = msg.getProperty("deviceid");

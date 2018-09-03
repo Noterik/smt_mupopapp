@@ -1,7 +1,7 @@
 <div id="quiz-game-container">
 		{{#questions}}
 		<div id="quiz-game-question_container">
-			<b>Vraag:&nbsp;</b> {{slidequestion}}
+			<span style="font-weight: bold;">Vraag:</span>&nbsp; {{slidequestion}}
 		</div>
 		{{/questions}}
 		

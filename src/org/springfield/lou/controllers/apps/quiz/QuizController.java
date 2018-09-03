@@ -330,9 +330,10 @@ public class QuizController extends Html5Controller {
 				}
 				results.addNode(nnode);
 			}
-			data.put("members",results.toJSONObject("en","name,score"));
+			List<FsNode> scores = results.getNodesSorted("score", "up");
+			data.put("members",FSList.ArrayToJSONObject(scores, "en", "name,score"));
+			
+			//data.put("members",results.toJSONObject("en","name,score"));
 		}
 	}
-
-
 }

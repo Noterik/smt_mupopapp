@@ -11,7 +11,9 @@
 				</div>
 			{{/nodes}}
 			<div id="selectionmapspot_holder">
+				{{^glassselection}}
 				<div id="selectionmapspot" style="top:{{y}}%;left:{{x}}%;background-color: {{color}};"> </div>
+				{{/glassselection}}
 			</div>
 		</div>
 		

@@ -2,7 +2,7 @@
 		<div id="quiz-game-highscore_container">
 		{{#members}}
 		{{#nl}}
-		punten lijst<br />
+		Scores<br />
 		{{/nl}}
 		{{#en}}
 		highscores<br />
