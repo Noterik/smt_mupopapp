@@ -164,7 +164,7 @@ public class QuizController extends Html5Controller {
 					if (slidetype==null) slidetype="image";
 					slidetimeout =  Integer.parseInt(node.getProperty("timeout"));
 					if (slidetype.equals("imagequestion") || slidetype.equals("videoquestion")) {
-						showtimer = 3;
+						showtimer = 5;
 					}
 					slidenode = node;
 					fillPage();
@@ -182,7 +182,7 @@ public class QuizController extends Html5Controller {
 				if (slidetype==null) slidetype="image";
 				slidetimeout =  Integer.parseInt(slidenode.getProperty("timeout"));
 				if (slidetype.equals("imagequestion") || slidetype.equals("videoquestion")) {
-					showtimer = 3;
+					showtimer = 5;
 				}
 				random = random - 1;
 				fillPage();

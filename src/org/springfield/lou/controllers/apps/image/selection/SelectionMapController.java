@@ -55,7 +55,7 @@ public class SelectionMapController extends Html5Controller {
 	Random rnd = new Random(System.currentTimeMillis());
 	
 	int timeout_toselect = 0;
-	int timeout_tomove = 8;
+	int timeout_tomove = 10;
 	String master = null;
 	String mastername = null;
 	boolean glassselection = false;
@@ -312,7 +312,7 @@ public class SelectionMapController extends Html5Controller {
 					screen.get("#selectionmapmask_"+selectedItem.getId()).css("opacity","0");
 				}
 				selectedItem = null;
-				timeout_tomove  = 8;
+				timeout_tomove  = 10;
 			}
 		} catch(Exception er1) {
 			
