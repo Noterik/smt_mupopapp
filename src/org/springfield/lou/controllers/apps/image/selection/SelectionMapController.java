@@ -64,7 +64,7 @@ public class SelectionMapController extends Html5Controller {
 	int maxtnoactiontimeoutcount = 1045; //(check every 1sec)
 	FsNode selectedItem = null;
 	List<FsNode> nodes;
-	private Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
+	private static Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
 	private Map<String, FsNode> selecteditems = new HashMap<String, FsNode>();
 	double spotx = -1;
 	double spoty = -1;

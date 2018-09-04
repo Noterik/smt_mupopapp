@@ -234,6 +234,7 @@ public class ExhibitionController extends Html5Controller {
     			return;
     		} else if (type.equals("selectionmap")) {
         		screen.get("#selectionmap").remove();
+        		screen.get("#selectionmap").remove();
     			screen.get("#exhibition").append("div", "selectionmap", new SelectionMapController());
     			return;
     		}
