@@ -312,7 +312,7 @@ public class QuizController extends Html5Controller {
  	}
 	
 	private void addHighScoreNodes(JSONObject data) {
-		FSList list = ExhibitionMemberManager.getActiveMembers(screen,600);
+		FSList list = ExhibitionMemberManager.getActiveMembers(screen,43200);
 		List<FsNode> nodes = list.getNodes();
 		FSList results = new FSList();
 		if (nodes != null) {

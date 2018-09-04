@@ -90,7 +90,7 @@ public class ExhibitionMemberManager {
 	}
 	
     public static int getMemberCount(Screen s) {
-    	FSList members = getActiveMembers(s,600);
+    	FSList members = getActiveMembers(s,60);
     	if (members==null) return 0;
     	return members.size();
     }

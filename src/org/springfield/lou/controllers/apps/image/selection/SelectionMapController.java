@@ -384,7 +384,7 @@ public class SelectionMapController extends Html5Controller {
 			message.setProperty("mastername",mastername);
     		model.notify("@selectionmapevent",message);
     	} else {
-    		FSList list = ExhibitionMemberManager.getActiveMembers(screen,300);
+    		FSList list = ExhibitionMemberManager.getActiveMembers(screen,60);
     		if (list!=null && list.size()>0) {
     			List<FsNode> nodes = list.getNodes();
     			int rp = rnd.nextInt(list.size());
