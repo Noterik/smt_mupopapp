@@ -1229,8 +1229,9 @@ h1.videotitle {
 	padding: 0;
 	position: absolute;
 	display: flex;
-  	justify-content: center;
+  	justify-content: flex-start;
   	align-items: center;
+  	flex-direction: column;
 }
 
 #quiz-game-image_container {

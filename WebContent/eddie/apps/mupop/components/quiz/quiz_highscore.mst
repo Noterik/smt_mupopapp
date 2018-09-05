@@ -2,10 +2,10 @@
 		<div id="quiz-game-highscore_container">
 		{{#members}}
 		{{#nl}}
-		Scores<br />
+		<u>Scores</u><br />
 		{{/nl}}
 		{{#en}}
-		highscores<br />
+		<u>highscores</u><br />
 		{{/en}}
 			{{#nodes}}
 				{{name}} {{score}}<br />

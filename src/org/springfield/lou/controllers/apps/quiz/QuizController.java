@@ -330,7 +330,7 @@ public class QuizController extends Html5Controller {
 				}
 				results.addNode(nnode);
 			}
-			List<FsNode> scores = results.getNodesSorted("score", "up");
+			List<FsNode> scores = results.getNodesSorted("score", "int_up");
 			data.put("members",FSList.ArrayToJSONObject(scores, "en", "name,score"));
 			
 			//data.put("members",results.toJSONObject("en","name,score"));
