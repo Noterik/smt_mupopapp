@@ -41,10 +41,10 @@
 			<div id="selectionmap-mobile-phone"></div>
 			<div id="join-text">
 				{{#code}}
-					<h2 class="selectionmap">{{domain}} - {{code}}</h2>
+					<h2 class="selectionmap">Speel mee via {{domain}} - {{code}}</h2>
 				{{/code}}
 				{{^code}}
-					<h2 class="selectionmap">{{domain}}/{{jumper}}</h2>
+					<h2 class="selectionmap">Speel mee via {{domain}}/{{jumper}}</h2>
 				{{/code}}
 			</div>
 		</div>

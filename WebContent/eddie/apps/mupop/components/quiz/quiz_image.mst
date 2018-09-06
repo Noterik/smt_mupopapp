@@ -74,7 +74,7 @@
 		<div class="vertical-center">
 			<div id="zoomandaudio-mobile-phone"></div>
 			<div id="join-text">
-				<h2 class="zoomandaudio">Doe mee via {{domain}} - {{code}}</h2>
+				<h2 class="zoomandaudio">Speel mee via {{domain}} - {{code}}</h2>
 			</div>
 		</div>
 	</div>
