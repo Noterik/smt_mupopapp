@@ -61,14 +61,12 @@ public class PhotoInfoSpotsController extends Html5Controller {
 		String selecteditem = model.getProperty("@selecteditem");
 		itemnode = null;
 		if (selecteditem != null) {
-			System.out.println("ITEMSET1" + selecteditem);
 			model.setProperty("@itemid", selecteditem);
 			itemnode = model.getNode("@item");
 		} else {
 			FSList items = model.getList("@items");
 			if (items.size() > 0) {
 				itemnode = items.getNodes().get(0);
-				System.out.println("ITEMSET2" + itemnode.getId());
 				model.setProperty("@itemid", itemnode.getId());
 			}
 
@@ -90,7 +88,6 @@ public class PhotoInfoSpotsController extends Html5Controller {
 			data.put("footer_logo", stationnode.getProperty("footer_logo"));
 			
 			model.setProperty("@contentrole", "mainapp");
-			System.out.println("ITEMSET3" + selecteditem);
 			model.setProperty("@itemid", selecteditem);
 
 			data.put("url", model.getProperty("@item/url"));

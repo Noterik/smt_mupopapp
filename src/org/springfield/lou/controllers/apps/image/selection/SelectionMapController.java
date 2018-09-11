@@ -60,8 +60,8 @@ public class SelectionMapController extends Html5Controller {
 	String mastername = null;
 	boolean glassselection = false;
 
-	int maxtimeoutcount = Integer.MAX_VALUE; //(check every 1sec)
-	int maxtnoactiontimeoutcount = 1045; //(check every 1sec)
+	int maxtimeoutcount = Integer.MAX_VALUE; //(check every 1sec) (time out to WAIT SCREEN)
+	int maxtnoactiontimeoutcount = 1045; //(check every 1sec) (time out to WAIT SCREEN)
 	FsNode selectedItem = null;
 	List<FsNode> nodes;
 	private static Map<String, BufferedImage> images = new HashMap<String, BufferedImage>();
@@ -189,6 +189,7 @@ public class SelectionMapController extends Html5Controller {
 		// time to move we give the user, 5 seconds to start picking if not we pick
 		if (timeout_toselect!=0) {
 			timeout_toselect=timeout_toselect-1;
+
 			if (selectedItem!=null && timeout_toselect==0) {
 				if (!glassselection) {
 					screen.get("#selectionmapspot").css("background-color","blue");	
