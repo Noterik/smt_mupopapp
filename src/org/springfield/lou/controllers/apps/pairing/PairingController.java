@@ -19,7 +19,7 @@
 */
 package org.springfield.lou.controllers.apps.pairing;
 
-import java.util.Date;
+import java.util.*;
 import java.util.Random;
 
 import javax.jws.WebParam.Mode;
@@ -29,6 +29,8 @@ import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.ExhibitionController;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.model.ModelEvent;
+import org.springfield.lou.screen.ScreenManager;
+
 
 /**
  * StaticEntryScreenController.java
@@ -45,12 +47,14 @@ public class PairingController extends Html5Controller {
 	String si;
 	String ei;
 	String un;
+	private static java.util.Map<String,String> oldhidscreen = new HashMap<String,String>();
 	
 	public PairingController() { 
 		
 	}
 	
 	public void attach(String sel) {
+		System.out.println("ATTACH DONE="+this);
 		String selector = sel;
 		hid = model.getProperty("@pairingid");
 		if (hid!=null && !hid.equals("")) {
@@ -63,6 +67,18 @@ public class PairingController extends Html5Controller {
 						model.setProperty("@username", un);
 						model.setProperty("@exhibitionid", ei);
 						model.setProperty("@stationid", si);
+						
+						// can we find old screens with this HID and kill them ?
+						String oldscreenid =oldhidscreen.get(hid);
+						System.out.println("oldscreenid="+oldscreenid);
+						if (oldscreenid!=null) {
+							System.out.println("KILLING OLD SCREEN="+oldscreenid);
+							screen.getApplication().removeScreen(oldscreenid,"");
+							//ScreenManager.globalremove(oldscreenid);
+						}
+						oldhidscreen.put(hid,screen.getId());
+						
+						
 						screen.get("#screen").append("div", "exhibition",new ExhibitionController());
 					} else {
 						JSONObject data = new JSONObject();
@@ -87,7 +103,9 @@ public class PairingController extends Html5Controller {
 			model.onPropertyUpdate("/shared/mupop/hidresponse"+code,"onHidResponse",this);
 			model.setProperty("/shared/mupop/hidrequest",code);
 		}
-		model.onNotify("/app['timers']", "onAliveCheck", this);
+		
+		//model.onNotify("/shared[timers]/10second", "onAliveCheck", this);
+		//model.onNotify("/shared[timers]/1second","on1SecTimer",this); 
 	}
 	
 	public void onDashboardMessage(ModelEvent e) {
@@ -113,7 +131,7 @@ public class PairingController extends Html5Controller {
 	}
 	
 	public void onAliveCheck(ModelEvent e) {
-		//System.out.println("ALIVE CHECK !!!"+e.getTargetFsNode().asXML());
+		System.out.println("ALIVE CHECK !!!"+e.getTargetFsNode().asXML()+" THIS="+this);
 		FsNode node = e.getTargetFsNode();
 		String message = node.getProperty("message");
 		if (message.equals("10") && hid!=null) {
