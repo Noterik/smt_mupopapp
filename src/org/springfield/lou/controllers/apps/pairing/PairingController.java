@@ -54,7 +54,6 @@ public class PairingController extends Html5Controller {
 	}
 	
 	public void attach(String sel) {
-		System.out.println("ATTACH DONE="+this);
 		String selector = sel;
 		hid = model.getProperty("@pairingid");
 		if (hid!=null && !hid.equals("")) {
@@ -70,9 +69,9 @@ public class PairingController extends Html5Controller {
 						
 						// can we find old screens with this HID and kill them ?
 						String oldscreenid =oldhidscreen.get(hid);
-						System.out.println("oldscreenid="+oldscreenid);
+						//System.out.println("oldscreenid="+oldscreenid);
 						if (oldscreenid!=null) {
-							System.out.println("KILLING OLD SCREEN="+oldscreenid);
+							//System.out.println("KILLING OLD SCREEN="+oldscreenid);
 							screen.getApplication().removeScreen(oldscreenid,"");
 							//ScreenManager.globalremove(oldscreenid);
 						}
@@ -92,7 +91,7 @@ public class PairingController extends Html5Controller {
 				data.put("nohidnode","true");
 				data.put("hid",hid);
 				screen.get(selector).render(data);	
-				System.out.println("NO HID NODE FOUND !");
+				//System.out.println("NO HID NODE FOUND !");
 			}
 		} else {
 			JSONObject data = new JSONObject();
@@ -104,7 +103,7 @@ public class PairingController extends Html5Controller {
 			model.setProperty("/shared/mupop/hidrequest",code);
 		}
 		
-		//model.onNotify("/shared[timers]/10second", "onAliveCheck", this);
+		model.onNotify("/shared[timers]/10second", "onAliveCheck", this);
 		//model.onNotify("/shared[timers]/1second","on1SecTimer",this); 
 	}
 	
@@ -131,23 +130,19 @@ public class PairingController extends Html5Controller {
 	}
 	
 	public void onAliveCheck(ModelEvent e) {
-		System.out.println("ALIVE CHECK !!!"+e.getTargetFsNode().asXML()+" THIS="+this);
-		FsNode node = e.getTargetFsNode();
-		String message = node.getProperty("message");
-		if (message.equals("10") && hid!=null) {
+		if (hid!=null) {
 			FsNode messagenode = new FsNode("notify","1");
 			messagenode.setProperty("message", hid);
+			String nd = ""+new Date().getTime();
 			if (un!=null) messagenode.setProperty("username", un);
 			if (si!=null) messagenode.setProperty("stationid", si);
 			if (ei!=null) messagenode.setProperty("exhibitionid", ei);
-			//model.notify("/shared['mupop']/hids[alive]",messagenode);	
+			messagenode.setProperty("lastseen", nd);
 	    	FsNode hidalive = model.getNode("@hidsalive/hid/"+hid); // auto create because of bug !
-	    	hidalive.setProperty("lastseen",""+new Date().getTime());
+	    	hidalive.setProperty("lastseen",""+nd);
 	    	hidalive.setProperty("stationid",si);
 	    	hidalive.setProperty("exhibitionid",ei);
 	    	hidalive.setProperty("username",un);
-			//System.out.println("ALIVE="+hidalive.asXML());
-	    	
 			model.notify("/shared['mupop']/hids[alive]",messagenode);
 		}
 	}

@@ -96,7 +96,7 @@ public class PhotoInfoSpotsController extends Html5Controller {
 				data.put("code", model.getProperty("@station/codeselect"));
 			}
 			
-			String applogoleft = model.getProperty("@station/content['contentselect']/applogoright");
+			String applogoleft = model.getProperty("@station/content['contentselect']/applogoleft");
 			if (applogoleft!=null && !applogoleft.equals("")) {
 				data.put("applogoleft",applogoleft);
 			}
