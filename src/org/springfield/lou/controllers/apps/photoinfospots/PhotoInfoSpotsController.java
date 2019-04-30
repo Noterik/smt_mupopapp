@@ -123,6 +123,13 @@ public class PhotoInfoSpotsController extends Html5Controller {
 						origin);
 			}
 		}
+		
+		// color hack
+		String themecolor1 = model.getProperty("@station/content['contentselect']/themecolor1");
+		if (themecolor1!=null || themecolor1.equals("")) {
+			screen.get("#bottom_left").css("background-color",themecolor1);
+			screen.get("#bottom_right").css("background-color",themecolor1);
+		}
 
 		model.onPropertiesUpdate("@photoinfospots/spot/move",
 				"onPositionChange", this);

@@ -13,7 +13,7 @@
 	</div>
 	
 	<div id="url_row" class="row">
-	<div class="col-md-2 fill-height nopadding url_row_background">
+	<div class="col-md-2 fill-height nopadding url_row_background" id="bottom_left">
 		<div class="vertical-center fill-height">
 			{{#applogoleft}}
 				<img src="{{applogoleft}}" />
@@ -41,7 +41,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background">
+	<div class="col-md-2 col-md-offset-1 fill-height nopadding url_row_background" id="bottom_right">
 		<div class="fill-height poweredbywrapper">
 			{{#applogoright}}
 				<img src="{{applogoright}}" />

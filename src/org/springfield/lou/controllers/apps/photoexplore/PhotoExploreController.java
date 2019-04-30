@@ -87,6 +87,14 @@ public class PhotoExploreController extends Html5Controller {
 
 			screen.get(selector).parsehtml(data);
 			screen.get(selector).loadScript(this);
+			
+			// color hack
+			String themecolor1 = model.getProperty("@station/content['contentselect']/themecolor1");
+			if (themecolor1!=null || themecolor1.equals("")) {
+				screen.get("#bottom_left").css("background-color",themecolor1);
+				screen.get("#bottom_right").css("background-color",themecolor1);
+			}
+
 
 			// = new JSONObject();	
 			JSONObject d = FSList.ArrayToJSONObject(nodes,"en","url");

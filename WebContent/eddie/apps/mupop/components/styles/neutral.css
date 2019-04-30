@@ -67,6 +67,7 @@ h1.title {
 	height: 150px;
 	text-align: center;
 	position: relative;
+	color: #000000;
 }
 
 #mobile-phone:before {
@@ -76,7 +77,7 @@ h1.title {
   	top: -0.36em;
   	left: 0;
   	content: "\f10b";
-  	color: #000;
+  	text-shadow: 0px 1px 1px rgba(0, 0, 0, 1);
 }
 
 .centerer {
@@ -366,22 +367,6 @@ h2.entryscreen {
     vertical-align: middle;
 }
 
-#mobile-phone {
-	width: 90px;
-	height: 150px;
-	text-align: center;
-	position: relative;
-}
-
-#mobile-phone:before {
-	position: absolute;
-  	font-family: FontAwesome;
-  	font-size: 15em;
-  	top: -0.36em;
-  	left: 0;
-  	content: "\f10b";
-  	color: #000;
-}
 
 .centerer {
 	height: 98%;
@@ -505,6 +490,14 @@ h2.mupop {
 }
 
 .url_row_background {
+	background-color: #fff;
+}
+
+#bottom_left {
+	background-color: #fff;
+}
+
+#bottom_right {
 	background-color: #fff;
 }
 

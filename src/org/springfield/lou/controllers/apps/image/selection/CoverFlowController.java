@@ -86,7 +86,7 @@ public class CoverFlowController extends Html5Controller {
 			
 			screen.get(selector).render(data);
 			screen.get(selector).loadScript(this);
-
+			
 			JSONObject d = new JSONObject();	
 			d.put("command","numItems");
 			d.put("items", nodes.size());
@@ -94,6 +94,12 @@ public class CoverFlowController extends Html5Controller {
 
 			totalItems = nodes.size();
 			selectedItem = (int) (Math.round(nodes.size() / 2.0) - 1);
+			
+			String themecolor1 = model.getProperty("@station/content['contentselect']/themecolor1");
+			if (themecolor1!=null || themecolor1.equals("")) {
+				screen.get("#bottom_left").css("background-color",themecolor1);
+				screen.get("#bottom_right").css("background-color",themecolor1);
+			}
 		}
 
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);
