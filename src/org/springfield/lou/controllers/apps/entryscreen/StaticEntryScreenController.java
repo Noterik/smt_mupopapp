@@ -126,7 +126,7 @@ public class StaticEntryScreenController extends Html5Controller {
 
 			// color hack
 			String themecolor1 = model.getProperty("@station/content['contentselect']/themecolor1");
-			if (themecolor1!=null || themecolor1.equals("")) {
+			if (themecolor1!=null && !themecolor1.equals("")) {
 				screen.get("#title").css("background-color",themecolor1);
 				screen.get("#mobile-phone").css("color",themecolor1);
 				screen.get("#mobile-phone:before").css("color",themecolor1);
