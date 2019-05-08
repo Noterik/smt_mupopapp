@@ -44,7 +44,7 @@ public class CoverFlowController extends Html5Controller {
 	int timeoutcount = 0;
 	int timeoutnoactioncount = 0;
 	int maxtimeoutcount = Integer.MAX_VALUE; //(check every 1sec)
-	int maxtnoactiontimeoutcount = 45; //(check every 1sec)
+	int maxtnoactiontimeoutcount = 120; //(check every 1sec)
 	int selectedItem = 0;
 	int totalItems = 0;
 	List<FsNode> nodes;
