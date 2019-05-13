@@ -6,12 +6,13 @@ StaticEntryScreenController.update = function(vars, data) {
 		vars["loaded"] = true;
 		
 		//resize once the image is loaded
-		$("#entryimage").on('load', resizeStaticEntryScreen).each(function() {
+		//We now use object-fit: cover to avoid borders
+		/*$("#entryimage").on('load', resizeStaticEntryScreen).each(function() {
 			if (this.complete) {
 				$(this).trigger('load');
 			}
 			
-		});
+		});*/
 		
 		
 	}
@@ -44,4 +45,4 @@ function resizeStaticEntryScreen(){
 	}
 }
 
-jQuery(window).on('resize', resizeStaticEntryScreen);
+//jQuery(window).on('resize', resizeStaticEntryScreen);

@@ -1,7 +1,5 @@
 <div id="image-container">
-	<div id="image-wrapper" class="center-block staticentryscreen">
-		<img id="entryimage" src="{{entryimageurl}}" class="img-responsive"/>
-	</div>
+	<img id="entryimage" src="{{entryimageurl}}"/>
 </div>
 {{#title}}
 <div class="row" id="title"><h1 class="title"><span class="title-span">{{{title}}}</span></h1>
