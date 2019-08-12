@@ -28,6 +28,7 @@ import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
 import org.springfield.lou.homer.LazyHomer;
+import org.springfield.lou.model.ModelEvent;
 
 /**
  * StaticEntryScreenController.java
@@ -135,7 +136,12 @@ public class StaticEntryScreenController extends Html5Controller {
 			JSONObject d = new JSONObject();	
 			d.put("command","init");
 			screen.get(selector).update(d);
+			
 		}
+		
+		// test notify for HUE
+		System.out.println("WAIT FOR NOTIFY !!");
+		model.onNotify("/shared[app]/proxy[NTK-RAS1]/msg","onHueCommand",this);
 	}
 
 
@@ -155,6 +161,45 @@ public class StaticEntryScreenController extends Html5Controller {
 		return true;
 	}
 
+	public void onHueCommand(ModelEvent e) {
+		FsNode msg = e.getTargetFsNode();
+		String sensor = msg.getProperty("sensor");
+		String presence = msg.getProperty("presence");
+		if (presence.equals("true")) {
+			screen.get("#staticentryscreen").css("display","inline");
+			
+			FsNode smsg = new FsNode("NTK-RAS1","Spot 2");
+			smsg.setProperty("state","true");
+			model.notify("/shared[app]/remote",smsg);
+			
+			/*
+			ServiceInterface jimmy = ServiceManager.getService("jimmy");
+			if (jimmy!=null) { 
+				jimmy.put("notify(/shared[app]/proxy[ON]/msg)",null, null);
+			} else {
+				System.out.println("can't fine jimmy !!!");
+			}
+			*/
+		} else {
+			screen.get("#staticentryscreen").css("display","none");
+			
+			FsNode smsg = new FsNode("NTK-RAS1","Spot 2");
+			smsg.setProperty("state","false");
+			model.notify("/shared[app]/remote",smsg);
+			
+			/*
+			ServiceInterface jimmy = ServiceManager.getService("jimmy");
+			if (jimmy!=null) { 
+				jimmy.put("notify(/shared[app]/proxy[FF]/msg)",null, null);
+			} else {
+				System.out.println("can't fine jimmy !!!");
+			}
+			*/
+		}
+	}
+
+	
+	
 	/*
     private boolean checkCodeInUse(String newcode) {
     	FSList stations = model.getList("@stations"); // check all the active stations
