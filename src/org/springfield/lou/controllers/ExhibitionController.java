@@ -31,6 +31,7 @@ import org.springfield.lou.application.ApplicationManager;
 import org.springfield.lou.application.Html5Application;
 import org.springfield.lou.application.Html5ApplicationInterface;
 import org.springfield.lou.controllers.apps.entryscreen.CodeSelector;
+import org.springfield.lou.controllers.apps.entryscreen.HueEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.ImageRotationEntryScreenController;
 import org.springfield.lou.controllers.apps.entryscreen.StaticEntryScreenController;
 import org.springfield.lou.controllers.apps.image.selection.CoverFlowController;
@@ -69,7 +70,14 @@ public class ExhibitionController extends Html5Controller {
     	model.setProperty("/screen/state","init"); // will trigger a event 
     	model.onNotify("@station","onStationChange",this);
     	model.onNotify("@exhibition","onStationChange",this);
+    	
+    	model.onNotify("/shared[app]/proxy[NTK-RAS1]/msg","onHueCommand",this);
     }
+    
+	public void onHueCommand(ModelEvent e) {
+		HueSceneManager sm = HueSceneManager.getInstance(model);
+		sm.onHueCommand(e);
+	}
     
     public void onStationChange(ModelEvent event) {
     	resetScreen();
@@ -146,6 +154,9 @@ public class ExhibitionController extends Html5Controller {
         		screen.get("#staticentryscreen").remove(); // extra checks daniel
         		screen.get("#staticentryscreen").remove(); // extra checks daniel
     			screen.get("#exhibition").append("div","staticentryscreen", new StaticEntryScreenController());
+    		} else if (waitscreen.equals("hue")) {
+        		screen.get("#hueentryscreen").remove(); // extra checks daniel
+    			screen.get("#exhibition").append("div","hueentryscreen", new HueEntryScreenController());
     		} else if (waitscreen.equals("kenburn")) {
         		screen.get("#exhibition").append("div","imagerotationentryscreen", new ImageRotationEntryScreenController());
     		}	

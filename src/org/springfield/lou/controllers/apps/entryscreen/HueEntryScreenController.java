@@ -27,6 +27,7 @@ import org.json.simple.JSONObject;
 import org.springfield.fs.FSList;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.controllers.Html5Controller;
+import org.springfield.lou.controllers.HueSceneManager;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.model.ModelEvent;
 import org.springfield.mojo.interfaces.ServiceInterface;
@@ -40,14 +41,17 @@ import org.springfield.mojo.interfaces.ServiceManager;
  * @package org.springfield.lou.controllers.apps.entryscreen
  * 
  */
-public class StaticEntryScreenController extends Html5Controller {
+public class HueEntryScreenController extends Html5Controller {
 
+	private int imageselected=0;
 
-	public StaticEntryScreenController() { }
+	public HueEntryScreenController() { }
 
 	public void attach(String sel) {
+		System.out.println("BLAAAAA");
 		String selector = sel;
-
+		//fillPage();
+		
 		FsNode stationnode = model.getNode("@station");
 		FsNode exhibitionnode = model.getNode("@exhibition");
 		if (stationnode!=null) {
@@ -135,20 +139,37 @@ public class StaticEntryScreenController extends Html5Controller {
 				screen.get("#mobile-phone:before").css("color",themecolor1);
 			}
 			
-
-			
-			
 			JSONObject d = new JSONObject();	
 			d.put("command","init");
 			screen.get(selector).update(d);
 			
 		}
+	
+	
 		
 		// test notify for HUE
-		//System.out.println("WAIT FOR NOTIFY !!");
+		
+		HueSceneManager hm = HueSceneManager.getInstance(model);
+		
+		System.out.println("WAIT FOR NOTIFY !!");
 		//model.onNotify("/shared[app]/proxy[NTK-RAS1]/msg","onHueCommand",this);
+		model.onNotify("/shared[app]/huescene/change","onHueSceneChange",this);
 	}
+	
+	public void fillPage() {
+		model.setProperty("@contentrole",model.getProperty("@station/waitscreen_content"));
+		FSList imagesList = model.getList("@images");
 
+
+		if (imagesList.size() > 0) {
+			FsNode first = imagesList.getNodes().get(imageselected);
+			String entryScreen = first.getProperty("url");
+			System.out.println("AAA="+entryScreen);
+			screen.get("#image-container").html("<img src=\""+entryScreen+"\" id=\"entryimage\"/>)");
+		}
+
+
+	}
 
 
 	private boolean checkCodeInUse(String newcode) {
@@ -166,44 +187,68 @@ public class StaticEntryScreenController extends Html5Controller {
 		return true;
 	}
 
-	/*
-	public void onHueCommand(ModelEvent e) {
+	
+	public void onHueSceneChange(ModelEvent e) {
+		//HueSceneManager sm = HueSceneManager.getInstance(model);
+		//sm.onHueCommand(e);
+		
 		FsNode msg = e.getTargetFsNode();
-		String sensor = msg.getProperty("sensor");
-		String presence = msg.getProperty("presence");
-		if (presence.equals("true")) {
-			screen.get("#staticentryscreen").css("display","inline");
-			
-			//FsNode smsg = new FsNode("NTK-RAS1","Spot 2");
-			//smsg.setProperty("state","true");
-			//model.notify("/shared[app]/remote",smsg);
-			
-			
+		//System.out.println("HUE ENTRY NODE="+msg.asXML());
+		String state = msg.getProperty("state");
+		
+		String scenename = msg.getProperty("scenename");
+		System.out.println("SCENENAME="+scenename);
+		if (scenename.equals("daniel/HUEDEMO1/ATSCREEN")) {
+			ServiceInterface jimmy = ServiceManager.getService("jimmy");
+			if (state.equals("true")) {
+				imageselected = 1;
+				jimmy.put("NTK-RAS1/light/Flood1,state=true",null, null);
+			} else {
+				imageselected = 0;
+				jimmy.put("NTK-RAS1/light/Flood1,state=false",null, null);
+			}
+			fillPage();
+			return;
+		} else if (scenename.equals("daniel/HUEDEMO1/WAITROOM")) {
+			ServiceInterface jimmy = ServiceManager.getService("jimmy");
+			if (state.equals("true")) {
+				imageselected = 2;
+				jimmy.put("NTK-RAS1/light/Spot 2,state=true",null, null);
+			} else {
+				imageselected = 0;
+				jimmy.put("NTK-RAS1/light/Spot 2,state=false",null, null);
+			}
+			fillPage();
+			return;
+		}
+		
+		
+		
+	//	String name = msg.getProperty("name");
+		/*
+		if (state.equals("true")) {
+			screen.get("#hueentryscreen").css("display","inline");
 			ServiceInterface jimmy = ServiceManager.getService("jimmy");
 			if (jimmy!=null) { 
+				System.out.println("TURN LIGHT ON");
 				jimmy.put("NTK-RAS1/light/Spot 2,state=true",null, null);
 			} else {
 				System.out.println("can't find jimmy !!!");
 			}
-	
+			imageselected = 1;
 		} else {
-			screen.get("#staticentryscreen").css("display","none");
-			
-			//FsNode smsg = new FsNode("NTK-RAS1","Spot 2");
-			//smsg.setProperty("state","false");
-			//model.notify("/shared[app]/remote",smsg);
-			
-			
 			ServiceInterface jimmy = ServiceManager.getService("jimmy");
 			if (jimmy!=null) { 
+				System.out.println("TURN LIGHT OFF");
 				jimmy.put("NTK-RAS1/light/Spot 2,state=false",null, null);
 			} else {
 				System.out.println("can't find jimmy !!!");
 			}
-		
+			imageselected = 0;
 		}
+		fillPage();
+		*/
 	}
-	*/
 
 	
 	

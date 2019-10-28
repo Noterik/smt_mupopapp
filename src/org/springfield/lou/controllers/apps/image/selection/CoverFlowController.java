@@ -100,6 +100,12 @@ public class CoverFlowController extends Html5Controller {
 				screen.get("#bottom_left").css("background-color",themecolor1);
 				screen.get("#bottom_right").css("background-color",themecolor1);
 			}
+			
+			// color hack
+			String themecolorbackground = model.getProperty("@station/content['contentselect']/themecolorbackground");
+			if (themecolorbackground!=null && !themecolorbackground.equals("")) {
+				screen.get("#coverflow").css("background-color",themecolorbackground);
+			}
 		}
 
 		model.onNotify("@stationevents/fromclient","onClientStationEvent",this);

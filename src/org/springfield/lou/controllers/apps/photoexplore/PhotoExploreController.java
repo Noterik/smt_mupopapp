@@ -94,6 +94,12 @@ public class PhotoExploreController extends Html5Controller {
 				screen.get("#bottom_left").css("background-color",themecolor1);
 				screen.get("#bottom_right").css("background-color",themecolor1);
 			}
+			
+			// color hack
+			String themecolorbackground = model.getProperty("@station/content['contentselect']/themecolorbackground");
+			if (themecolorbackground!=null && !themecolorbackground.equals("")) {
+				screen.get("#photoexplore_app").css("background-color",themecolorbackground);
+			}
 
 
 			// = new JSONObject();	

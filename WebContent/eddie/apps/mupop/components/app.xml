@@ -179,6 +179,14 @@
 			<javascript>entryscreen/StaticEntryScreenController.js</javascript>
 		</controller>
 	</view>
+	
+	<view id="#hueentryscreen">
+		<template>entryscreen/hueentryscreen.mst</template>
+		<style>entryscreen/hueentryscreen.css</style>
+		<controller id="HueEntryScreenController">
+			<javascript>entryscreen/HueEntryScreenController.js</javascript>
+		</controller>
+	</view>
 
 	<view id="#imagerotationentryscreen">
 		<template>entryscreen/imagerotationentryscreen.mst</template>
