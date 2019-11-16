@@ -48,7 +48,6 @@ public class HueEntryScreenController extends Html5Controller {
 	public HueEntryScreenController() { }
 
 	public void attach(String sel) {
-		System.out.println("BLAAAAA");
 		String selector = sel;
 		//fillPage();
 		
@@ -142,17 +141,12 @@ public class HueEntryScreenController extends Html5Controller {
 			JSONObject d = new JSONObject();	
 			d.put("command","init");
 			screen.get(selector).update(d);
-			
 		}
 	
 	
 		
 		// test notify for HUE
-		
 		HueSceneManager hm = HueSceneManager.getInstance(model);
-		
-		System.out.println("WAIT FOR NOTIFY !!");
-		//model.onNotify("/shared[app]/proxy[NTK-RAS1]/msg","onHueCommand",this);
 		model.onNotify("/shared[app]/huescene/change","onHueSceneChange",this);
 	}
 	
@@ -160,15 +154,11 @@ public class HueEntryScreenController extends Html5Controller {
 		model.setProperty("@contentrole",model.getProperty("@station/waitscreen_content"));
 		FSList imagesList = model.getList("@images");
 
-
 		if (imagesList.size() > 0) {
 			FsNode first = imagesList.getNodes().get(imageselected);
 			String entryScreen = first.getProperty("url");
-			System.out.println("AAA="+entryScreen);
 			screen.get("#image-container").html("<img src=\""+entryScreen+"\" id=\"entryimage\"/>)");
 		}
-
-
 	}
 
 
@@ -194,18 +184,50 @@ public class HueEntryScreenController extends Html5Controller {
 		
 		FsNode msg = e.getTargetFsNode();
 		//System.out.println("HUE ENTRY NODE="+msg.asXML());
+		
+		
 		String state = msg.getProperty("state");
 		
 		String scenename = msg.getProperty("scenename");
-		System.out.println("SCENENAME="+scenename);
+
+		
+		// lets find the scene 
+		
+		//System.out.println("SCENENAME="+scenename);
+		FSList imagesList = model.getList("@images");
+		//String matcher = "utrecht/bridge1/";
+		List<FsNode> nodes = imagesList.getNodes();
+		if (nodes != null) {
+			int pos = 0;
+			for (Iterator<FsNode> iter = nodes.iterator(); iter.hasNext();) {
+				FsNode node = (FsNode) iter.next();
+				String scene = node.getProperty("scene");
+				//System.out.println("SCENE="+scene);
+				if (scene!=null && !scene.equals("")) {
+					if ((scene).equals(scenename)) {
+						//System.out.println("WE GOT A HIT="+scene+" p="+pos+" state="+state);
+						if (state.equals("true")) {
+							imageselected = pos;	
+						} else {
+							imageselected = 0;			
+						}
+						fillPage();
+						return;
+					}
+				}
+				pos++;
+			}
+		}
+		
+		/*
 		if (scenename.equals("daniel/HUEDEMO1/ATSCREEN")) {
 			ServiceInterface jimmy = ServiceManager.getService("jimmy");
 			if (state.equals("true")) {
 				imageselected = 1;
-				jimmy.put("NTK-RAS1/light/Flood1,state=true",null, null);
+				jimmy.put("NTK-RAS1/light/Stop muur,state=true",null, null);
 			} else {
 				imageselected = 0;
-				jimmy.put("NTK-RAS1/light/Flood1,state=false",null, null);
+				jimmy.put("NTK-RAS1/light/Stop muur,state=false",null, null);
 			}
 			fillPage();
 			return;
@@ -213,14 +235,15 @@ public class HueEntryScreenController extends Html5Controller {
 			ServiceInterface jimmy = ServiceManager.getService("jimmy");
 			if (state.equals("true")) {
 				imageselected = 2;
-				jimmy.put("NTK-RAS1/light/Spot 2,state=true",null, null);
+				jimmy.put("NTK-RAS1/light/Flood1,state=true",null, null);
 			} else {
 				imageselected = 0;
-				jimmy.put("NTK-RAS1/light/Spot 2,state=false",null, null);
+				jimmy.put("NTK-RAS1/light/Flood1,state=false",null, null);
 			}
 			fillPage();
 			return;
 		}
+		*/
 		
 		
 		
