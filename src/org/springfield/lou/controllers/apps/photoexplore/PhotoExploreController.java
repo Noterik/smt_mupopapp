@@ -61,13 +61,22 @@ public class PhotoExploreController extends Html5Controller {
 			System.out.println("SELECTED ITEM="+itemname);
 			FSList imagesList = model.getList("@itemimages");
 			System.out.println("Found "+imagesList.size()+" images");
+			
+			
 			String renderoption = model.getProperty("@item/renderoption");
 			if (renderoption!=null && !renderoption.equals("") && !renderoption.equals("none")) {
 				imagesList = rewriteUrls(imagesList,renderoption);
 			}
 
 			List<FsNode> nodes = imagesList.getNodes();
-			JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url"); 
+	
+			for (Iterator<FsNode> iter = imagesList.getNodes().iterator(); iter.hasNext();) {
+				FsNode node = (FsNode) iter.next();
+				System.out.println("MAIN SCREEN URL="+node.asXML());
+			}
+			
+			
+			JSONObject data = FSList.ArrayToJSONObject(nodes,"en","url,mp4"); 
 			data.put("domain", LazyHomer.getExternalIpNumber());
 			data.put("jumper", exhibitionnode.getProperty("jumper"));
 			data.put("footer_logo", stationnode.getProperty("footer_logo"));
@@ -120,10 +129,16 @@ public class PhotoExploreController extends Html5Controller {
 		for(Iterator<FsNode> iter = nodes.getNodes().iterator() ; iter.hasNext(); ) {
 			FsNode node = (FsNode)iter.next();	
 			String oldurl = node.getProperty("url");
-			if (oldurl.startsWith("http://")) {
-				node.setProperty("url","http://"+LazyHomer.getExternalIpNumber()+"/edna/external/"+oldurl.substring(7)+"?script="+renderoption);
-			} else if (oldurl.startsWith("https://")) {
-				node.setProperty("url","http://"+LazyHomer.getExternalIpNumber()+"/edna/external/"+oldurl.substring(8)+"?script="+renderoption);
+			System.out.println("OLDURL="+oldurl);
+			if (!oldurl.endsWith(".mp4")) {
+				if (oldurl.startsWith("http://")) {
+					node.setProperty("url","http://"+LazyHomer.getExternalIpNumber()+"/edna/external/"+oldurl.substring(7)+"?script="+renderoption);
+				} else if (oldurl.startsWith("https://")) {
+					node.setProperty("url","http://"+LazyHomer.getExternalIpNumber()+"/edna/external/"+oldurl.substring(8)+"?script="+renderoption);
+				}
+			} else {
+				System.out.println("SETMP4="+oldurl);
+				node.setProperty("mp4","true");
 			}
 		//	System.out.println("URL REWRITE="+node.getProperty("url"));
 		}

@@ -388,6 +388,11 @@ h1.videotitle {
 		height: 100%;
 	}
 	
+	.zoomandaudio_video {
+		width: 100%;
+		height: 100%;
+	}
+	
 	.zoomandaudio_layer {
 		position: absolute;
 		top: 0;
@@ -573,6 +578,11 @@ h1.videotitle {
 	}
 	
 	.zoomandaudio_image {
+		width: 100%;
+		height: 100%;
+	}
+	
+	.zoomandaudio_video {
 		width: 100%;
 		height: 100%;
 	}

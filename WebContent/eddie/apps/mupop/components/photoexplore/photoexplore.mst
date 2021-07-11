@@ -1,9 +1,18 @@
 <div id="photoexplore-image-container">
+
 	{{#nodes}}
 		<div id="image-wrapper{{id}}" class="center-block image-wrapper">
+			{{^mp4}}
 			<img class="zoomandaudio_image" src="{{url}}" id="photoexplore_image-{{id}}" />
+			{{/mp4}}
+			{{#mp4}}
+			<video class="zoomandaudio_video" autoplay playsinline muted loop>
+  				<source src="{{url}}" type="video/mp4">
+  			</video>
+			{{/mp4}}	
 		</div>
 	{{/nodes}}
+
 </div>
 
 <div id="url_row" class="row">
