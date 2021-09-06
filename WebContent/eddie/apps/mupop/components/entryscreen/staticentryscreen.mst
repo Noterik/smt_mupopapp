@@ -43,3 +43,16 @@
 		{{/stationselect}}
 	</div>
 </div>
+<canvas id="qrcode_mainscreen"></canvas>
+
+<script src="/eddie/apps/mupop/libs/qrious.min.js"></script>
+	    <script>
+      (function() {
+        var qr = new QRious({
+      	  foreground: 'black',
+      	  size: 500,
+          element: document.getElementById('qrcode_mainscreen'),
+          value: 'http://{{domain}}/?code={{codeselect}}'
+        });
+      })();
+</script>

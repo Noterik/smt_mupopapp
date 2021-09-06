@@ -35,6 +35,7 @@
 				<h2 class="zoomandaudio">{{domain}}/{{jumper}} {{#code}}- {{code}}{{/code}}</h2>
 			</div>
 		</div>
+		<canvas id="qrcode_mainscreen_footer"></canvas>
 	</div>
 	<div class="col-md-2 col-md-offset-2 fill-height nopadding url_row_background">
 		<div class="fill-height poweredbywrapper">
@@ -42,3 +43,15 @@
 		</div>
 	</div>
 </div>
+
+<script src="/eddie/apps/mupop/libs/qrious.min.js"></script>
+	    <script>
+      (function() {
+        var qr = new QRious({
+      	  foreground: 'black',
+      	  size: 500,
+          element: document.getElementById('qrcode_mainscreen_footer'),
+          value: 'http://{{domain}}/?code={{code}}'
+        });
+      })();
+</script>

@@ -681,3 +681,26 @@ h2.zoomandaudio {
 .nopadding {
 	padding: 0;
 }
+
+#qrcode_mainscreen {
+	position: absolute;
+    bottom: 15%;
+    left: 72%;
+    width: 10%;
+    height: 16%;
+    background-color: white;
+    z-index: 19999;
+    border: 5px solid black;
+    box-shadow: 3px 3px 3px #ffffff;
+}
+
+#qrcode_mainscreen_footer {
+    position: absolute;
+    bottom: -19%;
+    left: 78%;
+    width: 7%;
+    height: 110%;
+    background-color: white;
+    z-index: 19999;
+}
+

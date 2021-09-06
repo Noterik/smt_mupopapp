@@ -135,6 +135,8 @@ public class StaticEntryScreenController extends Html5Controller {
 				screen.get("#mobile-phone:before").css("color",themecolor1);
 			}
 			
+			// fill the QR CODE !!!
+			System.out.println(" ADD QRCODE TO MAINSCREEN !!!");
 
 			
 			
